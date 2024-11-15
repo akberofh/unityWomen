@@ -10,7 +10,7 @@ const ResertPass =() => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:8000/api/users/reset-password', {
+      const response = await axios.post('https://unity-women-backend.vercel.app/api/users/reset-password', {
         token,
         newPassword,
       });

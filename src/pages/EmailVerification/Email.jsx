@@ -11,7 +11,7 @@ const Email = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8000/api/users/verifyEmail", {
+      const response = await axios.post("https://unity-women-backend.vercel.app/api/users/verifyEmail", {
         email,
         verficationToken,
       });

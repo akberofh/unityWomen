@@ -14,7 +14,7 @@ const Cart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/qolbaq/');
+                const response = await axios.get('https://unity-women-backend.vercel.app/api/qolbaq/');
                 setData(response.data.allQolbaq); // Set data with fetched products
             } catch (error) {
                 console.error('Error fetching data:', error);

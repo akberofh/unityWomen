@@ -9,7 +9,7 @@ const RequestPass = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/users/request-password-reset', {
+      const response = await axios.post('https://unity-women-backend.vercel.app/api/users/request-password-reset', {
         email,
       });
       setMessage(response.data.message);

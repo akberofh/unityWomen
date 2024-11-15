@@ -21,7 +21,7 @@ const Saat = () => {
     useEffect(() => {
         const fetchNotes = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/api/qolbaq/');
+                const res = await axios.get('https://unity-women-backend.vercel.app/api/qolbaq/');
                 const filteredNotes = res.data.allQolbaq.filter(note => note.catagory === 'Saat');
                 setCharms(filteredNotes);
                 setLoading(false);

@@ -18,7 +18,7 @@ export const todoApiSlice = apiSlice.injectEndpoints({
     }),
     updateTodo: builder.mutation({
       query: (formData) => ({
-        url: `https://shope-smoky.vercel.app/api/todos/${formData.get('_id')}`, // Assuming your URL requires the ID
+        url: `https://unity-women-backend.vercel.app/api/todos/${formData.get('_id')}`, // Assuming your URL requires the ID
         method: 'PUT',
         body: formData,
       }),
