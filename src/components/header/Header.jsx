@@ -195,33 +195,33 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Mobil Menü Butonu */}
             <div className="md:hidden flex items-center space-x-4 z-20">
-  <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-    <Link to='/basket'>
-      <FaShoppingCart className="w-6 h-6" />
-    </Link>
-  </button>
-  <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-    <FaHeart className="w-6 h-6" />
-  </button>
-  {theme === "dark" ? (
-    <BiSolidSun
-      onClick={() => setTheme("light")}
-      className="text-2xl cursor-pointer"
-    />
-  ) : (
-    <BiSolidMoon
-      onClick={() => setTheme("dark")}
-      className="text-2xl text-white cursor-pointer"
-    />
-  )}
-  <button onClick={toggleMenu} className="text-white dark:text-white">
-    {isMenuOpen ? (
-      <FaBarsStaggered size={24} />
-    ) : (
-      <FaBars size={24} />
-    )}
-  </button>
-</div>
+              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                <Link to='/basket'>
+                  <FaShoppingCart className="w-6 h-6" />
+                </Link>
+              </button>
+              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                <FaHeart className="w-6 h-6" />
+              </button>
+              {theme === "dark" ? (
+                <BiSolidSun
+                  onClick={() => setTheme("light")}
+                  className="text-2xl cursor-pointer"
+                />
+              ) : (
+                <BiSolidMoon
+                  onClick={() => setTheme("dark")}
+                  className="text-2xl text-white cursor-pointer"
+                />
+              )}
+              <button onClick={toggleMenu} className="text-white dark:text-white">
+                {isMenuOpen ? (
+                  <FaBarsStaggered size={24} />
+                ) : (
+                  <FaBars size={24} />
+                )}
+              </button>
+            </div>
 
           </div>
         </div>
@@ -324,13 +324,14 @@ const Header = ({ theme, setTheme }) => {
           {/* Kategoriler Menüsü */}
           <button
             onClick={toggleCategoryMenu}
-            className="w-full text-left py-3 px-5 text-lg font-semibold text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 mt-6 rounded-lg"
+            className="w-full    text-left py-3 px-5 text-lg font-semibold text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 mt-6 rounded-lg "  data-aos="custom-border"
+                data-aos-duration="1000"
           >
             Kategoriler
           </button>
           {isCategoryMenuOpen && (
             <div
-              className="absolute left-0 bg-white dark:bg-black text-gray-700 dark:text-white shadow-lg rounded-lg mt-2 w-60 overflow-y-auto max-h-60"
+              className="absolute z-10 border-t border-l border-b  bg-white dark:bg-black text-gray-700 dark:text-white shadow-lg rounded-lg mt-2 w-60 overflow-y-auto max-h-60"
             >
               {categories.map((category) => (
                 <Link
@@ -347,13 +348,15 @@ const Header = ({ theme, setTheme }) => {
 
           {/* Linkler */}
           <div className="space-y-4 mt-6">
-            <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Haqqımızda</Link>
-            <Link to="/contact" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Əlaqə</Link>
-            <Link to="/confirmed" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Sifarişlərim</Link>
+            <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"   data-aos="custom-border"
+                data-aos-duration="1000">Haqqımızda</Link>
+            <Link to="/contact" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"   data-aos="custom-border"
+                data-aos-duration="1000">Əlaqə</Link>
+            <Link to="/confirmed" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"   data-aos="custom-border"
+                data-aos-duration="1000">Sifarişlərim</Link>
           </div>
         </div>
       )}
-
 
 
 
