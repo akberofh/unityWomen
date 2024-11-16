@@ -11,6 +11,12 @@ const Cart = () => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
 
+    const [visibleItems, setVisibleItems] = useState(8); // Başlangıçta görünen ürün sayısı
+
+    const loadMore = () => {
+        setVisibleItems(visibleItems + 8); // Her tıklamada 8 ürün daha göster
+    };
+
     // Fetch products from backend
     useEffect(() => {
         const fetchData = async () => {
@@ -45,57 +51,82 @@ const Cart = () => {
     };
 
     return (
-        // React Icons'dan FaHeart'ı import ediyoruz
+        <div className="w-[95%] mx-auto p-6">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                {data.length > 0 ? (
+                    data.slice(0, visibleItems).map((product) => (
+                        <div
+                            key={product._id}
+                            className="bg-white shadow-lg rounded-xl dark:bg-black border overflow-hidden p-6 flex flex-col items-center transition-transform transform hover:scale-105 relative" 
+                        
+                            onClick={() => navigate(`/product/${product._id}`)}
+                        >
+                            {/* Favori Ikonu */}
+                            <button className="absolute top-4 right-4 p-2 rounded-full dark:text-purple-950 text-gray-950">
+                                <FaRegHeart className="h-8 w-8 hover:text-blue-900" />
+                            </button>
 
-  
-        <div className=" w-[95%] mx-auto p-6">
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 xl:grid-cols-5">
-          {data.length > 0 ? (
-            data.map((product, index) => (
-              <div
-                key={product._id}
-                className={`bg-white shadow-lg rounded-xl overflow-hidden p-6 flex flex-col items-center transition-transform transform hover:scale-105 relative`}
-              >
-                {/* Favori Ikonu */}
-                <button className="absolute top-4 right-4 p-2 rounded-full text-gray-400">
-  <FaRegHeart className="h-8 w-8  hover:text-red-600"/>
-</button>
+                            {/* Ürün Görseli */}
+                            <img
+                                src={product.thumbnail}
+                                alt={product.title}
+                                className="h-40 w-40 object-cover mb-6 rounded-lg"
+                            />
 
-      
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="h-60 w-60 object-cover mb-6 rounded-lg"
-                />
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{product.title}</h3>
-                <p className={`text-lg font-semibold mb-4 ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}>
-                  {product.stock > 0 ? "Stokta Var" : "Stokta Yok"}
-                </p>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  disabled={product.stock === 0}
-                  className={`px-6 py-3 rounded-lg text-white ${
-                    product.stock === 0
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
-                  } transition-colors duration-200`}
-                >
-                  {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-600">Ürünler yükleniyor...</p>
-          )}
+                            {/* Ürün Başlık ve Fiyat */}
+                            <h3 className="text-lg font-semibold mb-2 text-gray-800 text-center h-12 overflow-hidden">
+                                {product.title}
+                            </h3>
+                            <h4 className="text-lg font-semibold mb-4 text-gray-800">{product.price}₼</h4>
+
+                            {/* Stok Durumu */}
+                            <p
+                                className={`text-base font-medium mb-4 ${product.stock > 0 ? "text-green-600" : "text-red-600"
+                                    }`}
+                            >
+                                {product.stock > 0 ? "Stokta Var" : "Stokta Yok"}
+                            </p>
+
+                            {/* Sepete Ekle Butonu */}
+                            <button
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock === 0}
+                                className={`w-full py-3 rounded-lg text-white ${product.stock === 0
+                                        ? "bg-gray-400 cursor-not-allowed"
+                                        : "bg-blue-600 hover:bg-blue-700"
+                                    } transition-colors duration-200`}
+                            >
+                                {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
+                            </button>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center text-gray-600">Ürünler yükleniyor...</p>
+                )}
+            </div>
+
+            {/* Daha Fazla Göster butonu */}
+            {visibleItems < data.length && (
+                <div className="flex justify-center mt-6">
+                    <button
+                        onClick={loadMore}
+                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                    >
+                        Daha Fazla Göster
+                    </button>
+                </div>
+            )}
         </div>
-      </div>
-      
-    
-        
-        
-
 
     );
 };
+
+
+
+
+
+
+
+
 
 export default Cart;
