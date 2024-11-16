@@ -370,7 +370,7 @@ const Header = ({ theme, setTheme }) => {
               placeholder="Arama yap..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)} // Input değiştiğinde queryyi güncelle
-              className="search-input  dark:text-white  dark:bg-black p-2 w-full border rounded-md"
+              className="search-input  dark:text-white  dark:bg-black p-2 w-full border rounded-md outline-none"
             />
             {searchQuery.length > 0 && (
               <ul className="search-results absolute top-full left-0 w-full bg-white dark:bg-black shadow-md rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
