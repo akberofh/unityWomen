@@ -339,10 +339,10 @@ const Header = ({ theme, setTheme }) => {
           {/* Mobil Arama ve İkonlar */}
           <div className="flex space-x-6 mt-4">
             <button className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <FaUser size={20} />
+            <Link to="/register"> <FaUser size={20} /> </Link>
             </button>
             <button className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <FaShoppingCart size={20} />
+            <Link to='/basket'> <FaShoppingCart size={20} /></Link>
             </button>
             <button className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
               <FaHeart size={20} />
