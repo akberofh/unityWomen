@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Header from '../../components/header/Header'
-import BackGround from "../../components/Background/BackGround";
 import Chat from '../../components/Chat/Chat'
-import Section from "../../components/Section/Section";
-import Sections from '../../components/TwoSection/Section'
 import Sec from "../../components/SwiperSec/Sec";
+import Cart from "../Cart/Cart";
 
 
 const Home = () => {
@@ -36,11 +34,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className=" dark:bg-black dark:text-white text-black overflow-x-hidden">
+    <div className=" dark:bg-black dark:text-white mt-[160px] text-black overflow-x-hidden">
         <Header theme={theme} setTheme={setTheme} />
         <Sec/>
-        <Section theme={theme} setTheme={setTheme}  />
-        <Sections />
+        <Cart theme={theme} />
         <Chat theme={theme}  />
     </div>
   );

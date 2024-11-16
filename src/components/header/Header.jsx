@@ -119,7 +119,7 @@ const Header = ({ theme, setTheme }) => {
 
 
   return (
-    <header className="relative h-[160px] z-10  shadow-md w-full dark:bg-black dark:text-white duration-300 ">
+    <header className="fixed top-0 left-0  h-[160px] z-10  shadow-md w-full dark:bg-black dark:text-white duration-300 ">
       <div className="w-full h-[80px] mx-auto dark:border-b dark:bg-black dark:text-white flex justify-between items-center bg-gray-800">
         <div className="w-[90%] mx-auto flex justify-between items-center">
           {/* Logo ve Menü */}
@@ -130,6 +130,7 @@ const Header = ({ theme, setTheme }) => {
                 <img
                   src={UnityWomen}
                   alt="Unity Women"
+                  
                   className="w-auto h-20 object-cover bg-transparent"
                 />
               </Link>
