@@ -31,7 +31,7 @@ const DetalPage = () => {
   }, []);
 
   return (
-    <div className={theme === "dark" ? "bg-black text-white" : "bg-white text-black"}>
+    <div className={theme === "dark" ? "bg-black text-white" : "bg-white text-black mt-[160px]"}>
       <Header theme={theme} setTheme={setTheme} />
       <Detalp theme={theme} />
     </div>

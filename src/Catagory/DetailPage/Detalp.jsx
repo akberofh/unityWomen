@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Detalp.module.scss';
 import { FaStar } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductCard from '../../pages/Cart/Cart';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
 
 const Detalp = () => {
     const [product, setProduct] = useState(null);
@@ -19,8 +17,19 @@ const Detalp = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [visibleLength, setVisibleLength] = useState(100); // Başlangıçta 100 karakter göster
+
+    const handleShowMore = () => {
+        setVisibleLength((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
+    };
+
+    const handleShowLess = () => {
+        setVisibleLength(100); // Reset to the default 100 characters
+    };
+
+    const isFullVisible = visibleLength >= product?.description?.length;
+
     const [addTodo] = useAddTodoMutation();
-   
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -43,27 +52,25 @@ const Detalp = () => {
         fetchProduct();
     }, [qolbaq_id]);
 
-
     const handleAddToCart = async (product) => {
         try {
-            const itemWithDetails = { productId: product._id }; // Use product._id dynamically
+            const itemWithDetails = { productId: product._id }; // Ürün ID'si ile sepete ekleme
 
-            // Add the product to the cart using addTodo mutation
+            // Sepete ekleme işlemi
             const newTodo = await addTodo(itemWithDetails).unwrap();
 
-            // Dispatch the new item to Redux state
+            // Redux'a yeni öğeyi ekle
             dispatch({ type: 'product/addTodo', payload: newTodo });
 
-            // Navigate to dashboard after adding product to the cart
+            // Sepete ekleme işlemi başarılıysa, sepete yönlendir
             navigate('/basket');
         } catch (err) {
-            console.error('Failed to add the product to cart:', err);
-            alert('Ürün sepete eklenemedi. Lütfen tekrar deneyin.');
+            console.error('Sepete ekleme hatası:', err);
+            toast.error('Ürün sepete eklenemedi. Lütfen tekrar deneyin.');
         }
     };
 
-
-
+    // Yükleniyor, hata, veya ürün bulunamadı durumları
     if (loading) {
         return <div className={styles.loading}>Yükleniyor...</div>;
     }
@@ -77,40 +84,78 @@ const Detalp = () => {
     }
 
     return (
-        <div className={styles.detailContent}>
-            <div className={styles.productDetails}>
-                <img src={product.thumbnail} alt={product.title} className={styles.image} />
-                <div className={styles.info}>
-                    <h1 className={styles.title}>{product.title}</h1>
-                    <p className={styles.price}>Fiyat: {product.price}$</p>
-                    <p className={styles.price}>Stock: {product.stock}</p>
-                    <p className={styles.description}>{product.description}</p>
-                    <p className={styles.category}>Kategori: {product.catagory}</p>
-                    <div className={styles.ratings}>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
+        <div className="bg-white text-gray-800 min-h-screen">
+            <div className="container mx-auto px-4 lg:px-16 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    {/* Ürün Görseli */}
+                    <div className="flex justify-center items-center">
+                        <img
+                            src={product.thumbnail}
+                            alt={product.title}
+                            className="w-full max-w-md lg:max-w-lg object-cover rounded-lg shadow-md"
+                        />
                     </div>
-                    <button 
-                                onClick={() => handleAddToCart(product)}
-                                disabled={product.stock === 0}
-                                className={`px-4 py-2 mt-auto rounded text-white ${
-                                    product.stock === 0
-                                        ? "bg-gray-400 cursor-not-allowed"
-                                        : "bg-blue-600 hover:bg-blue-700"
+
+                    {/* Ürün Detayları */}
+                    <div className="flex flex-col justify-center">
+                        <h1 className="text-3xl font-semibold mb-4">{product.title}</h1>
+                        <p className="text-xl text-blue-600 font-semibold mb-6">Fiyat: {product.price}$</p>
+                        <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
+                        <div className="text-gray-700 mb-6">
+                            {/* Açıklama Metni */}
+                            <p>
+                                {product.description.slice(0, visibleLength)}
+                                {visibleLength < product.description.length && "..."}
+                            </p>
+
+                            {/* Butonlar */}
+                            <div className="mt-2">
+                                {!isFullVisible && (
+                                    <button
+                                        onClick={handleShowMore}
+                                        className="text-blue-600 font-semibold mr-4"
+                                    >
+                                        Daha Fazla Göster
+                                    </button>
+                                )}
+                                {visibleLength > 100 && (
+                                    <button
+                                        onClick={handleShowLess}
+                                        className="text-blue-600 font-semibold"
+                                    >
+                                        Daha Az Göster
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-500 italic mb-6">Kategori: {product.catagory}</p>
+                        <div className="flex items-center gap-1 text-yellow-500 text-xl mb-8">
+                            <FaStar />
+                            <FaStar />
+                            <FaStar />
+                            <FaStar />
+                        </div>
+                        <button
+                            onClick={() => handleAddToCart(product)}
+                            disabled={product.stock === 0}
+                            className={`py-3 px-6 rounded-lg font-semibold text-white shadow-md transition ${product.stock === 0
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-blue-600 hover:bg-blue-700"
                                 }`}
-                            >
-                                {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
-                            </button>
+                        >
+                            {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.otherProducts}>
-                <h1>DİĞER ÜRÜNLERİMİZİ GÖRÜNTÜLE</h1>
-                <div className={styles.cards}>
+
+                {/* Diğer Ürünler */}
+                <div className="mt-16">
+                    <h2 className="text-2xl font-semibold mb-8">Diğer Ürünler</h2>
                     <ProductCard />
                 </div>
             </div>
+
+            {/* Toast Bildirimi */}
             <ToastContainer />
         </div>
     );

@@ -59,7 +59,7 @@ const Cart = () => {
                             key={product._id}
                             className="bg-white shadow-lg rounded-xl dark:bg-black border overflow-hidden p-6 flex flex-col items-center transition-transform transform hover:scale-105 relative" 
                         
-                            onClick={() => navigate(`/product/${product._id}`)}
+                            
                         >
                             {/* Favori Ikonu */}
                             <button className="absolute top-4 right-4 p-2 rounded-full dark:text-purple-950 text-gray-950">
@@ -71,6 +71,7 @@ const Cart = () => {
                                 src={product.thumbnail}
                                 alt={product.title}
                                 className="h-40 w-40 object-cover mb-6 rounded-lg"
+                                onClick={() => navigate(`/product/${product._id}`)}
                             />
 
                             {/* Ürün Başlık ve Fiyat */}
