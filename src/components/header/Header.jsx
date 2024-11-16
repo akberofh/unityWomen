@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
 import { FaSearch, FaUser, FaBars, FaTimes, FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
 import UnityWomen from './1722665487WhatsApp_Görsel_2024-08-03_saat_10.08.37_83e97437-removebg.png';
@@ -14,12 +14,13 @@ const Header = ({ theme, setTheme }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // API'den ürünleri al
   useEffect(() => {
     if (searchQuery.length >= 1) {
       setLoading(true);
-      axios.get(`https://unity-women-backend.vercel.app/api/qolbaq?search=${searchQuery}`)
+      axios.get(`http://localhost:8000/api/qolbaq?search=${searchQuery}`)
         .then(response => {
           setItems(response.data.allQolbaq); // API'den gelen verileri state'e kaydet
           setLoading(false);
@@ -131,10 +132,10 @@ const Header = ({ theme, setTheme }) => {
   }
 `}</style>
 
-        
+
 
         {/* Ortada Arama Input'u */}
-        <div className="search-container w-[300px] md:hidden relative flex items-center">
+        <div className="search-container w-[400px] md:hidden relative flex items-center">
           {isSearchOpen ? (
             <div className="flex items-center space-x-2 w-full">
               <input
@@ -159,16 +160,22 @@ const Header = ({ theme, setTheme }) => {
           ) : (
             <ul className="search-results absolute top-full left-0 w-full bg-white dark:bg-black shadow-md rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
               {Array.isArray(items) && items.length > 0 ? (
-                items.map(item => (
-                  <li key={item.id} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <img src={item.thumbnail} alt={item.title} className="w-12 h-12 object-cover rounded" />
+                items.map((item, index) => (
+                  <li
+                    key={item.id}
+                    className={`flex items-center space-x-2 p-4 hover:bg-gray-950 dark:hover:bg-gray-800 ${index < items.length - 1 ? "border-b border-black dark:border-gray-700" : ""} cursor-pointer`}
+                    onClick={() => navigate(`/product/${item._id}`)}
+                     >
+                    <img src={item.thumbnail} alt={item.title} className="w-16 h-16 object-cover rounded" />
                     <div className="flex flex-col flex-grow">
-                      <h2 className="text-sm font-medium">{item.title}</h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-300">{item.price}</p>
-                      <div className="flex items-center space-x-1 text-yellow-400">
-                        {[...Array(5)].map((_, index) => (
-                          <FaStar key={index} className={index < item.rating ? "text-yellow-500" : "text-gray-300"} />
-                        ))}
+                      <h2 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h2>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-gray-600 dark:text-gray-300">{item.price}</p>
+                        <div className="flex items-center space-x-1 text-yellow-400">
+                          {[...Array(5)].map((_, index) => (
+                            <FaStar key={index} className={index < item.rating ? "text-yellow-500" : "text-gray-300"} />
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -178,6 +185,8 @@ const Header = ({ theme, setTheme }) => {
               )}
             </ul>
           )}
+
+
         </div>
 
 
@@ -192,18 +201,23 @@ const Header = ({ theme, setTheme }) => {
           {loading ? (
             <p className="text-center">Yükleniyor...</p>
           ) : (
-            <ul className="search-results absolute top-full left-0 w-full bg-white dark:bg-black shadow-md rounded-lg max-h-80 overflow-y-auto mt-1">
+            <ul className="search-results absolute top-full left-0 w-full bg-white dark:bg-black shadow-md rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
               {Array.isArray(items) && items.length > 0 ? (
-                items.map(item => (
-                  <li key={item.id} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <img src={item.thumbnail} alt={item.title} className="w-12 h-12 object-cover rounded" />
+                items.map((item, index) => (
+                  <li
+                  key={item.id}
+                  className={`flex items-center space-x-2 p-4 hover:bg-gray-950 dark:hover:bg-gray-800 ${index < items.length - 1 ? "border-b border-black dark:border-gray-700" : ""} cursor-pointer`}
+                  onClick={() => navigate(`/product/${item._id}`)}
+                   >                    <img src={item.thumbnail} alt={item.title} className="w-12 h-12 object-cover rounded" />
                     <div className="flex flex-col flex-grow">
-                      <h2 className="text-sm font-medium">{item.title}</h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-300">{item.price}</p>
-                      <div className="flex items-center space-x-1 text-yellow-400">
-                        {[...Array(5)].map((_, index) => (
-                          <FaStar key={index} className={index < item.rating ? "text-yellow-500" : "text-gray-300"} />
-                        ))}
+                      <h2 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h2>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-gray-600 dark:text-gray-300">{item.price}</p>
+                        <div className="flex items-center space-x-1 text-yellow-400">
+                          {[...Array(5)].map((_, index) => (
+                            <FaStar key={index} className={index < item.rating ? "text-yellow-500" : "text-gray-300"} />
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </li>
