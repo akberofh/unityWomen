@@ -11,7 +11,10 @@ const Cart = () => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
 
-    const [visibleItems, setVisibleItems] = useState(8); // Başlangıçta görünen ürün sayısı
+    const [visibleItems, setVisibleItems] = useState(8);
+    const [visibleLength, setVisibleLength] = useState(17); // Başlangıçta 100 karakter göster
+
+    // Başlangıçta görünen ürün sayısı
 
     const loadMore = () => {
         setVisibleItems(visibleItems + 8); // Her tıklamada 8 ürün daha göster
@@ -52,7 +55,7 @@ const Cart = () => {
 
     return (
         <div className="w-[95%] mx-auto p-6">
-            <div className="grid gap-6 dark:text-white grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid gap-6 dark:text-white grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
                 {data.length > 0 ? (
                     data.slice(0, visibleItems).map((product) => (
                         <div
@@ -76,8 +79,9 @@ const Cart = () => {
 
                             {/* Ürün Başlık ve Fiyat */}
                             <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white text-center h-12 overflow-hidden">
-                                {product.title}
-                            </h3>
+                            {(product.title || "").slice(0, visibleLength)}
+                            {visibleLength < (product.title || "").length && "..."}                            </h3>
+                           
                             <h4 className="text-lg font-semibold mb-4 dark:text-white text-gray-800">{product.price}₼</h4>
 
                             {/* Stok Durumu */}
