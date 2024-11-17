@@ -10,7 +10,6 @@ import EmailVerification from "../pages/EmailVerification/Email"
 import ResertPass from "../pages/login/ResertPass";
 import RequestPass from "../pages/login/RequestPass";
 import Cart from "../pages/Cart/Cart";
-import Basket from "../pages/basket/Basket";
 import Confirmed from "../pages/Confirmed/Confirmerd";
 import ContactComp from "../components/ContacUs/ContactComp";
 import DestCatagory from "../Catagory/DestCatagory";
@@ -33,6 +32,7 @@ import QasUcun from "../Catagory/QasUcun";
 import UsaqlarUcun from "../Catagory/UsaqlarUcun";
 import Makiaj from "../Catagory/Makiaj";
 import AddNewTodo from "../pages/addTodo/AddNewTodo";
+import BasketProduct from "../pages/basket/BaketProduct";
 
 
 const Router = () => {
@@ -61,7 +61,7 @@ const Router = () => {
         <Route path="/temizleyici" element={<Temizleyici />}  />
         <Route path="/contact" element={<ContactComp />}  />
         <Route path="/confirmed" element={<Confirmed />}  />
-        <Route path="/basket" element={<Basket />}  />
+        <Route path="/basket" element={<BasketProduct />}  />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/EmailVerification" element={< EmailVerification/>} />

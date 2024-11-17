@@ -52,7 +52,7 @@ const Cart = () => {
 
     return (
         <div className="w-[95%] mx-auto p-6">
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid gap-6 dark:text-white grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
                 {data.length > 0 ? (
                     data.slice(0, visibleItems).map((product) => (
                         <div
@@ -62,7 +62,7 @@ const Cart = () => {
                             
                         >
                             {/* Favori Ikonu */}
-                            <button className="absolute top-4 right-4 p-2 rounded-full dark:text-purple-950 text-gray-950">
+                            <button className="absolute top-4 right-4 p-2 rounded-full dark:text-white text-gray-950">
                                 <FaRegHeart className="h-8 w-8 hover:text-blue-900" />
                             </button>
 
@@ -75,10 +75,10 @@ const Cart = () => {
                             />
 
                             {/* Ürün Başlık ve Fiyat */}
-                            <h3 className="text-lg font-semibold mb-2 text-gray-800 text-center h-12 overflow-hidden">
+                            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white text-center h-12 overflow-hidden">
                                 {product.title}
                             </h3>
-                            <h4 className="text-lg font-semibold mb-4 text-gray-800">{product.price}₼</h4>
+                            <h4 className="text-lg font-semibold mb-4 dark:text-white text-gray-800">{product.price}₼</h4>
 
                             {/* Stok Durumu */}
                             <p
@@ -102,7 +102,7 @@ const Cart = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center text-gray-600">Ürünler yükleniyor...</p>
+                    <p className="text-center dark:text-white text-gray-600">Ürünler yükleniyor...</p>
                 )}
             </div>
 

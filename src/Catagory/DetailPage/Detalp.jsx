@@ -84,11 +84,11 @@ const Detalp = () => {
     }
 
     return (
-        <div className="bg-white text-gray-800 min-h-screen">
+        <div className="dark:bg-black text-gray-800 min-h-screen">
             <div className="container mx-auto px-4 lg:px-16 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Ürün Görseli */}
-                    <div className="flex justify-center items-center">
+                    <div className="flex  justify-center items-center">
                         <img
                             src={product.thumbnail}
                             alt={product.title}
@@ -97,16 +97,17 @@ const Detalp = () => {
                     </div>
 
                     {/* Ürün Detayları */}
-                    <div className="flex flex-col justify-center">
+                    <div className="flex dark:text-white flex-col justify-center">
                         <h1 className="text-3xl font-semibold mb-4">{product.title}</h1>
                         <p className="text-xl text-blue-600 font-semibold mb-6">Fiyat: {product.price}$</p>
                         <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
-                        <div className="text-gray-700 mb-6">
+                        <div className="text-gray-700 dark:text-white mb-6">
                             {/* Açıklama Metni */}
                             <p>
-                                {product.description.slice(0, visibleLength)}
-                                {visibleLength < product.description.length && "..."}
+                                {(product.description || "").slice(0, visibleLength)}
+                                {visibleLength < (product.description || "").length && "..."}
                             </p>
+
 
                             {/* Butonlar */}
                             <div className="mt-2">
@@ -138,22 +139,29 @@ const Detalp = () => {
                         <button
                             onClick={() => handleAddToCart(product)}
                             disabled={product.stock === 0}
-                            className={`py-3 px-6 rounded-lg font-semibold text-white shadow-md transition ${product.stock === 0
+                            className={`py-3 w-[250px] px-6 rounded-lg  font-semibold text-white shadow-md transition ${product.stock === 0
                                 ? "bg-gray-400 cursor-not-allowed"
                                 : "bg-blue-600 hover:bg-blue-700"
                                 }`}
                         >
                             {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
                         </button>
+                        <div className='h-[20px]'></div>
+                        <button
+                            onClick={() => (product)}
+                            className="py-3 w-[250px] px-6 bg-green-700  hover:bg-green-900  rounded-lg font-semibold text-white shadow-md transition"
+                          >
+                           Sevimlilere Ekle
+                        </button>
                     </div>
                 </div>
 
                 {/* Diğer Ürünler */}
-                <div className="mt-16">
-                    <h2 className="text-2xl font-semibold mb-8">Diğer Ürünler</h2>
+            </div>
+                <div className="mt-16 dark:text-white w-[95%]">
+                    <h2 className="text-2xl dark:text-white font-semibold mb-8">Diğer Ürünler</h2>
                     <ProductCard />
                 </div>
-            </div>
 
             {/* Toast Bildirimi */}
             <ToastContainer />
