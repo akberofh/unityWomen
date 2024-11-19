@@ -26,7 +26,7 @@ const Sec = () => {
     <section className="p-6 md:p-12 dark:bg-black dark:text-white text-black">
       <h2 className="text-3xl font-bold text-center mb-12">Fotoğraf Galerisi</h2>
       <div className="flex flex-wrap justify-center gap-6">
-        <div className="w-full md:w-[90%] lg:w-[60%]">
+        <div className="w-full md:w-[97%] lg:w-[60%]">
           <Swiper
             effect={"coverflow"}
             grabCursor={true}
@@ -52,13 +52,16 @@ const Sec = () => {
           >
             {images.map((src, index) => (
               <SwiperSlide key={index}>
-                <div className="p-3 relative group h-[300px] sm:h-[400px] lg:h-[500px] flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
-                  <img
-                    src={src}
-                    alt={`Image ${index + 1}`}
-                    className="w-full h-full object-cover object-center transition-transform duration-500 transform group-hover:scale-105"
-                  />
-                </div>
+               <div className="p-3 relative group  aspect-w-4 aspect-h-3 flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+               <img
+  src={src}
+  alt={`Image ${index + 1}`}
+  className="w-full h-full object-contain transition-transform duration-500 transform group-hover:scale-105"
+/>
+
+
+</div>
+
               </SwiperSlide>
             ))}
           </Swiper>

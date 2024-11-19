@@ -5,7 +5,7 @@ import styles from './Detalp.module.scss';
 import { FaStar } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductCard from '../../pages/Cart/Cart';
+import ProductCard from './Catos';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
 
@@ -150,18 +150,19 @@ const Detalp = () => {
                         <button
                             onClick={() => (product)}
                             className="py-3 w-[250px] px-6 bg-green-700  hover:bg-green-900  rounded-lg font-semibold text-white shadow-md transition"
-                          >
-                           Sevimlilere Ekle
+                        >
+                            Sevimlilere Ekle
                         </button>
                     </div>
                 </div>
 
                 {/* Diğer Ürünler */}
             </div>
-                <div className="mt-16 dark:text-white w-[95%]">
-                    <h2 className="text-2xl dark:text-white font-semibold mb-8">Diğer Ürünler</h2>
-                    <ProductCard />
-                </div>
+            <div className="mt-16 dark:text-white w-[95%]">
+                <h2 className="text-2xl dark:text-white font-semibold mb-8">Diğer Ürünler</h2>
+                <ProductCard catagory={product.catagory} />
+            </div>
+
 
             {/* Toast Bildirimi */}
             <ToastContainer />
