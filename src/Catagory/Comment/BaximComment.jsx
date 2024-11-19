@@ -22,7 +22,7 @@ const BaximComment = () => {
         const fetchreviews = async () => {
             try {
                 const res = await axios.get('https://unity-women-backend.vercel.app/api/reviews');
-                const filteredreviews = res.data.filter(review => review.catagory === 'Dest');
+                const filteredreviews = res.data.filter(review => review.catagory === 'Baxim');
                 setCharms(filteredreviews);
                 setLoading(false);
             } catch (error) {
