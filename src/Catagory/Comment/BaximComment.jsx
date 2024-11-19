@@ -3,12 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useSelector } from 'react-redux';
 
 const BaximComment = () => {
     const [charms, setCharms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [photo , setPhoto] = useState(null);
+
+
+    const { userInfo } = useSelector((state) => state.auth);
+
+
+    useEffect(() => {
+      if (userInfo) {
+        setPhoto(userInfo.photo);
+  
+  
+      }
+    }, [userInfo]);
 
    
 
@@ -78,6 +92,27 @@ const BaximComment = () => {
                     <div className="rounded-full w-12 h-12 bg-gray-300 flex items-center justify-center">
                       {review.name.charAt(0)}
                     </div>
+                  </div>
+                  <div>
+                  {userInfo && userInfo.photo ? (
+              userInfo.photo.startsWith('data:image/') ? (
+                // Base64 formatında resim varsa
+                <img
+                  src={userInfo.photo}
+                  alt="Profil"
+                  className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+                />
+              ) : (
+                // URL formatında resim varsa
+                <img
+                  src={`data:image/jpeg;base64,${userInfo.photo}`} // Elle base64 ekliyoruz
+                  alt="Profil"
+                  className="w-24 h-24 object-cover mx-auto rounded-full shadow-lg mb-4"
+                />
+              )
+            ) : (
+              <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-4" />
+            )}
                   </div>
                   <div>
                     <p className="text-lg font-semibold text-gray-800">{review.name}</p>
