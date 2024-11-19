@@ -67,7 +67,7 @@ const Sec = () => {
           </Swiper>
         </div>
         <div className="w-full md:w-[90%] lg:w-[35%] flex flex-col gap-6">
-          {photo.map((src, index) => (
+        {photo.map((src, index) => (
             <div
               key={index}
               className="relative group overflow-hidden rounded-lg shadow-lg border border-gray-300 dark:border-gray-700"

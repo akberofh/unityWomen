@@ -63,7 +63,7 @@ const ContactDetails = () => {
   };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 dark:bg-black dark:text-white">
       <div className="section-title text-center">
         <h3>Contact Us</h3>
       </div>
@@ -81,12 +81,12 @@ const ContactDetails = () => {
             tabIndex="0"
           ></iframe>
         </div>
-        <div className="form-container">
+        <div className="form-container border  dark:bg-black dark:text-white">
           <form ref={form} onSubmit={sendEmail}>
             <div className="input-group">
               <div className="input-field">
-                <p className="label">Name</p>
-                <input
+                <p className="label dark:text-white text-white">Name</p>
+                <input className="dark:bg-black dark:text-white"
                   type="text"
                   placeholder="Enter Name"
                   name="to_name"
@@ -97,7 +97,7 @@ const ContactDetails = () => {
               </div>
               <div className="input-field">
                 <p className="label">Email</p>
-                <input
+                <input className="dark:bg-black dark:text-white"
                   type="email"
                   placeholder="Enter Email"
                   name="from_name"
@@ -109,7 +109,7 @@ const ContactDetails = () => {
             </div>
             <div className="input-field">
               <p className="label">Subject</p>
-              <input
+              <input className="dark:bg-black dark:text-white"
                 type="text"
                 placeholder="Enter Subject"
                 name="subject"
@@ -120,7 +120,7 @@ const ContactDetails = () => {
             </div>
             <div className="input-field">
               <p className="label">Message</p>
-              <textarea
+              <textarea className="dark:bg-black dark:text-white"
                 placeholder="Enter your message"
                 name="message"
                 value={formData.message}

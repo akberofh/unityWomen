@@ -1,8 +1,8 @@
 :root {
     --primary-color: #4CAF50;
     --secondary-color: #f0f0f0;
-    --text-color: #333;
     --input-border-color: #ccc;
+    
     --input-focus-border-color: #4CAF50;
     --button-bg-color: #4CAF50;
     --button-text-color: white;
@@ -70,7 +70,7 @@
 
 .input-field .icon {
     position: absolute;
-    top: 35px;
+    top: 40px;
     right: 10px;
     color: var(--input-border-color);
 }
