@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import DusgeliComment from './Comment/DusgeliComment';
 
 const DusGeli = () => {
     const [charms, setCharms] = useState([]);
@@ -85,7 +86,7 @@ const DusGeli = () => {
                     <div className="text-center col-span-full">Ürün bulunamadı.</div>
                 )}
             </div>
-
+<DusgeliComment/>
 
         </div>
     );

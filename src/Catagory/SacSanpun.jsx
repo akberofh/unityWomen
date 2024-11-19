@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import SacsanpunComment from './Comment/SacsanpunComment';
 
 const SacSanpun = () => {
     const [charms, setCharms] = useState([]);
@@ -86,7 +87,7 @@ const SacSanpun = () => {
                 )}
             </div>
 
-
+<SacsanpunComment/>
         </div>
     );
 };

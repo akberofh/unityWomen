@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import BoyunbagiComment from './Comment/BoyunbagiComment';
 
 const Boyunbagi = () => {
     const [charms, setCharms] = useState([]);
@@ -86,7 +87,7 @@ const Boyunbagi = () => {
                 )}
             </div>
 
-
+<BoyunbagiComment/>
         </div>
     );
 };

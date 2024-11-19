@@ -4,7 +4,7 @@ import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const BaximComment = () => {
+const BoyunbagiComment = () => {
     const [charms, setCharms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ const BaximComment = () => {
         const fetchreviews = async () => {
             try {
                 const res = await axios.get('https://unity-women-backend.vercel.app/api/reviews');
-                const filteredreviews = res.data.filter(review => review.catagory === 'baxim');
+                const filteredreviews = res.data.filter(review => review.catagory === 'boyunbagi');
                 setCharms(filteredreviews);
                 setLoading(false);
             } catch (error) {
@@ -109,4 +109,4 @@ const BaximComment = () => {
     );
 };
 
-export default BaximComment;
+export default BoyunbagiComment;

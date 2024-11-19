@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import EtirComment from './Comment/EtirComment';
 
 const Etir = () => {
     const [charms, setCharms] = useState([]);
@@ -86,7 +87,7 @@ const Etir = () => {
                 )}
             </div>
 
-
+<EtirComment/>
         </div>
     );
 };

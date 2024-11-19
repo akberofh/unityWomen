@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import DestComment from './Comment/DestComment';
 
 const DestCatagory = () => {
     const [charms, setCharms] = useState([]);
@@ -85,7 +86,7 @@ const DestCatagory = () => {
                     <div className="text-center col-span-full">Ürün bulunamadı.</div>
                 )}
             </div>
-
+<DestComment/>
 
         </div>
     );
