@@ -33,6 +33,7 @@ import UsaqlarUcun from "../Catagory/UsaqlarUcun";
 import Makiaj from "../Catagory/Makiaj";
 import AddNewTodo from "../pages/addTodo/AddNewTodo";
 import BasketProduct from "../pages/basket/BaketProduct";
+import Comment from "../Catagory/Comment/Comment";
 
 
 const Router = () => {
@@ -40,6 +41,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}  />
+        <Route path="/comment" element={<Comment />}  />
         <Route path="/sirga" element={<Sirga />}  />
         <Route path="/saat" element={<Saat />}  />
         <Route path="/dodaq" element={<Dodaq />}  />
