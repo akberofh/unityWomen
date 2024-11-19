@@ -96,8 +96,8 @@ const QasucunComment = () => {
                     </svg>
                   ))}
                 </div>
-                <p className="text-gray-700">{truncateText(review.review, 40)}</p>
-                <p className="text-gray-700">{review.catagory}</p>
+                <p className="text-gray-700">Komment:{truncateText(review.review, 40)}</p>
+                <p className="text-gray-700">Kategoriya:{review.catagory}</p>
                 <p className="text-sm text-gray-500 mt-2">
                   Gönderilme Tarihi: {review.addedAt ? new Date(review.addedAt).toLocaleString() : 'Belirtilmemiş'}
                 </p>
