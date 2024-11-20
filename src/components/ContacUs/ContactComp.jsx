@@ -32,7 +32,7 @@ const ContactComp = () => {
     AOS.refresh();
   }, []);
   return (
-    <div  className="bg-white dark:bg-black h-[750px] mt-[160px] dark:text-black text-black overflow-x-hidden" >
+    <div  className="bg-white dark:bg-black h-[750px] mt-[270px] dark:text-black text-black overflow-x-hidden" >
         <Header theme={theme} setTheme={setTheme}  />
         <ContactUsDetails theme={theme}  />
     </div>

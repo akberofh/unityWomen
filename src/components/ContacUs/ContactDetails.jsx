@@ -39,10 +39,10 @@ const ContactDetails = () => {
 
     emailjs
       .sendForm(
-        "service_2zpk6os",
-        "template_6rutc5r",
+        "service_xa06pup",
+        "template_agm4rtf",
         form.current,
-        "DUkmq3l_R7K62dV89"
+        "JJCjViGCvTcPh-wqS"
       )
       .then(
         (result) => {
@@ -108,11 +108,11 @@ const ContactDetails = () => {
               </div>
             </div>
             <div className="input-field">
-              <p className="label">Subject</p>
+              <p className="label">Kategoriya</p>
               <input className="dark:bg-black dark:text-white"
                 type="text"
-                placeholder="Enter Subject"
-                name="subject"
+                placeholder="Enter Kategoriya"
+                name="kategoriya"
                 value={formData.subject}
                 onChange={handleChange}
               />

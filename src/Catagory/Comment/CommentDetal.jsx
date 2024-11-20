@@ -53,34 +53,36 @@ React.useEffect(() => {
 }, []);
 
   return (
-    <div theme={theme} setTheme={setTheme} className="bg-white dark:bg-black dark:text-white text-black overflow-x-hidden">
-      <div className="container px-4 mx-auto">
+    <div theme={theme} setTheme={setTheme} className="bg-white dark:border-b relative  dark:bg-black dark:text-white min-h-[700px] text-black overflow-x-hidden">
+      <div className="container absolute top-20 right-0 left-0 px-4 mx-auto">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-center text-gray-800 sm:text-4xl">
+          <h2 className="text-3xl font-bold text-center  text-gray-800 dark:text-white sm:text-4xl">
             Müşteri Yorumları ve Puanları
           </h2>
-          <p className="text-center text-gray-600">
+          <p className="text-center dark:text-white text-gray-600">
             Müşterilerimizin ürün ve hizmetlerimizle ilgili yorumları burada yer alıyor.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 dark:bg-black sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {reviews.map((review, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-md p-6"
+              className="bg-white dark:bg-black border dark:text-white rounded-lg shadow-md p-6"
             >
               <div className="flex items-center mb-4">
                 <div className="mr-4">
-                  <div className="rounded-full w-12 h-12 bg-gray-300 flex items-center justify-center">
+                  <div className="rounded-full w-12 h-12 bg-gray-300 dark:text-white flex items-center justify-center">
                     {review.name.charAt(0)}
                   </div>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-gray-800">{review.name}</p>
-                  <p className="text-sm text-gray-600">{review.email}</p>
+                  <p className="text-lg font-semibold text-gray-800 dark:text-white">{review.name}</p>
+                  <p className="text-sm text-gray-600 sm:w-[377px]  dark:text-white">{review.email}</p>
                 </div>
               </div>
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
               <div className="flex items-center mb-2">
                 {[...Array(parseInt(review.rating))].map((_, i) => (
                   <svg
@@ -93,9 +95,15 @@ React.useEffect(() => {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-700">Komment:{truncateText(review.review, 40)}</p>
-                <p className="text-gray-700">Kategoriya:{review.catagory}</p>
-                <p className="text-sm text-gray-500 mt-2">
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+              <p className="text-gray-700 dark:text-white">Komment:{truncateText(review.review, 40)}</p>
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+                <p className="text-gray-700 dark:text-white">Kategoriya:{review.catagory}</p>
+                <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+                <p className="text-sm text-gray-500 mt-2 dark:text-white">
                   Gönderilme Tarihi: {review.addedAt ? new Date(review.addedAt).toLocaleString() : 'Belirtilmemiş'}
                 </p>
             </div>

@@ -33,7 +33,7 @@ const BasketProduct = () => {
   }, []);
 
   return (
-    <div className=" dark:bg-black dark:text-white mt-[160px] text-black overflow-x-hidden">
+    <div className=" dark:bg-black dark:text-white mt-[270px] text-black overflow-x-hidden">
         <Header theme={theme} setTheme={setTheme} />
         <Basket theme={theme} />
     </div>

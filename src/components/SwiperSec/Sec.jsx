@@ -52,22 +52,22 @@ const Sec = () => {
           >
             {images.map((src, index) => (
               <SwiperSlide key={index}>
-               <div className="p-3 relative group  aspect-w-4 aspect-h-3 flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
-               <img
-  src={src}
-  alt={`Image ${index + 1}`}
-  className="w-full h-full object-contain transition-transform duration-500 transform group-hover:scale-105"
-/>
+                <div className="p-3 relative group  aspect-w-4 aspect-h-3 flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+                  <img
+                    src={src}
+                    alt={`Image ${index + 1}`}
+                    className="w-full h-full object-contain transition-transform duration-500 transform group-hover:scale-105"
+                  />
 
 
-</div>
+                </div>
 
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
         <div className="w-full md:w-[90%] lg:w-[35%] flex flex-col gap-6">
-        {photo.map((src, index) => (
+          {photo.map((src, index) => (
             <div
               key={index}
               className="relative group overflow-hidden rounded-lg shadow-lg border border-gray-300 dark:border-gray-700"
