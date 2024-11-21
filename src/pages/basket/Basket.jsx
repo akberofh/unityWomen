@@ -89,7 +89,7 @@ const Basket = () => {
   const isStockAvailable = data && Array.isArray(data) && !data.some((product) => product.stock === 0);
 
   return (
-<div className="container min-h-[600px] mx-auto p-6">
+<div className="container min-h-[740px] mx-auto p-6">
   {isLoading ? (
     <p className="text-center text-gray-600">Yükleniyor...</p>
   ) : (
