@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import DestComment from './Comment/DestComment';
+import DestComment from './Commet/DestComment';
 
 const DestCatagory = () => {
     const [charms, setCharms] = useState([]);

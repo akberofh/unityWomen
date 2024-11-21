@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import QolbaqComment from './Comment/QolbaqComment';
+import QolbaqComment from './Commet/QolbaqComment';
 
 const Qolbaq = () => {
     const [charms, setCharms] = useState([]);

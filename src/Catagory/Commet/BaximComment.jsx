@@ -4,11 +4,12 @@ import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const SacucunComment = () => {
+const BaximComment = () => {
     const [charms, setCharms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    
 
    
 
@@ -22,7 +23,7 @@ const SacucunComment = () => {
         const fetchreviews = async () => {
             try {
                 const res = await axios.get('https://unity-women-backend.vercel.app/api/reviews');
-                const filteredreviews = res.data.filter(review => review.catagory === 'sac-ucun');
+                const filteredreviews = res.data.filter(review => review.catagory === 'baxim');
                 setCharms(filteredreviews);
                 setLoading(false);
             } catch (error) {
@@ -68,45 +69,53 @@ const SacucunComment = () => {
           </div>
   
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {charms.map((review, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-md p-6"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="mr-4">
-                    <div className="rounded-full w-12 h-12 bg-gray-300 flex items-center justify-center">
-                      {review.name.charAt(0)}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-gray-800">{review.name}</p>
-                    <p className="text-sm text-gray-600">{review.email}</p>
+          {charms.map((review, index) => (
+            <div
+              key={index}
+              className="bg-white dark:bg-black border dark:text-white rounded-lg shadow-md p-6"
+            >
+              <div className="flex items-center mb-4">
+                <div className="mr-4">
+                  <div className="rounded-full w-12 h-12 bg-gray-300 dark:text-white flex items-center justify-center">
+                    {review.name.charAt(0)}
                   </div>
                 </div>
-                <div className="flex items-center mb-2">
-                  {[...Array(parseInt(review.rating))].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.123-6.543L0 6.908l6.561-.955L10 0l3.439 5.953L20 6.908l-5.245 4.639 1.123 6.543z" />
-                    </svg>
-                  ))}
+                <div>
+                  <p className="text-lg font-semibold text-gray-800 dark:text-white">{review.name}</p>
+                  <p className="text-sm text-gray-600 sm:w-[377px]  dark:text-white">{review.email}</p>
                 </div>
-                <p className="text-gray-700">Komment:{truncateText(review.review, 40)}</p>
-                <p className="text-gray-700">Kategoriya:{review.catagory}</p>
-                <p className="text-sm text-gray-500 mt-2">
+              </div>
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+              <div className="flex items-center mb-2">
+                {[...Array(parseInt(review.rating))].map((_, i) => (
+                  <svg
+                    key={i}
+                    className="w-5 h-5 text-yellow-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 15l-5.878 3.09 1.123-6.543L0 6.908l6.561-.955L10 0l3.439 5.953L20 6.908l-5.245 4.639 1.123 6.543z" />
+                  </svg>
+                ))}
+              </div>
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+              <p className="text-gray-700 dark:text-white">Komment:{truncateText(review.review, 40)}</p>
+              <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+                <p className="text-gray-700 dark:text-white">Kategoriya:{review.catagory}</p>
+                <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+                <p className="text-sm text-gray-500 mt-2 dark:text-white">
                   Gönderilme Tarihi: {review.addedAt ? new Date(review.addedAt).toLocaleString() : 'Belirtilmemiş'}
                 </p>
-              </div>
-            ))}
+            </div>
+          ))}
           </div>
         </div>
       </div>
     );
 };
 
-export default SacucunComment;
+export default BaximComment;

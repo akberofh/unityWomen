@@ -33,7 +33,7 @@ import UsaqlarUcun from "../Catagory/UsaqlarUcun";
 import Makiaj from "../Catagory/Makiaj";
 import AddNewTodo from "../pages/addTodo/AddNewTodo";
 import BasketProduct from "../pages/basket/BaketProduct";
-import Comment from "../Catagory/Comment/Comment";
+import Comment from "../Catagory/Commet/Comment";
 
 
 const Router = () => {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import EtirComment from './Comment/EtirComment';
+import EtirComment from './Commet/EtirComment';
 
 const Etir = () => {
     const [charms, setCharms] = useState([]);

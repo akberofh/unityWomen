@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import BaximComment from './Comment/BaximComment';
+import BaximComment from './Commet/BaximComment';
 
 const Baxim = () => {
     const [charms, setCharms] = useState([]);

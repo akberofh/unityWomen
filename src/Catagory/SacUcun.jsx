@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import SacucunComment from './Comment/SacucunComment';
+import SacucunComment from './Commet/SacucunComment';
 
 const SacUcun = () => {
     const [charms, setCharms] = useState([]);

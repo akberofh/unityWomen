@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import TemizleyiciComment from './Comment/TemizleyiciComment';
+import TemizleyiciComment from './Commet/TemizleyiciComment';
 
 const Temizleyici = () => {
     const [charms, setCharms] = useState([]);

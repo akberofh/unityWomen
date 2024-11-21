@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import SirgaComment from './Comment/SirgaComment';
+import SirgaComment from './Commet/SirgaComment';
 
 const Sirga = () => {
     const [charms, setCharms] = useState([]);

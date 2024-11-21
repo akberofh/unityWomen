@@ -5,7 +5,7 @@ import Header from '../../components/header/Header'
 import Chat from '../../components/Chat/Chat'
 import Sec from "../../components/SwiperSec/Sec";
 import Cart from "../Cart/Cart";
-import CommentDetal from "../../Catagory/Comment/CommentDetal";
+import CommentDetal from "../../Catagory/Commet/CommentDetal";
 
 
 const Home = () => {

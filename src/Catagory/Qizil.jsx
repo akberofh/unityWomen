@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import QizilComment from './Comment/QizilComment';
+import QizilComment from './Commet/QizilComment';
 
 const Qizil = () => {
     const [charms, setCharms] = useState([]);

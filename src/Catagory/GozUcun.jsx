@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import GozucunComment from './Comment/GozucunComment';
+import GozucunComment from './Commet/GozucunComment';
 
 const GozUcun = () => {
     const [charms, setCharms] = useState([]);

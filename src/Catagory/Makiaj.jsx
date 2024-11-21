@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import MakiajComment from './Comment/MakiajComment';
+import MakiajComment from './Commet/MakiajComment';
 
 const Makiaj = () => {
     const [charms, setCharms] = useState([]);
