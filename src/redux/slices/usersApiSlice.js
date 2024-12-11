@@ -33,7 +33,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
         getReferralCode: builder.mutation({
             query: (referralCode) => ({
-              url: `https://unity-women-backend.vercel.app/api/users/admin/${referralCode}`,
+              url: `https://unity-women.vercel.app/api/users/admin/${referralCode}`,
               method: 'GET',  // POST isteği kullanıyoruz, veri gönderiyoruz
               body: { referralCode },
             }),

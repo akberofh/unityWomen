@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useAddQolbaqMutation } from '../../redux/slices/qolbaqApiSlice';
+import { useAddsTodoMutation } from '../../redux/slices/todoApiSlice';
 import styles from './AddNewTodo.module.css';
 
 const AddNewTodo = () => {
@@ -13,7 +13,7 @@ const AddNewTodo = () => {
   const [photo, setPhoto] = useState(null); // New state for photo
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [addQolbaq] = useAddQolbaqMutation();
+  const [addQolbaq] = useAddsTodoMutation();
 
   const handlePhotoChange = (e) => {
     setPhoto(e.target.files[0]);
@@ -33,7 +33,7 @@ const AddNewTodo = () => {
       const newQolbaq = await addQolbaq(formData).unwrap();
 
       setTimeout(() => {
-        dispatch({ type: 'qolbaq/addQolbaq', payload: newQolbaq });
+        dispatch({ type: 'todo/addTodo', payload: newQolbaq });
       }, 1000);
 
       navigate('/dashboard');

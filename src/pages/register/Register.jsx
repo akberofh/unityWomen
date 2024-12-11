@@ -26,7 +26,7 @@ const Register = () => {
 
     useEffect(() => {
         if (userInfo) {
-            navigate("/EmailVerification");
+            navigate("/");
         }
         const queryParams = new URLSearchParams(location.search);
         const referral = queryParams.get('referral');
@@ -58,7 +58,7 @@ const Register = () => {
 
             const res = await register(formData).unwrap();
             dispatch(setCredentials({ ...res }));
-            navigate("/EmailVerification");
+            navigate("/");
         } catch (error) {
             toast.error('Registration failed');
         }

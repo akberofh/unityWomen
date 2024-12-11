@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
+import {  useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { FaRegHeart } from "react-icons/fa";
@@ -8,6 +9,7 @@ import { FaRegHeart } from "react-icons/fa";
 const Cart = () => {
     const dispatch = useDispatch();
     const [addTodo] = useAddTodoMutation();
+    const [addTodoo] = useAddsTodoMutation();
     const navigate = useNavigate();
     const [data, setData] = useState([]);
 
@@ -24,7 +26,7 @@ const Cart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://unity-women-backend.vercel.app/api/qolbaq/');
+                const response = await axios.get('https://unity-women.vercel.app/api/qolbaq/');
                 setData(response.data.allQolbaq); // Set data with fetched products
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -53,6 +55,30 @@ const Cart = () => {
         }
     };
 
+
+
+    const handleAddToFavorie = async (product) => {
+   
+  
+      try {
+          const itemWithDetails = { productId: product._id };
+  
+          // API çağrısı
+          const newFavorie = await addTodoo(itemWithDetails).unwrap();
+  
+          // Redux'a ekle
+          dispatch({ type: 'favorie/add', payload: newFavorie });
+  
+          // Favoriler sayfasına yönlendir
+          navigate('/favorie');
+      } catch (err) {
+          console.error('Failed to add the product to favorie:', err);
+          alert(err.data?.error || 'Ürün favorilere eklenemedi. Lütfen tekrar deneyin.');
+      }
+  };
+  
+  
+
     return (
 <div className="w-[97%] mx-auto p-4 sm:p-6">
   <div className="grid gap-4 sm:gap-6 dark:text-white grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
@@ -63,7 +89,7 @@ const Cart = () => {
           className="bg-white shadow-lg rounded-lg dark:bg-gray-800 border overflow-hidden p-4 sm:p-6 flex flex-col items-center transition-transform transform hover:scale-105 relative"
         >
           {/* Favori Ikonu */}
-          <button className="absolute top-4 right-4 p-2 rounded-full dark:text-white text-gray-950">
+          <button onClick={() => handleAddToFavorie(product)} className="absolute top-4 right-4 p-2 rounded-full dark:text-white text-gray-950">
             <FaRegHeart className="h-6 w-6 sm:h-8 sm:w-8 hover:text-blue-900" />
           </button>
 

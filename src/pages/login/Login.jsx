@@ -13,6 +13,7 @@ import { IoEyeOffOutline } from "react-icons/io5";
 
 const Login = () => {
   const [email, setEmail] = useState('');
+  const [referralCode, setReferralCode] = useState();
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const navigation = useNavigate();
@@ -33,7 +34,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
+      const res = await login({ email, password, referralCode }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigation('/dashboard');
     } catch (error) {
@@ -49,9 +50,13 @@ const Login = () => {
           <input
             type="text"
             name="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email or Referral Code"
+            value={email || referralCode} // Hangisi doluysa onu gösterir
+            onChange={(e) => {
+              const value = e.target.value;
+              setEmail(value); // Email değerini güncelle
+              setReferralCode(value); // ReferralCode değerini güncelle
+            }}
           />
           <div className="password-container" style={{ position: 'relative' }}>
             <input

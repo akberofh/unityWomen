@@ -4,23 +4,16 @@ const TODOS_URL = '/api/todos';
 
 export const todoApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getTodos: builder.query({
+    getsTodos: builder.query({
       query: () => ({
         url: `${TODOS_URL}/`,
       }),
     }),
-    addTodo: builder.mutation({
+    addsTodo: builder.mutation({
       query: (todo) => ({
         url: `${TODOS_URL}/`,
         method: 'POST',
         body: todo,
-      }),
-    }),
-    updateTodo: builder.mutation({
-      query: (formData) => ({
-        url: `https://unity-women-backend.vercel.app/api/todos/${formData.get('_id')}`, // Assuming your URL requires the ID
-        method: 'PUT',
-        body: formData,
       }),
     }),
     deleteTodo: builder.mutation({
@@ -32,6 +25,4 @@ export const todoApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation, useUpdateTodoMutation } = todoApiSlice;
-
-
+export const { useGetsTodosQuery, useAddsTodoMutation, useDeleteTodoMutation } = todoApiSlice;
