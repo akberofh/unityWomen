@@ -80,7 +80,7 @@ const Profile = () => {
 
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
+    navigator.clipboard.writeText(`https://unity-women-backend.vercel.app/register?referral=${referralLink}`)
       .then(() => {
         toast.success("Referral link copied to clipboard!");
       })
