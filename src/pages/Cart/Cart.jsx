@@ -24,14 +24,17 @@ const Cart = () => {
 
     // Fetch products from backend
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://unity-women.vercel.app/api/qolbaq/');
-                setData(response.data.allQolbaq); // Set data with fetched products
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+      const fetchData = async () => {
+        try {
+            const response = await axios.get('https://unity-women.vercel.app/api/qolbaq/');
+            console.log(response.data); // Gelen veriyi kontrol et
+            setData(response.data.allQolbaq || []); // Eğer undefined ise boş dizi ata
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setData([]); // Hata durumunda boş dizi ata
+        }
+    };
+    
 
         fetchData();
     }, []);
