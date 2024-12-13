@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
-import { FaSearch, FaUser, FaBars, FaTimes, FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
+import {  FaUser, FaBars,  FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
 import UnityWomen from './1722665487WhatsApp_Görsel_2024-08-03_saat_10.08.37_83e97437-removebg.png';
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import axios from "axios";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import AOS from "aos";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; // Swiper'ın CSS'i
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation"; // Navigation için CSS
-import { EffectCoverflow, Navigation, Scrollbar } from "swiper/modules";
 import Catagory from "../../Catagory/Catagory";
 
 
@@ -88,27 +81,7 @@ const Header = ({ theme, setTheme }) => {
     .sort((a, b) => b.matchCount - a.matchCount); // searchQuery değiştikçe bu effect çalışacak
 
 
-  // Kategoriler Dropdown içeriği
-  const categories = [
-    { name: "Dəst", link: "/dest" },
-    { name: "Qolbaq", link: "/qolbaq" },
-    { name: "Temizleyici", link: "/temizleyici" },
-    { name: "Boyunbağı", link: "/boyunbagi" },
-    { name: "Sırğa", link: "/sirga" },
-    { name: "Saat", link: "/saat" },
-    { name: "Üzük", link: "/uzuk" },
-    { name: "Ətir", link: "/etir" },
-    { name: "Qızıl", link: "/qizil" },
-    { name: "Saç üçün", link: "/sac-ucun" },
-    { name: "Baxim mehsullari", link: "/baxim" },
-    { name: "Saç şanpunları", link: "/sac-sanpun" },
-    { name: "Duş geli", link: "/dus-geli" },
-    { name: "Dodaq boyasi", link: "/dodaq" },
-    { name: "Göz üçün", link: "/goz-ucun" },
-    { name: "Qaş üçün", link: "/qas-ucun" },
-    { name: "Uşaqlar üçün", link: "/usaq-ucun" },
-    { name: "Makiyaj", link: "/makiaj" },
-  ];
+
 
 
   const toggleMenu = () => {
@@ -122,9 +95,7 @@ const Header = ({ theme, setTheme }) => {
 
 
 
-  const categoriess = [
-
-  ];
+ 
 
 
 
@@ -161,33 +132,15 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Ana Menü ve Kategoriler Sağ Taraf */}
             <nav className="hidden md:flex space-x-6">
-              <div className="relative group">
-                <button
-                  onClick={toggleCategoryMenu} // Kategoriler menüsünü açıp kapatma
-                  className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
-                  data-aos="custom-border"
-                  data-aos-duration="1000">
-                  Kategoriler
-                  {isCategoryMenuOpen ? (
-                    <MdKeyboardArrowUp className="inline" />
-                  ) : (
-                    <MdKeyboardArrowDown className="inline" />
-                  )}
-                </button>
-                {isCategoryMenuOpen && (
-                  <div className="absolute border-t border-l border-b z-10 left-0 h-[200px] bg-white dark:bg-black text-gray-700 dark:text-white shadow-md rounded-lg mt-2 w-48 overflow-y-auto">
-                    {categories.map((category) => (
-                      <Link
-                        key={category.name}
-                        to={category.link}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      >
-                        {category.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+            
+              <Link
+                to="/favorie"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Sevimliler
+              </Link>
               <Link
                 to="/about"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
@@ -353,32 +306,13 @@ const Header = ({ theme, setTheme }) => {
 
 
           {/* Kategoriler Menüsü */}
-          <button
-            onClick={toggleCategoryMenu}
-            className="w-full    text-left py-3 px-5 text-lg font-semibold text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 mt-6 rounded-lg " data-aos="custom-border"
-            data-aos-duration="1000"
-          >
-            Kategoriler
-          </button>
-          {isCategoryMenuOpen && (
-            <div
-              className="absolute z-10 border-t border-l border-b  bg-white dark:bg-black text-gray-700 dark:text-white shadow-lg rounded-lg mt-2 w-60 overflow-y-auto max-h-60"
-            >
-              {categories.map((category) => (
-                <Link
-                  key={category.name}
-                  to={category.link}
-                  className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  {category.name}
-                </Link>
-              ))}
-            </div>
-          )}
+          
 
 
           {/* Linkler */}
           <div className="space-y-4 mt-6">
+            <Link to="/favorie" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Sevimliler</Link>
             <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Haqqımızda</Link>
             <Link to="/contact" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
@@ -443,7 +377,7 @@ const Header = ({ theme, setTheme }) => {
           {/* İkonlar Sağ Taraf */}
           <div className="flex salamicon space-x-6 items-center">
             <button className=" text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <Link to="/register"> <FaUser size={20} /> </Link>
+              <Link to="/profile"> <FaUser size={20} /> </Link>
             </button>
             <button className=" text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
               <Link to='/basket'> <FaShoppingCart size={20} /></Link>

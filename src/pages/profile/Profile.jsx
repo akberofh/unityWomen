@@ -13,7 +13,10 @@ const Profile = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [updateUser] = useUpdateUserMutation();  const [referredUsers, setReferredUsers] = useState([]); // State to hold referred users
+  const [updateUser] = useUpdateUserMutation(); 
+   const [referredUsers, setReferredUsers] = useState([]); 
+
+   const [referredUserss, setReferredUserss] = useState([]); 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,7 +71,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .get(`http://localhost:8000/api/users/admin/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUsers(res.data.users);
         })
@@ -78,9 +81,28 @@ const Profile = () => {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.name);
+      setEmail(userInfo.email);
+      setPhoto(userInfo.photo);
+      setReferralLink(userInfo.referralCode); // referralCode from user info
+
+      // Fetch referred users using referralCode
+      axios
+        .get(`http://localhost:8000/api/users/user/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUserss(res.data.users);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
+    }
+  }, [userInfo]);
+
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
+    navigator.clipboard.writeText(`http://localhost:3000/register?referral=${referralLink}`)
       .then(() => {
         toast.success("Referral link copied to clipboard!");
       })
@@ -183,7 +205,7 @@ const Profile = () => {
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {`https://unity-women.vercel.app/register?referral=${referralLink}`}
+                  {`http://localhost:3000/register?referral=${referralLink}`}
                 </a>
                 <button
                   type="button"
@@ -203,7 +225,7 @@ const Profile = () => {
         </form>
 
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Referans İle Kayıt Olan Kullanıcılar</h2>
+          <h2 className="text-2xl font-semibold mb-4">Saq Sol Qollar.</h2>
           {referredUsers.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
@@ -226,7 +248,34 @@ const Profile = () => {
               </tbody>
             </table>
           ) : (
-            <p className="text-gray-500">Henüz referans ile kayıt olan kullanıcı yok.</p>
+            <p className="text-gray-500">Qol yoxdur.</p>
+          )}
+        </div>
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Saq sol qol və qruplar</h2>
+          {referredUserss.length > 0 ? (
+            <table className="min-w-full border-collapse text-left">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2 border-b">Ad</th>
+                  <th className="px-4 py-2 border-b">Email</th>
+                  <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {referredUserss.map((user) => (
+                  <tr key={user._id} className="border-b">
+                    <td className="px-4 py-2">{user.name}</td>
+                    <td className="px-4 py-2">{user.email}</td>
+                    <td className="px-4 py-2">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-gray-500">Qrup yoxdur.</p>
           )}
         </div>
       </div>

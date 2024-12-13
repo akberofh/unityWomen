@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductCard from './Catos';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
+import {  useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
+
 
 const Detalp = () => {
     const [product, setProduct] = useState(null);
@@ -16,6 +18,8 @@ const Detalp = () => {
     const { qolbaq_id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [addTodoo] = useAddsTodoMutation();
+    
 
     const [visibleLength, setVisibleLength] = useState(100); // Başlangıçta 100 karakter göster
 
@@ -67,6 +71,26 @@ const Detalp = () => {
         } catch (err) {
             console.error('Sepete ekleme hatası:', err);
             toast.error('Ürün sepete eklenemedi. Lütfen tekrar deneyin.');
+        }
+    };
+
+    const handleAddToFavorie = async (product) => {
+   
+  
+        try {
+            const itemWithDetails = { productId: product._id };
+    
+            // API çağrısı
+            const newFavorie = await addTodoo(itemWithDetails).unwrap();
+    
+            // Redux'a ekle
+            dispatch({ type: 'favorie/add', payload: newFavorie });
+    
+            // Favoriler sayfasına yönlendir
+            navigate('/favorie');
+        } catch (err) {
+            console.error('Failed to add the product to favorie:', err);
+            alert(err.data?.error || 'Ürün favorilere eklenemedi. Lütfen tekrar deneyin.');
         }
     };
 
@@ -148,7 +172,7 @@ const Detalp = () => {
                         </button>
                         <div className='h-[20px]'></div>
                         <button
-                            onClick={() => (product)}
+                            onClick={() => handleAddToFavorie(product)}
                             className="py-3 w-[250px] px-6 bg-green-700  hover:bg-green-900  rounded-lg font-semibold text-white shadow-md transition"
                         >
                             Sevimlilere Ekle

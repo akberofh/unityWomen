@@ -42,7 +42,7 @@ const Router = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/kategori" element={<Catagory />} />
         <Route path="/catagoryadd" element={<CatagoryAdd />} />
-        <Route path="/reset-password" element={<  ResertPass/>} />
+        <Route path="/reset-password/:token" element={<  ResertPass/>} />
         <Route path="/request-password-reset" element={<  RequestPass/>} />
         <Route path="" element={<PrivateRoute/>}>
           <Route path="/profile" element={<Profile/>} />
