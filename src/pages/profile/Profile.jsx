@@ -71,7 +71,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`http://localhost:8000/api/users/admin/${userInfo.referralCode}`)
+        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUsers(res.data.users);
         })
@@ -90,7 +90,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`http://localhost:8000/api/users/user/${userInfo.referralCode}`)
+        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res.data.users);
         })
@@ -102,7 +102,7 @@ const Profile = () => {
 
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/register?referral=${referralLink}`)
+    navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
       .then(() => {
         toast.success("Referral link copied to clipboard!");
       })
@@ -205,7 +205,7 @@ const Profile = () => {
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {`http://localhost:3000/register?referral=${referralLink}`}
+                  {`https://unity-women.vercel.app/register?referral=${referralLink}`}
                 </a>
                 <button
                   type="button"
