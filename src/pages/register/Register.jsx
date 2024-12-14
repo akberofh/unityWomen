@@ -10,8 +10,10 @@ import { useDropzone } from 'react-dropzone';
 
 const Register = () => {
     const [name, setName] = useState('');
+    const [faze, setFaze] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [photo, setPhoto] = useState(null);
     const [referralCode, setReferralCode] = useState("");
@@ -48,6 +50,8 @@ const Register = () => {
         try {
             const formData = new FormData();
             formData.append('name', name);
+            formData.append('faze', faze);
+            formData.append('phone', phone);
             formData.append('email', email);
             formData.append('referralCode', referralCode);
             formData.append('password', password);
@@ -136,6 +140,32 @@ const Register = () => {
                                 placeholder="Confirm Password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label className="block text-md font-semibold text-gray-700">Ata Adi</label>
+                            <input
+                                type="Ata adi"
+                                name="Ata adi"
+                                placeholder="Ata adi"
+                                value={faze}
+                                onChange={(e) => setFaze(e.target.value)}
+                                required
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
+                            <input
+                                type="Telefon nömrəsi"
+                                name="Telefon nömrəsi"
+                                placeholder="Telefon nömrəsi"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                                 required
                                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
                             />
