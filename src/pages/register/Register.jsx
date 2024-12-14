@@ -7,6 +7,9 @@ import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
 import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -159,17 +162,19 @@ const Register = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
-                            <input
-                                type="Telefon nömrəsi"
-                                name="Telefon nömrəsi"
-                                placeholder="Telefon nömrəsi"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                required
-                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
-                            />
-                        </div>
+            <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
+            <PhoneInput
+                country={'az'} // Varsayılan ülke kodu
+                value={phone}
+                onChange={(phone) => setPhone(phone)}
+                inputProps={{
+                    name: 'Telefon nömrəsi',
+                    required: true,
+                }}
+                containerClass="w-full mt-1"
+                inputClass="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+            />
+        </div>
                     </div>
                     <div>
                         <label className="block text-md font-semibold text-gray-700">Cinsiyyət</label>
