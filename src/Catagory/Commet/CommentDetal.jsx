@@ -104,7 +104,7 @@ React.useEffect(() => {
                 <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
                 <p className="text-sm text-gray-500 mt-2 dark:text-white">
-                  Gönderilme Tarihi: {review.addedAt ? new Date(review.addedAt).toLocaleString() : 'Belirtilmemiş'}
+                  Gönderilme Tarihi: {review.createdAt ? new Date(review.createdAt).toLocaleString() : 'Belirtilmemiş'}
                 </p>
             </div>
           ))}
