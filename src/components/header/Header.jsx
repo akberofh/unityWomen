@@ -178,7 +178,7 @@ const Header = ({ theme, setTheme }) => {
                 </Link>
               </button>
               <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                <FaHeart className="w-6 h-6" />
+              <Link to="/favorie"> <FaHeart className="w-6 h-6" /> </Link>
               </button>
               {theme === "dark" ? (
                 <BiSolidSun
@@ -383,7 +383,7 @@ const Header = ({ theme, setTheme }) => {
               <Link to='/basket'> <FaShoppingCart size={20} /></Link>
             </button>
             <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <FaHeart size={20} />
+            <Link to="/favorie"> <FaHeart size={20} /> </Link>
             </button>
             {theme === "dark" ? (
               <BiSolidSun

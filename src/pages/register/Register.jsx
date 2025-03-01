@@ -73,11 +73,11 @@ const Register = () => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: 'image/*',
-        maxSize: 20971520,
+        maxSize: 50971520,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length > 0) {
                 const file = acceptedFiles[0];
-                if (file.size <= 20971520) {
+                if (file.size <= 50971520) {
                     setPhoto(file);
                 } else {
                     toast.error('File size exceeds 20 MB limit');
