@@ -15,6 +15,7 @@ import { useGetsTodosQuery } from "../../redux/slices/todoApiSlice";
 
 
 
+
 const Header = ({ theme, setTheme }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
@@ -181,8 +182,9 @@ const Header = ({ theme, setTheme }) => {
 
 
             {/* Mobil Menü Butonu */}
-            <div className="md:hidden flex items-center space-x-4 z-20">
-              <div className="relative group">
+            <div className="md:hidden flex items-center justify-center gap-6 z-20">
+              {/* Sepet */}
+              <div className="relative group flex items-center">
                 <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                   <Link to="/basket">
                     <FaShoppingCart className="w-6 h-6" />
@@ -201,7 +203,9 @@ const Header = ({ theme, setTheme }) => {
                   {isLoading ? "Yükleniyor..." : itemCount === 0 ? "Sepet Boş" : "Sepetinizde Ürün Var"}
                 </div>
               </div>
-              <div className="relative group">
+
+              {/* Favoriler */}
+              <div className="relative group flex items-center">
                 <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                   <Link to="/favorie">
                     <FaHeart className="w-6 h-6" />
@@ -220,25 +224,24 @@ const Header = ({ theme, setTheme }) => {
                   {isLoadingg ? "Yükleniyor..." : favoriteCount === 0 ? "Favoriler Boş" : "Favorileriniz Var"}
                 </div>
               </div>
-              {theme === "dark" ? (
-                <BiSolidSun
-                  onClick={() => setTheme("light")}
-                  className="text-2xl cursor-pointer"
-                />
-              ) : (
-                <BiSolidMoon
-                  onClick={() => setTheme("dark")}
-                  className="text-2xl text-white cursor-pointer"
-                />
-              )}
-              <button onClick={toggleMenu} className="text-white dark:text-white">
-                {isMenuOpen ? (
-                  <FaBarsStaggered size={24} />
+
+              {/* Tema Değiştirme */}
+              <div className="flex items-center">
+                {theme === "dark" ? (
+                  <BiSolidSun onClick={() => setTheme("light")} className="text-2xl cursor-pointer" />
                 ) : (
-                  <FaBars size={24} />
+                  <BiSolidMoon onClick={() => setTheme("dark")} className="text-2xl text-white cursor-pointer" />
                 )}
-              </button>
+              </div>
+
+              {/* Menü Aç/Kapat */}
+              <div className="flex items-center">
+                <button onClick={toggleMenu} className="text-white dark:text-white">
+                  {isMenuOpen ? <FaBarsStaggered size={24} /> : <FaBars size={24} />}
+                </button>
+              </div>
             </div>
+
 
           </div>
         </div>
@@ -416,71 +419,60 @@ const Header = ({ theme, setTheme }) => {
 
           {/* İkonlar Sağ Taraf */}
           <div className="flex salamicon space-x-6 items-center">
-            <button className=" text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <Link to="/profile"> <FaUser size={20} /> </Link>
+            <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+              <Link to="/profile">
+                <FaUser size={24} />
+              </Link>
             </button>
-            <div className="relative group">
+
+            <div className="relative group flex items-center">
               <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                 <Link to="/basket">
-                  <FaShoppingCart className="w-6 h-6" />
+                  <FaShoppingCart size={24} />
                 </Link>
               </button>
-
-              {/* Sepette ürün varsa ürün sayısını göster */}
               {itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   {itemCount}
                 </span>
               )}
-
-              {/* Sepet boşsa üzerine gelindiğinde "Sepet Boş" yazısını göster */}
               <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                 {isLoading ? "Yükleniyor..." : itemCount === 0 ? "Sepet Boş" : "Sepetinizde Ürün Var"}
               </div>
             </div>
-            <div className="relative group">
+
+            <div className="relative group flex items-center">
               <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                 <Link to="/favorie">
-                  <FaHeart className="w-6 h-6" />
+                  <FaHeart size={24} />
                 </Link>
               </button>
-
-              {/* Favoriler doluysa ürün sayısını göster */}
               {favoriteCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   {favoriteCount}
                 </span>
               )}
-
-              {/* Favoriler boşsa üzerine gelindiğinde "Favoriler Boş" yazısını göster */}
               <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                {isLoadingg ? "Yükleniyor..." : favoriteCount === 0 ? "Favoriler Boş" :"Favorileriniz Var  "}
+                {isLoadingg ? "Yükleniyor..." : favoriteCount === 0 ? "Favoriler Boş" : "Favorileriniz Var"}
               </div>
             </div>
-            {theme === "dark" ? (
-              <BiSolidSun
-                onClick={() => setTheme("light")}
-                className="text-2xl  cursor-pointer"
-              />
-            ) : (
-              <BiSolidMoon
-                onClick={() => setTheme("dark")}
-                className="text-2xl text-white cursor-pointer"
-              />
-            )}
+
+            <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="text-white dark:text-white cursor-pointer">
+              {theme === "dark" ? <BiSolidSun size={24} /> : <BiSolidMoon size={24} />}
+            </button>
+
             <style jsx>{`
-  @media (max-width: 840px) {
-    .salamicon {
-      display: none;
+    @media (max-width: 840px) {
+      .salamicon {
+        display: none;
+      }
+      .search-containerr {
+        width: 100% !important;
+      }
     }
-
-
-        .search-containerr {
-      width: 100% !important;  /* Arama kutusunun tam genişlikte olmasını sağla */
-    }
-  }
-`}</style>
+  `}</style>
           </div>
+
         </div>
       </div>
 
