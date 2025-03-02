@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
-import {  FaUser, FaBars,  FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
+import { FaUser, FaBars, FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
 import UnityWomen from './1722665487WhatsApp_Görsel_2024-08-03_saat_10.08.37_83e97437-removebg.png';
 import axios from "axios";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import AOS from "aos";
 import Catagory from "../../Catagory/Catagory";
+import { useGetTodosQuery } from "../../redux/slices/productApiSlice";
+import { useGetsTodosQuery } from "../../redux/slices/todoApiSlice";
+
+
 
 
 
@@ -21,7 +25,14 @@ const Header = ({ theme, setTheme }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
+  const { data: cartItems, isLoading } = useGetTodosQuery();
+  const { data: favorites, isLoadingg } = useGetsTodosQuery();
 
+  // Favorilerde kaç ürün olduğunu kontrol ediyoruz
+  const favoriteCount = favorites?.length || 0;
+
+  // Sepette ürün olup olmadığını kontrol ediyoruz
+  const itemCount = cartItems?.length || 0;
   useEffect(() => {
     AOS.init();
   }, []);
@@ -52,6 +63,7 @@ const Header = ({ theme, setTheme }) => {
           setItems(response.data.allQolbaq); // API'den gelen verileri state'e kaydet
           setLoading(false);
         })
+
         .catch(error => {
           console.error('Error fetching items:', error);
           setLoading(false);
@@ -83,7 +95,6 @@ const Header = ({ theme, setTheme }) => {
 
 
 
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -95,7 +106,7 @@ const Header = ({ theme, setTheme }) => {
 
 
 
- 
+
 
 
 
@@ -132,7 +143,6 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Ana Menü ve Kategoriler Sağ Taraf */}
             <nav className="hidden md:flex space-x-6">
-            
               <Link
                 to="/favorie"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
@@ -172,14 +182,44 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Mobil Menü Butonu */}
             <div className="md:hidden flex items-center space-x-4 z-20">
-              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                <Link to='/basket'>
-                  <FaShoppingCart className="w-6 h-6" />
-                </Link>
-              </button>
-              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <Link to="/favorie"> <FaHeart className="w-6 h-6" /> </Link>
-              </button>
+              <div className="relative group">
+                <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                  <Link to="/basket">
+                    <FaShoppingCart className="w-6 h-6" />
+                  </Link>
+                </button>
+
+                {/* Sepette ürün varsa ürün sayısını göster */}
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {itemCount}
+                  </span>
+                )}
+
+                {/* Sepet boşsa üzerine gelindiğinde "Sepet Boş" yazısını göster */}
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  {isLoading ? "Yükleniyor..." : itemCount === 0 ? "Sepet Boş" : "Sepetinizde Ürün Var"}
+                </div>
+              </div>
+              <div className="relative group">
+                <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                  <Link to="/favorie">
+                    <FaHeart className="w-6 h-6" />
+                  </Link>
+                </button>
+
+                {/* Favoriler doluysa ürün sayısını göster */}
+                {favoriteCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {favoriteCount}
+                  </span>
+                )}
+
+                {/* Favoriler boşsa üzerine gelindiğinde "Favoriler Boş" yazısını göster */}
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  {isLoadingg ? "Yükleniyor..." : favoriteCount === 0 ? "Favoriler Boş" : "Favorileriniz Var"}
+                </div>
+              </div>
               {theme === "dark" ? (
                 <BiSolidSun
                   onClick={() => setTheme("light")}
@@ -235,7 +275,7 @@ const Header = ({ theme, setTheme }) => {
           className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 h-full z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="relative text-center">
-            <Link to="/profile"className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profil</Link>
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profil</h1>
 
             {userInfo && userInfo.photo ? (
               userInfo.photo.startsWith('data:image/') ? (
@@ -306,7 +346,7 @@ const Header = ({ theme, setTheme }) => {
 
 
           {/* Kategoriler Menüsü */}
-          
+
 
 
           {/* Linkler */}
@@ -379,12 +419,44 @@ const Header = ({ theme, setTheme }) => {
             <button className=" text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
               <Link to="/profile"> <FaUser size={20} /> </Link>
             </button>
-            <button className=" text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              <Link to='/basket'> <FaShoppingCart size={20} /></Link>
-            </button>
-            <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-            <Link to="/favorie"> <FaHeart size={20} /> </Link>
-            </button>
+            <div className="relative group">
+              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                <Link to="/basket">
+                  <FaShoppingCart className="w-6 h-6" />
+                </Link>
+              </button>
+
+              {/* Sepette ürün varsa ürün sayısını göster */}
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {itemCount}
+                </span>
+              )}
+
+              {/* Sepet boşsa üzerine gelindiğinde "Sepet Boş" yazısını göster */}
+              <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                {isLoading ? "Yükleniyor..." : itemCount === 0 ? "Sepet Boş" : "Sepetinizde Ürün Var"}
+              </div>
+            </div>
+            <div className="relative group">
+              <button className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                <Link to="/favorie">
+                  <FaHeart className="w-6 h-6" />
+                </Link>
+              </button>
+
+              {/* Favoriler doluysa ürün sayısını göster */}
+              {favoriteCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {favoriteCount}
+                </span>
+              )}
+
+              {/* Favoriler boşsa üzerine gelindiğinde "Favoriler Boş" yazısını göster */}
+              <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                {isLoadingg ? "Yükleniyor..." : favoriteCount === 0 ? "Favoriler Boş" :"Favorileriniz Var  "}
+              </div>
+            </div>
             {theme === "dark" ? (
               <BiSolidSun
                 onClick={() => setTheme("light")}
@@ -419,7 +491,7 @@ const Header = ({ theme, setTheme }) => {
 
 
       <div className="dark:bg-black bg-white w-full h-[120px] py-4 border-b flex justify-center items-center">
-       <Catagory/>
+        <Catagory />
       </div>
 
 
