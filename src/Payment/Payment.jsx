@@ -19,33 +19,37 @@ const Payment = () => {
   const canvasRef = useRef(null);
 
   const startCamera = () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // Arka kamerayı seçmeye çalış
-      const constraints = {
-        video: {
-          facingMode: "environment" // Arka kamerayı açmaya çalışıyoruz
-        }
-      };
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          const videoDevices = devices.filter(device => device.kind === 'videoinput');
+          const backCamera = videoDevices.find(device => device.label.toLowerCase().includes('back') || device.facing == 'environment');
   
-      navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream) => {
-          // Akış başarılıysa video elementine bağla
-          const videoElement = document.getElementById("videoElement");
-          videoElement.srcObject = stream;
-          setIsCameraOpen(true);
+          if (backCamera) {
+            const constraints = {
+              video: { deviceId: { exact: backCamera.deviceId } }
+            };
+  
+            navigator.mediaDevices
+              .getUserMedia(constraints)
+              .then((stream) => {
+                setIsCameraOpen(true);
+              })
+              .catch((err) => {
+                console.error("Kamera açılırken bir hata oluştu: ", err);
+                alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
+              });
+          } else {
+            alert("Arka kamera bulunamadı.");
+          }
         })
-        .catch((err) => {
-          console.error("Kamera açılırken bir hata oluştu: ", err);
-          alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
+        .catch(err => {
+          console.error("Cihazlar alınırken bir hata oluştu: ", err);
         });
     } else {
       alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
-  
-  
-  
   
   
 
