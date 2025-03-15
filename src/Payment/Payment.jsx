@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useGetTodosQuery } from '../redux/slices/productApiSlice';
 import { setTodos } from '../redux/slices/productSlice';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,48 @@ const Payment = () => {
       dispatch(setTodos(data));
     }
   }, [data, dispatch]);
+
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  // Kamerayı başlatma fonksiyonu
+  const startCamera = () => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          videoRef.current.srcObject = stream;
+          setIsCameraOpen(true);
+        })
+        .catch((err) => console.error("Kamera erişimi hatası:", err));
+    }
+  };
+
+  // Fotoğraf çekme fonksiyonu
+  const takePicture = () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageUrl = canvas.toDataURL('image/png');
+    setSelectedImage(imageUrl); // Fotoğrafı selectedImage state'ine kaydediyoruz
+  };
+
+  // Fotoğraf seçme fonksiyonu
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result); // Yüklenen fotoğrafı selectedImage state'ine kaydediyoruz
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="flex justify-between border max-w-7xl dark:bg-black mx-auto p-5 gap-5 flex-wrap">
@@ -96,33 +138,70 @@ const Payment = () => {
           <div>
             <h2 className="text-xl font-semibold mb-4">Ödəniş</h2>
             <form>
-              {[
-                ['Kart Nömrəsi', '**** **** **** ****'],
-                ['Son istifadə tarixi', 'MM/YY'],
-                ['CVV', '***'],
-              ].map(([label, placeholder], idx) => (
-                <div key={idx}>
-                  <label className="block text-sm font-semibold mt-4">{label}</label>
-                  <input
-                    type="text"
-                    className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
-                    placeholder={placeholder}
-                    required
-                  />
-                </div>
-              ))}
-              <label className="block text-sm font-semibold mt-4">Şəkil yüklə</label>
-              <input type="file" className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md" />
+      {[['Kart Nömrəsi', '**** **** **** ****'], ['Son istifadə tarixi', 'MM/YY'], ['CVV', '***']].map(
+        ([label, placeholder], idx) => (
+          <div key={idx}>
+            <label className="block text-sm font-semibold mt-4">{label}</label>
+            <input
+              type="text"
+              className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
+              placeholder={placeholder}
+              required
+            />
+          </div>
+        )
+      )}
 
-              <div className="flex justify-between mt-6">
-                <button type="button" onClick={() => setStep(2)} className="bg-gray-400 text-white py-2 px-4 rounded-md">
-                  ← Geri
-                </button>
-                <button type="submit" className="bg-[#b87333] text-white py-2 px-4 rounded-md hover:bg-[#a0652e]">
-                  Ödənişi tamamla
-                </button>
-              </div>
-            </form>
+      {/* Fotoğraf Yükleme ve Kamera Açma Seçenekleri */}
+      <label className="block text-sm font-semibold mt-4">Şəkil yüklə</label>
+      {/* Fotoğraf yükleme alanı */}
+      <input
+        type="file"
+        className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+      
+      {/* Kamera açma alanı */}
+      {!isCameraOpen ? (
+        <button
+          type="button"
+          onClick={startCamera}
+          className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
+        >
+          Kamerayı aç
+        </button>
+      ) : (
+        <div>
+          <video ref={videoRef} autoPlay className="w-full rounded-md mb-4"></video>
+          <button
+            type="button"
+            onClick={takePicture}
+            className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
+          >
+            Fotoğraf çek
+          </button>
+          <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+        </div>
+      )}
+
+      {/* Seçilen veya çekilen fotoğrafı göster */}
+      {selectedImage && (
+        <div className="mt-4">
+          <h5 className="text-sm font-semibold">Seçilen Fotoğraf:</h5>
+          <img src={selectedImage} alt="Selected or Captured" className="w-full mt-2 rounded-md" />
+        </div>
+      )}
+
+      <div className="flex justify-between mt-6">
+        <button type="button" className="bg-gray-400 text-white py-2 px-4 rounded-md">
+          ← Geri
+        </button>
+        <button type="submit" className="bg-[#b87333] text-white py-2 px-4 rounded-md hover:bg-[#a0652e]">
+          Ödənişi tamamla
+        </button>
+      </div>
+    </form>
           </div>
         )}
       </div>
