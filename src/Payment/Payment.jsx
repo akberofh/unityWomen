@@ -20,15 +20,17 @@ const Payment = () => {
 
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      // Arka kamerayı seçmeye çalış
       const constraints = {
         video: {
-          facingMode: { exact: "environment" }  // Arka kamerayı tercih et
+          facingMode: "environment" // Arka kamerayı açmaya çalışıyoruz
         }
       };
   
       navigator.mediaDevices
         .getUserMedia(constraints)
         .then((stream) => {
+          // Akış başarılıysa video elementine bağla
           const videoElement = document.getElementById("videoElement");
           videoElement.srcObject = stream;
           setIsCameraOpen(true);
@@ -41,6 +43,7 @@ const Payment = () => {
       alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
+  
   
   
   
