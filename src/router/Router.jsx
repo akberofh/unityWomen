@@ -20,7 +20,7 @@ import Comment from "../Catagory/Commet/Comment";
 import Catagory from "../Catagory/Catagory";
 import CatagoryAdd from "../Catagory/CatagoryAdd";
 import FavorieProduct from "../pages/Favorie/FavorieProduct";
-import PaymentDetal from "../../Payment/PaymentDetal";
+import PaymentDetal from "../Payment/PaymentDetal";
 
 
 const Router = () => {
