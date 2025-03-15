@@ -19,38 +19,29 @@ const Payment = () => {
   const canvasRef = useRef(null);
 
   const startCamera = () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-      navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          const videoDevices = devices.filter(device => device.kind === 'videoinput');
-          const backCamera = videoDevices.find(device => device.label.includes('back') || device.facing === 'environment');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const constraints = {
+        video: {
+          facingMode: { exact: "environment" }  // Arka kamerayı tercih et
+        }
+      };
   
-          if (backCamera) {
-            const constraints = {
-              video: { deviceId: backCamera.deviceId }
-            };
-  
-            navigator.mediaDevices.getUserMedia(constraints)
-              .then((stream) => {
-                const videoElement = document.getElementById("videoElement");
-                videoElement.srcObject = stream;
-                setIsCameraOpen(true);
-              })
-              .catch((err) => {
-                console.error("Kamera açılırken bir hata oluştu: ", err);
-                alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
-              });
-          } else {
-            alert("Arka kamera bulunamadı.");
-          }
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          const videoElement = document.getElementById("videoElement");
+          videoElement.srcObject = stream;
+          setIsCameraOpen(true);
         })
         .catch((err) => {
-          console.error("Cihazlar listelenirken bir hata oluştu: ", err);
+          console.error("Kamera açılırken bir hata oluştu: ", err);
+          alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
         });
     } else {
-      alert("Tarayıcınız bu özellikleri desteklemiyor.");
+      alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
+  
   
   
   
