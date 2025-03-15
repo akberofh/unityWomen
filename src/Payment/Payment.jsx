@@ -43,7 +43,7 @@ const Payment = () => {
         )}
         
         {step === 2 && (
-          <div>
+          <div className=" min-h-96">
             <h2 className="text-xl font-semibold mb-4">Çatdırılma ünvanı</h2>
             <form>
               <label className="block text-sm font-semibold mt-4">Şəhər</label>
