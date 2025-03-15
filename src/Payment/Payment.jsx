@@ -21,7 +21,9 @@ const Payment = () => {
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ video: true }) // Kamera açılıyor
+        .getUserMedia({
+          video: { facingMode: { exact: 'environment' } } // Burada 'environment' arka kamerayı işaret eder
+        })
         .then((stream) => {
           setIsCameraOpen(true); // Kamera açıldığında state'i güncelliyoruz
         })
@@ -33,6 +35,7 @@ const Payment = () => {
       alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
+  
 
   // Fotoğraf çekme fonksiyonu
   const takePicture = () => {
