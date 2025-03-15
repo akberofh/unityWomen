@@ -236,7 +236,7 @@ const Payment = () => {
           ) : (
             <div className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
               <div className="w-full flex flex-col items-center sm:items-start">
-                <h6 className="text-sm font-semibold dark:text-white text-gray-800">Qiymet:</h6>
+                <h6 className="text-sm font-semibold dark:text-white text-gray-800">Umumi qiymet:</h6>
               </div>
               <p className="object-cover rounded-full mb-4 sm:mb-0 sm:mr-6">
                 {data && data.reduce((acc, product) => acc + product.price, 0)}₼
