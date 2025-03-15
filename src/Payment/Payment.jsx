@@ -13,23 +13,20 @@ const Payment = () => {
       dispatch(setTodos(data));
     }
   }, [data, dispatch]);
-
   const [selectedImage, setSelectedImage] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   // Kamerayı başlatma fonksiyonu
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: "environment" } }) // Arka kamerayı açmak için facingMode kullanıyoruz
+        .getUserMedia({ video: true }) // Kamera açılıyor
         .then((stream) => {
-          videoRef.current.srcObject = stream;
-          setIsCameraOpen(true);
+          setIsCameraOpen(true); // Kamera açıldığında state'i güncelliyoruz
         })
         .catch((err) => {
-          console.error("Kamera erişimi hatası:", err);
+          console.error("Kamera açılırken bir hata oluştu: ", err);
           alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
         });
     } else {
@@ -40,16 +37,32 @@ const Payment = () => {
   // Fotoğraf çekme fonksiyonu
   const takePicture = () => {
     const canvas = canvasRef.current;
-    const video = videoRef.current;
     const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height); // Video görüntüsünü kanvasa çiziyoruz
-    const imageUrl = canvas.toDataURL('image/png'); // Kanvası image URL'ye dönüştürüyoruz
-    setSelectedImage(imageUrl); // Fotoğrafı selectedImage state'ine kaydediyoruz
+    const video = document.createElement('video');
+    
+    // Video akışını elde et
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+        video.play();
+
+        // Fotoğraf çekildiğinde canvas'a çizim yapılır
+        video.onloadedmetadata = () => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height); // Görüntüyü canvas'a çiz
+          const imageUrl = canvas.toDataURL('image/png'); // Fotoğrafı al
+          setSelectedImage(imageUrl); // Fotoğrafı state'e kaydet
+          stream.getTracks().forEach(track => track.stop()); // Video akışını durdur
+        };
+      })
+      .catch((err) => {
+        console.error("Kamera kullanılamadı: ", err);
+      });
   };
 
-  // Fotoğraf seçme fonksiyonu
+  // Fotoğraf yükleme alanı
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -156,17 +169,16 @@ const Payment = () => {
         )
       )}
 
-      {/* Fotoğraf Yükleme ve Kamera Açma Seçenekleri */}
-      <label className="block text-sm font-semibold mt-4">Şəkil yüklə</label>
       {/* Fotoğraf yükleme alanı */}
+      <label className="block text-sm font-semibold mt-4">Şəkil yüklə</label>
       <input
         type="file"
         className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
         accept="image/*"
         onChange={handleFileChange}
       />
-      
-      {/* Kamera açma alanı */}
+
+      {/* Kamera açma butonu */}
       {!isCameraOpen ? (
         <button
           type="button"
@@ -184,7 +196,7 @@ const Payment = () => {
           >
             Fotoğraf çek
           </button>
-          <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+          <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
       )}
 
