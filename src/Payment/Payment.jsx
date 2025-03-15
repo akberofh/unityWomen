@@ -14,8 +14,8 @@ const Payment = () => {
     }
   }, [data, dispatch]);
 
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -23,12 +23,17 @@ const Payment = () => {
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({ video: { facingMode: "environment" } }) // Arka kamerayı açmak için facingMode kullanıyoruz
         .then((stream) => {
           videoRef.current.srcObject = stream;
           setIsCameraOpen(true);
         })
-        .catch((err) => console.error("Kamera erişimi hatası:", err));
+        .catch((err) => {
+          console.error("Kamera erişimi hatası:", err);
+          alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
+        });
+    } else {
+      alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
 
@@ -39,8 +44,8 @@ const Payment = () => {
     const context = canvas.getContext('2d');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageUrl = canvas.toDataURL('image/png');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height); // Video görüntüsünü kanvasa çiziyoruz
+    const imageUrl = canvas.toDataURL('image/png'); // Kanvası image URL'ye dönüştürüyoruz
     setSelectedImage(imageUrl); // Fotoğrafı selectedImage state'ine kaydediyoruz
   };
 
@@ -55,7 +60,6 @@ const Payment = () => {
       reader.readAsDataURL(file);
     }
   };
-
   return (
     <div className="flex justify-between border max-w-7xl dark:bg-black mx-auto p-5 gap-5 flex-wrap">
       {/* Left Panel */}
@@ -173,7 +177,6 @@ const Payment = () => {
         </button>
       ) : (
         <div>
-          <video ref={videoRef} autoPlay className="w-full rounded-md mb-4"></video>
           <button
             type="button"
             onClick={takePicture}
