@@ -23,16 +23,17 @@ const Payment = () => {
       navigator.mediaDevices.enumerateDevices()
         .then(devices => {
           const videoDevices = devices.filter(device => device.kind === 'videoinput');
-          const backCamera = videoDevices.find(device => device.label.toLowerCase().includes('back') || device.facing == 'environment');
+          const backCamera = videoDevices.find(device => device.label.includes('back') || device.facing === 'environment');
   
           if (backCamera) {
             const constraints = {
-              video: { deviceId: { exact: backCamera.deviceId } }
+              video: { deviceId: backCamera.deviceId }
             };
   
-            navigator.mediaDevices
-              .getUserMedia(constraints)
+            navigator.mediaDevices.getUserMedia(constraints)
               .then((stream) => {
+                const videoElement = document.getElementById("videoElement");
+                videoElement.srcObject = stream;
                 setIsCameraOpen(true);
               })
               .catch((err) => {
@@ -43,13 +44,14 @@ const Payment = () => {
             alert("Arka kamera bulunamadı.");
           }
         })
-        .catch(err => {
-          console.error("Cihazlar alınırken bir hata oluştu: ", err);
+        .catch((err) => {
+          console.error("Cihazlar listelenirken bir hata oluştu: ", err);
         });
     } else {
-      alert("Tarayıcınız kamera erişimini desteklemiyor.");
+      alert("Tarayıcınız bu özellikleri desteklemiyor.");
     }
   };
+  
   
   
 
