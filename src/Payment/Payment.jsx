@@ -20,8 +20,15 @@ const Payment = () => {
 
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      // Telefonlarda arka kamera, bilgisayarlarda ise ön kamera açılacak şekilde yapılandırma
+      const constraints = {
+        video: {
+          facingMode: window.innerWidth <= 768 ? 'environment' : 'user' // Telefonlarda arka kamera, bilgisayarlarda ön kamera
+        }
+      };
+  
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia(constraints)
         .then((stream) => {
           setIsCameraOpen(true);
         })
@@ -33,6 +40,7 @@ const Payment = () => {
       alert("Tarayıcınız kamera erişimini desteklemiyor.");
     }
   };
+  
 
   const takePicture = () => {
     const canvas = canvasRef.current;
