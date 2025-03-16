@@ -8,6 +8,7 @@ import {
   useDeleteTodoMutation,
   useUpdateTodoMutation,
 } from "../../redux/slices/productApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const Basket = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const Basket = () => {
   const [addPayment] = useAddPaymentMutation();
   const [removeTodo] = useDeleteTodoMutation();
   const [outOfStock, setOutOfStock] = useState([]);
+    const navigate = useNavigate();
+  
 
   // Update product quantity
   const updateQuantity = async (productId, quantity) => {
@@ -42,6 +45,9 @@ const Basket = () => {
     try {
       await addConfirm().unwrap();
       alert("Sepet başarıyla onaylandı!");
+      setTimeout(() => {
+        navigate('/payment');
+      }, 3000);
     } catch (error) {
       console.error("Sepeti onaylarken hata oluştu:", error);
       alert("Sepeti onaylarken bir hata oluştu.");
@@ -89,42 +95,42 @@ const Basket = () => {
   const isStockAvailable = data && Array.isArray(data) && !data.some((product) => product.stock === 0);
 
   return (
-<div className="container min-h-[740px] mx-auto p-6">
-  {isLoading ? (
-    <p className="text-center text-gray-600">Yükleniyor...</p>
-  ) : (
-    data && data.map((product) => (
-      <div key={product._id} className=" dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-<img src={product.thumbnail} alt="Thumbnail" className="w-32 h-32 object-cover rounded-full mb-4 md:mb-0 md:mr-6 border border-gray-200" />
-<div className="w-full flex flex-col items-center">
-          <h3 className="text-lg font-semibold dark:text-white  text-gray-800">{product.title}</h3>
-        </div>
-        <div className="flex w-full dark:text-white items-center justify-center space-x-4 mt-4">
-          {product.quantity > 1 ? (
-            <button onClick={() => updateQuantity(product.productId, product.quantity - 1)} className="px-4 py-2  bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">-</button>
-          ) : (
-            <button onClick={() => removeProduct(product._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Sil</button>
-          )}
-          <span className="text-lg dark:text-white font-medium text-gray-700">{product.quantity}</span>
-          <button onClick={() => updateQuantity(product.productId, product.quantity + 1)} className="px-4  py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+</button>
-        </div>
-        <div className="flex flex-col w-full items-center mt-4">
-          <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Fiyat: {product.totalPrice} ₺</p>
-          {product.stock === 1 ? (
-            <p className="text-red-500 mb-2">Son 1 ürün kaldı!</p>
-          ) : product.stock === 0 ? (
-            <p className="text-red-500 mb-2">Bu ürün stokta yok!</p>
-          ) : null}
-        </div>
-      </div>
-    ))
-  )}
+    <div className="container min-h-[740px] mx-auto p-6">
+      {isLoading ? (
+        <p className="text-center text-gray-600">Yükleniyor...</p>
+      ) : (
+        data && data.map((product) => (
+          <div key={product._id} className=" dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
+            <img src={product.thumbnail} alt="Thumbnail" className="w-32 h-32 object-cover rounded-full mb-4 md:mb-0 md:mr-6 border border-gray-200" />
+            <div className="w-full flex flex-col items-center">
+              <h3 className="text-lg font-semibold dark:text-white  text-gray-800">{product.title}</h3>
+            </div>
+            <div className="flex w-full dark:text-white items-center justify-center space-x-4 mt-4">
+              {product.quantity > 1 ? (
+                <button onClick={() => updateQuantity(product.productId, product.quantity - 1)} className="px-4 py-2  bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">-</button>
+              ) : (
+                <button onClick={() => removeProduct(product._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Sil</button>
+              )}
+              <span className="text-lg dark:text-white font-medium text-gray-700">{product.quantity}</span>
+              <button onClick={() => updateQuantity(product.productId, product.quantity + 1)} className="px-4  py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+</button>
+            </div>
+            <div className="flex flex-col w-full items-center mt-4">
+              <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Fiyat: {product.totalPrice} ₼</p>
+              {product.stock === 1 ? (
+                <p className="text-red-500 mb-2">Son 1 ürün kaldı!</p>
+              ) : product.stock === 0 ? (
+                <p className="text-red-500 mb-2">Bu ürün stokta yok!</p>
+              ) : null}
+            </div>
+          </div>
+        ))
+      )}
 
-  <div className="flex justify-between items-center mt-6">
-    <p className="text-xl font-semibold dark:text-white text-gray-800">Sepet Toplamı: {calculateTotalPrice} ₺</p>
-    <button onClick={handleConfirmCart} disabled={!isStockAvailable} className={`px-6 py-2 rounded text-white ${!isStockAvailable ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600 transition-all"}`}>Sepeti Onayla</button>
-  </div>
-</div>
+      <div className="flex justify-between items-center mt-6">
+        <p className="text-xl font-semibold dark:text-white text-gray-800">Sepet Toplamı: {calculateTotalPrice} ₼</p>
+        <button onClick={handleConfirmCart} disabled={!isStockAvailable} className={`px-6 py-2 rounded text-white ${!isStockAvailable ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600 transition-all"}`}>Sepeti Onayla</button>
+      </div>
+    </div>
 
   );
 };
