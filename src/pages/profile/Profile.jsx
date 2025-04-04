@@ -71,13 +71,14 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women.vercel.app/api/users/admin/${userInfo.referralCode}`)
-        .then((res) => {
-          setReferredUsers(res.data.users);
-        })
-        .catch((error) => {
-          console.error("Referred users fetch error:", error);
-        });
+      .get(`https://unity-women.vercel.app/api/users/admin/${userInfo.referralCode}`)
+      .then((res) => {
+        setReferredUsers(res?.data?.users || []);
+      })
+      .catch((error) => {
+        console.error("Referred users fetch error:", error);
+      });
+    
     }
   }, [userInfo]);
 
@@ -90,13 +91,14 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women.vercel.app/api/users/user/${userInfo.referralCode}`)
-        .then((res) => {
-          setReferredUserss(res.data.users);
-        })
-        .catch((error) => {
-          console.error("Referred users fetch error:", error);
-        });
+      .get(`https://unity-women.vercel.app/api/users/user/${userInfo.referralCode}`)
+      .then((res) => {
+        setReferredUserss(res?.data?.users || []);
+      })
+      .catch((error) => {
+        console.error("Referred users fetch error:", error);
+      });
+    
     }
   }, [userInfo]);
 
