@@ -39,7 +39,7 @@ const Register = () => {
             setReferralCode(referralCode);
 
             // API'ye referral ile kaç kullanıcı kayıt olmuş kontrolü yap
-            fetch(`https://unity-women.vercel.app/api/users/admin/${referralCode}`)
+            fetch(`https://unity-women-backend.vercel.app/api/users/admin/${referralCode}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.count >= 2) {

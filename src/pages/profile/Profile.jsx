@@ -71,7 +71,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-      .get(`https://unity-women.vercel.app/api/users/admin/${userInfo.referralCode}`)
+      .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
       .then((res) => {
         setReferredUsers(res?.data?.users || []);
       })
@@ -91,7 +91,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-      .get(`https://unity-women.vercel.app/api/users/user/${userInfo.referralCode}`)
+      .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
       .then((res) => {
         setReferredUserss(res?.data?.users || []);
       })
