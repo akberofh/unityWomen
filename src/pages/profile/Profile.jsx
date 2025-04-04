@@ -133,7 +133,7 @@ const Profile = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/")}
           className="text-blue-500 hover:text-blue-700"
         >
           Geri

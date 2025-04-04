@@ -278,7 +278,7 @@ const Header = ({ theme, setTheme }) => {
           className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 h-full z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="relative text-center">
-            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profil</h1>
+            <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profile</Link>
 
             {userInfo && userInfo.photo ? (
               userInfo.photo.startsWith('data:image/') ? (
