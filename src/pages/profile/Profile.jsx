@@ -9,9 +9,8 @@ import axios from "axios";
 const Profile = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [card, setCard] = useState("");
   const [referralLink, setReferralLink] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [photo, setPhoto] = useState(null);
   const [updateUser] = useUpdateUserMutation(); 
    const [referredUsers, setReferredUsers] = useState([]); 
@@ -36,29 +35,30 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-    } else {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-      if (photo) {
-        formData.append("photo", photo);
-      }
   
-      try {
-        const res = await updateUser(formData).unwrap();
-        dispatch(setCredentials({ ...res }));
-        toast.success("Profile updated successfully");
-        setPassword('');
-        setConfirmPassword('');
-        navigate("/dashboard");
-      } catch (error) {
-        toast.error(error.data.message || error.message);
-      }
+    // Eğer "card" değeri yoksa hata mesajı göster
+    if (!card) {
+      toast.error("Kart bilgisi gereklidir!");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("card", card);
+  
+    if (photo) {
+      formData.append("photo", photo);
+    }
+  
+    try {
+      const res = await updateUser(formData).unwrap();
+      dispatch(setCredentials({ ...res }));
+      toast.success("Profil başarıyla güncellendi!");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error?.data?.message || error.message || "Bir hata oluştu.");
     }
   };
+  
   
 
   // Fetch user information and referral data
@@ -71,7 +71,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .get(`http://localhost:8000/api/users/admin/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUsers(res.data.users);
         })
@@ -90,7 +90,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .get(`http://localhost:8000/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res.data.users);
         })
@@ -102,12 +102,23 @@ const Profile = () => {
 
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
+    navigator.clipboard.writeText(`http://localhost:3000/register?referral=${referralLink}`)
       .then(() => {
-        toast.success("Referral link copied to clipboard!");
+        toast.success("Referral linkiniz kopyalandı!");
       })
       .catch((error) => {
-        toast.error("Failed to copy referral link");
+        toast.error("Referral linkiniz kopyalanmadı");
+        console.error(error);
+      });
+  };
+
+  const copyReferralLinke = () => {
+    navigator.clipboard.writeText(`${referralLink}`)
+      .then(() => {
+        toast.success("İstifadəçi kodunuz kopyalandı!");
+      })
+      .catch((error) => {
+        toast.error("İstifadəçi kodunuz kopyalanmadı");
         console.error(error);
       });
   };
@@ -161,42 +172,32 @@ const Profile = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col space-y-2">
-            <label className="text-lg font-semibold">Ad</label>
+            <label className="text-lg font-semibold">Card</label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={card}
+              onChange={(e) => setCard(e.target.value)}
               className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col space-y-2">
-            <label className="text-lg font-semibold">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex flex-col space-y-2">
-            <label className="text-lg font-semibold">Şifre</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex flex-col space-y-2">
-            <label className="text-lg font-semibold">Şifreyi Yeniden Gir</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <h1 className="mt-4 text-lg font-semibold">Kendi Referans Linkiniz:</h1>
+       
+          <h1 className="mt-4 text-lg font-semibold">İstifadəçi kodunuz:</h1>
+            {referralLink && (
+              <div className="flex items-center space-x-4 mt-2">
+                <a
+                >
+                  {`${referralLink}`}
+                </a>
+                <button
+                  type="button"
+                  onClick={copyReferralLinke}
+                  className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Kopyala
+                </button>
+              </div>
+            )}
+          <h1 className="mt-4 text-lg font-semibold">Referans Linkiniz:</h1>
             {referralLink && (
               <div className="flex items-center space-x-4 mt-2">
                 <a
@@ -205,7 +206,7 @@ const Profile = () => {
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {`https://unity-women.vercel.app/register?referral=${referralLink}`}
+                  {`http://localhost:3000/register?referral=${referralLink}`}
                 </a>
                 <button
                   type="button"
@@ -252,7 +253,7 @@ const Profile = () => {
           )}
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Saq sol qol və qruplar</h2>
+          <h2 className="text-2xl font-semibold mb-4">Qruplar</h2>
           {referredUserss.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>

@@ -17,6 +17,8 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
+    const [finCode, setFinCode] = useState('');
+    const [card, setCard] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [photo, setPhoto] = useState(null);
     const [referralCode, setReferralCode] = useState("");
@@ -28,6 +30,31 @@ const Register = () => {
 
     const [register, { isLoading }] = useRegisterMutation();
     const { userInfo } = useSelector(state => state.auth);
+
+    const [referralRequired, setReferralRequired] = useState(false);
+
+    useEffect(() => {
+
+        if (userInfo) {
+            setReferralCode(referralCode);
+
+            // API'ye referral ile kaç kullanıcı kayıt olmuş kontrolü yap
+            fetch(`http://localhost:8000/api/users/admin/${referralCode}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.count >= 2) {
+                        setReferralRequired(true); // 2 kişi olmuşsa zorunlu yap
+                    } else {
+                        setReferralRequired(false); // değilse zorunlu değil
+                    }
+                })
+                .catch(err => {
+                    console.error("Referral kod kontrol hatası:", err);
+                });
+        }
+    }, [userInfo]);
+
+
 
     useEffect(() => {
         if (userInfo) {
@@ -43,7 +70,7 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-     
+
 
         if (password !== confirmPassword) {
             toast.error('Passwords do not match');
@@ -55,10 +82,12 @@ const Register = () => {
             formData.append('name', name);
             formData.append('faze', faze);
             formData.append('phone', phone);
+            formData.append('finCode', finCode);
+            formData.append('card', card);
             formData.append('email', email);
             formData.append('referralCode', referralCode);
             formData.append('password', password);
-            formData.append('gender', gender); 
+            formData.append('gender', gender);
             if (photo) {
                 formData.append('photo', photo);
             }
@@ -97,7 +126,7 @@ const Register = () => {
                 <form onSubmit={handleRegister} className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-md font-semibold text-gray-700">Ad</label>
+                            <label className="block text-md font-semibold text-gray-700">Ad Soyad</label>
                             <input
                                 type="text"
                                 name="name"
@@ -110,6 +139,34 @@ const Register = () => {
                             />
                         </div>
                         <div>
+                            <label className="block text-md font-semibold text-gray-700">Ata Adi</label>
+                            <input
+                                type="Ata adi"
+                                name="Ata adi"
+                                placeholder="Ata adi"
+                                value={faze}
+                                onChange={(e) => setFaze(e.target.value)}
+                                required
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-md font-semibold text-gray-700">Referral Kod</label>
+                            <input
+                                type="text"
+                                name="referralCode"
+                                placeholder="Referral kodunuzu daxil edin"
+                                value={referralCode}
+                                onChange={(e) => setReferralCode(e.target.value)}
+                                required={referralRequired}
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                            {referralRequired && (
+                                <p className="text-sm text-red-500 mt-1">Bu kod artıq 2 dəfə istifadə edilib, yeni qeydiyyat üçün kod daxil edilməlidir.</p>
+                            )}
+                        </div>
+
+                        <div>
                             <label className="block text-md font-semibold text-gray-700">Email</label>
                             <input
                                 type="text"
@@ -121,6 +178,20 @@ const Register = () => {
                                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
                             />
                         </div>
+                        <div>
+                            <label className="block text-md font-semibold text-gray-700">FinCode</label>
+                            <input
+                                type="text"
+                                name="finCode"
+                                placeholder="FinCode"
+                                value={finCode}
+                                onChange={(e) => setFinCode(e.target.value)}
+                                required
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                        </div>
+
+
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
@@ -150,31 +221,32 @@ const Register = () => {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-md font-semibold text-gray-700">Ata Adi</label>
+                            <label className="block text-md font-semibold text-gray-700">Card</label>
                             <input
-                                type="Ata adi"
-                                name="Ata adi"
-                                placeholder="Ata adi"
-                                value={faze}
-                                onChange={(e) => setFaze(e.target.value)}
+                                type="text"
+                                name="card"
+                                placeholder="Card"
+                                value={card}
+                                onChange={(e) => setCard(e.target.value)}
                                 required
                                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
                             />
+                            <p>(Mecbur deyil)</p>
                         </div>
                         <div>
-            <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
-            <PhoneInput
-                country={'az'} // Varsayılan ülke kodu
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
-                inputProps={{
-                    name: 'Telefon nömrəsi',
-                    required: true,
-                }}
-                containerClass="w-full mt-1"
-                inputClass="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
-            />
-        </div>
+                            <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
+                            <PhoneInput
+                                country={'az'} // Varsayılan ülke kodu
+                                value={phone}
+                                onChange={(phone) => setPhone(phone)}
+                                inputProps={{
+                                    name: 'Telefon nömrəsi',
+                                    required: true,
+                                }}
+                                containerClass="w-full mt-1"
+                                inputClass="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                        </div>
                     </div>
                     <div>
                         <label className="block text-md font-semibold text-gray-700">Cinsiyyət</label>
