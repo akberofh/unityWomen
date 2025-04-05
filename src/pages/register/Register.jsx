@@ -151,12 +151,11 @@ const Register = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-md font-semibold text-gray-700">Referral Kod</label>
+                            <label className="block text-md font-semibold text-gray-700">Lider</label>
                             <input
                                 type="text"
                                 name="referralCode"
-                                placeholder="Referral kodunuzu daxil edin"
-                                value={referralCode}
+                                placeholder="Liderin kodunu daxil edin"
                                 onChange={(e) => setReferralCode(e.target.value)}
                                 required={referralRequired}
                                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
@@ -164,6 +163,17 @@ const Register = () => {
                             {referralRequired && (
                                 <p className="text-sm text-red-500 mt-1">Bu kod artıq 2 dəfə istifadə edilib, yeni qeydiyyat üçün kod daxil edilməlidir.</p>
                             )}
+                        </div>
+                        
+                        <div>
+                            <label className="block text-md font-semibold text-gray-700">Link Sahibi</label>
+                            <input
+                                type="text"
+                                name="referralCode"
+                                value={referralCode}
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                          
                         </div>
 
                         <div>
