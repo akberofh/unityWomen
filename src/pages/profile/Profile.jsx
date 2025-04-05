@@ -12,10 +12,10 @@ const Profile = () => {
   const [card, setCard] = useState("");
   const [referralLink, setReferralLink] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [updateUser] = useUpdateUserMutation(); 
-   const [referredUsers, setReferredUsers] = useState([]); 
+  const [updateUser] = useUpdateUserMutation();
+  const [referredUsers, setReferredUsers] = useState([]);
 
-   const [referredUserss, setReferredUserss] = useState([]); 
+  const [referredUserss, setReferredUserss] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,20 +35,20 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Eğer "card" değeri yoksa hata mesajı göster
     if (!card) {
       toast.error("Kart bilgisi gereklidir!");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("card", card);
-  
+
     if (photo) {
       formData.append("photo", photo);
     }
-  
+
     try {
       const res = await updateUser(formData).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -58,8 +58,8 @@ const Profile = () => {
       toast.error(error?.data?.message || error.message || "Bir hata oluştu.");
     }
   };
-  
-  
+
+
 
   // Fetch user information and referral data
   useEffect(() => {
@@ -71,14 +71,14 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-      .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
-      .then((res) => {
-        setReferredUsers(res?.data?.users || []);
-      })
-      .catch((error) => {
-        console.error("Referred users fetch error:", error);
-      });
-    
+        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUsers(res?.data?.users || []);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
+
     }
   }, [userInfo]);
 
@@ -91,14 +91,14 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-      .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
-      .then((res) => {
-        setReferredUserss(res?.data?.users || []);
-      })
-      .catch((error) => {
-        console.error("Referred users fetch error:", error);
-      });
-    
+        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUserss(res?.data?.users || []);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
+
     }
   }, [userInfo]);
 
@@ -130,7 +130,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={() => navigate("/")}
@@ -147,7 +147,7 @@ const Profile = () => {
       </div>
 
       <div className="space-y-6">
-      <div className="text-center">
+        <div className="text-center">
           <h1 className="text-3xl font-bold">Profil</h1>
           {photo && (
             <img
@@ -182,43 +182,43 @@ const Profile = () => {
               className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-       
+
           <h1 className="mt-4 text-lg font-semibold">İstifadəçi kodunuz:</h1>
-            {referralLink && (
-              <div className="flex items-center space-x-4 mt-2">
-                <a
-                >
-                  {`${referralLink}`}
-                </a>
-                <button
-                  type="button"
-                  onClick={copyReferralLinke}
-                  className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  Kopyala
-                </button>
-              </div>
-            )}
+          {referralLink && (
+            <div className="flex items-center space-x-4 mt-2">
+              <a
+              >
+                {`${referralLink}`}
+              </a>
+              <button
+                type="button"
+                onClick={copyReferralLinke}
+                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Kopyala
+              </button>
+            </div>
+          )}
           <h1 className="mt-4 text-lg font-semibold">Referans Linkiniz:</h1>
-            {referralLink && (
-              <div className="flex items-center space-x-4 mt-2">
-                <a
-                  href={`/register?referral=${referralLink}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {`https://unity-women.vercel.app/register?referral=${referralLink}`}
-                </a>
-                <button
-                  type="button"
-                  onClick={copyReferralLink}
-                  className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  Kopyala
-                </button>
-              </div>
-            )}
+          {referralLink && (
+            <div className="flex items-center space-x-4 mt-2">
+              <a
+                href={`/register?referral=${referralLink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                {`https://unity-women.vercel.app/register?referral=${referralLink}`}
+              </a>
+              <button
+                type="button"
+                onClick={copyReferralLink}
+                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Kopyala
+              </button>
+            </div>
+          )}
           <button
             type="submit"
             className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
@@ -228,13 +228,21 @@ const Profile = () => {
         </form>
 
         <div>
+          <button
+            onClick={() => navigate("/cedvel")}
+            className="text-blue-500 hover:text-white hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
+          >
+            Cədvələ Keçin➡
+          </button>
           <h2 className="text-2xl font-semibold mb-4">Saq Sol Qollar.</h2>
           {referredUsers.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="px-4 py-2 border-b">Ad</th>
+                  <th className="px-4 py-2 border-b">Kod</th>
                   <th className="px-4 py-2 border-b">Email</th>
+                  <th className="px-4 py-2 border-b">Ödəniş</th>
                   <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
                 </tr>
               </thead>
@@ -242,7 +250,16 @@ const Profile = () => {
                 {referredUsers.map((user) => (
                   <tr key={user._id} className="border-b">
                     <td className="px-4 py-2">{user.name}</td>
+                    <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`${user.payment ? "text-green-500" : "text-red-500"
+                          } text-5xl`}
+                      >
+                        {user.payment ? "+" : "-"}
+                      </span>
+                    </td>
                     <td className="px-4 py-2">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
@@ -254,14 +271,17 @@ const Profile = () => {
             <p className="text-gray-500">Qol yoxdur.</p>
           )}
         </div>
+
         <div>
           <h2 className="text-2xl font-semibold mb-4">Qruplar</h2>
           {referredUserss.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-4 py-2 border-b">Ad</th>
+                  <th className="px-4 py-2 border-b">Ad Soyad</th>
+                  <th className="px-4 py-2 border-b">Kod</th>
                   <th className="px-4 py-2 border-b">Email</th>
+                  <th className="px-4 py-2 border-b">Ödəniş</th>
                   <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
                 </tr>
               </thead>
@@ -269,7 +289,16 @@ const Profile = () => {
                 {referredUserss.map((user) => (
                   <tr key={user._id} className="border-b">
                     <td className="px-4 py-2">{user.name}</td>
+                    <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
+                    <td className="px-4 py-2 ">
+                      <span
+                        className={`${user.payment ? "text-green-500" : "text-red-500"
+                          } text-5xl`}
+                      >
+                        {user.payment ? "+" : "-"}
+                      </span>
+                    </td>
                     <td className="px-4 py-2">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
