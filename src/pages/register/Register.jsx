@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import axios from "axios";
 
 
 const Register = () => {
@@ -42,7 +43,7 @@ const Register = () => {
             console.log(`Referral Code: ${code}`);  // Burada referralCode konsola yazdırılıyor.
 
             axios
-                .get(`http://localhost:8000/api/users/admin/${code}`)
+                .get(`https://unity-women-backend.vercel.app/api/users/admin/${code}`)
                 .then((res) => {
                     console.log("API'den gelen veri:", res.data); // Veriyi doğru şekilde alıyoruz
                     const data = res.data;
