@@ -304,36 +304,41 @@ const Profile = () => {
 
           {/* Seçilmiş istifadəçi üçün əlavə məlumatlar */}
           {selectedUser && (
-            <div className="mt-6 p-4 border rounded-lg bg-blue-50 relative">
-              <button
-                onClick={() => setSelectedUser(null)}
-                className="absolute top-2 right-2 text-xl text-red-500"
-              >
-                ❌
-              </button>
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl relative">
+      <button
+        onClick={() => setSelectedUser(null)}
+        className="absolute top-2 right-2 text-2xl text-red-500 hover:text-red-700"
+      >
+        ❌
+      </button>
 
-              {ownerInfo && (
-                <>
-                  <h4 className="text-lg mt-4 font-medium">👑 Dəvət edən Şəxs:</h4>
-                  <p><strong>Ad:</strong> {ownerInfo.name}</p>
-                  <p><strong>Email:</strong> {ownerInfo.email}</p>
-                </>
-              )}
+      <h3 className="text-xl font-semibold text-center mb-4">İstifadəçi Məlumatları</h3>
 
-              {referralChain.length > 0 && (
-                <>
-                  <h4 className="text-lg mt-4 font-medium">🔗 Referral Zənciri:</h4>
-                  <ul className="list-disc ml-6">
-                    {referralChain.map((person, index) => (
-                      <li key={index}>
-                        {person.name} ({person.email})
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          )}
+      {ownerInfo && (
+        <div className="mb-4">
+          <h4 className="text-lg font-medium">👑 Dəvət edən Şəxs:</h4>
+          <p><strong>Ad:</strong> {ownerInfo.name}</p>
+          <p><strong>Email:</strong> {ownerInfo.email}</p>
+        </div>
+      )}
+
+      {referralChain.length > 0 && (
+        <div>
+          <h4 className="text-lg font-medium">🔗 Referral Zənciri:</h4>
+          <ul className="list-disc ml-5 text-sm text-gray-700 mt-2">
+            {referralChain.map((person, index) => (
+              <li key={index}>
+                {person.name} ({person.email})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
         </div>
 
         <div>
