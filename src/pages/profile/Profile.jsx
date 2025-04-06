@@ -7,6 +7,29 @@ import { useLogoutMutation, useUpdateUserMutation } from "../../redux/slices/use
 import axios from "axios";
 
 const Profile = () => {
+
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [ownerInfo, setOwnerInfo] = useState(null);
+  const [referralChain, setReferralChain] = useState([]);
+
+  const handleUserClick = async (user) => {
+    setSelectedUser(user);
+    setOwnerInfo(null);
+    setReferralChain([]);
+
+    try {
+      // referredBy üçün owner məlumatını al
+      const ownerRes = await axios.get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`);
+      setOwnerInfo(ownerRes.data.owner);
+
+      // referralChain məlumatını al
+      const chainRes = await axios.get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`);
+      setReferralChain(chainRes.data.users);
+    } catch (error) {
+      console.error("Məlumatlar alınarkən xəta baş verdi:", error);
+    }
+  };
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [card, setCard] = useState("");
@@ -234,8 +257,10 @@ const Profile = () => {
           >
             Cədvələ Keçin➡
           </button>
-          <h2 className="text-2xl font-semibold mb-4">Saq Sol Qollar.</h2>
-          {referredUsers.length > 0 ? (
+
+          <h2 className="text-2xl font-semibold mb-4">Sağ-Sol Qollar</h2>
+
+          {(referredUsers?.length || 0) > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
                 <tr className="bg-gray-100">
@@ -243,19 +268,25 @@ const Profile = () => {
                   <th className="px-4 py-2 border-b">Kod</th>
                   <th className="px-4 py-2 border-b">Email</th>
                   <th className="px-4 py-2 border-b">Ödəniş</th>
-                  <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                  <th className="px-4 py-2 border-b">Kayıt Tarixi</th>
                 </tr>
               </thead>
               <tbody>
-                {referredUsers.map((user) => (
-                  <tr key={user._id} className="border-b">
-                    <td className="px-4 py-2">{user.name}</td>
+                {(referredUsers || []).map((user) => (
+                  <tr key={user._id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-2">
+                      <button
+                        onClick={() => handleUserClick(user)}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {user.name}
+                      </button>
+                    </td>
                     <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
                     <td className="px-4 py-2">
                       <span
-                        className={`${user.payment ? "text-green-500" : "text-red-500"
-                          } text-5xl`}
+                        className={`text-3xl ${user.payment ? "text-green-500" : "text-red-500"}`}
                       >
                         {user.payment ? "+" : "-"}
                       </span>
@@ -269,6 +300,39 @@ const Profile = () => {
             </table>
           ) : (
             <p className="text-gray-500">Qol yoxdur.</p>
+          )}
+
+          {/* Seçilmiş istifadəçi üçün əlavə məlumatlar */}
+          {selectedUser && (
+            <div className="mt-6 p-4 border rounded-lg bg-blue-50 relative">
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="absolute top-2 right-2 text-xl text-red-500"
+              >
+                ❌
+              </button>
+
+              {ownerInfo && (
+                <>
+                  <h4 className="text-lg mt-4 font-medium">👑 Dəvət edən Şəxs:</h4>
+                  <p><strong>Ad:</strong> {ownerInfo.name}</p>
+                  <p><strong>Email:</strong> {ownerInfo.email}</p>
+                </>
+              )}
+
+              {referralChain.length > 0 && (
+                <>
+                  <h4 className="text-lg mt-4 font-medium">🔗 Referral Zənciri:</h4>
+                  <ul className="list-disc ml-6">
+                    {referralChain.map((person, index) => (
+                      <li key={index}>
+                        {person.name} ({person.email})
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
           )}
         </div>
 
@@ -288,7 +352,12 @@ const Profile = () => {
               <tbody>
                 {referredUserss.map((user) => (
                   <tr key={user._id} className="border-b">
-                    <td className="px-4 py-2">{user.name}</td>
+                    <td className="px-4 py-2">  <button
+                        onClick={() => handleUserClick(user)}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {user.name}
+                      </button></td>
                     <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
                     <td className="px-4 py-2 ">

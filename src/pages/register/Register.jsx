@@ -251,19 +251,18 @@ const Register = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-md font-semibold text-gray-700">Card</label>
-                        <input
-                            type="text"
-                            name="card"
-                            placeholder="Card"
-                            value={card}
-                            onChange={(e) => setCard(e.target.value)}
-                            required
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
-                        />
-                        <p>(Mecbur deyil)</p>
-                    </div>
+                <div>
+                            <label className="block text-md font-semibold text-gray-700">Card</label>
+                            <input
+                                type="text"
+                                name="card"
+                                placeholder="Card"
+                                value={card}
+                                onChange={(e) => setCard(e.target.value)}
+                                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-md"
+                            />
+                            <p>(Məcbur deyil)</p>
+                        </div>
                     <div>
                         <label className="block text-md font-semibold text-gray-700">Telefon Nömrəsi</label>
                         <PhoneInput
