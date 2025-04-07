@@ -18,8 +18,8 @@ const ReferralTree = () => {
                     ]);
 
                     const combinedUsers = [
-                        ...adminRes?.data?.users || [],
-                        ...userRes?.data?.users || []
+                        ...(adminRes?.data?.users || []),
+                        ...(userRes?.data?.users || [])
                     ];
 
                     setAllReferredUsers(combinedUsers);
@@ -32,8 +32,14 @@ const ReferralTree = () => {
         }
     }, [userInfo]);
 
-    const renderUser = (user, level = 0) => {
-        const childUsers = allReferredUsers.filter((u) => u.referredBy === user.referralCode).slice(0, 2);
+    const renderUser = (user, level = 0, renderedUsers = new Set()) => {
+        // Aynı kullanıcıyı tekrar gösterme
+        if (renderedUsers.has(user._id)) return null;
+        renderedUsers.add(user._id);
+
+        const childUsers = allReferredUsers
+            .filter((u) => u.referredBy === user.referralCode)
+            .slice(0, 2);
 
         const getColor = (level) => {
             if (level === 0) return 'bg-blue-100';
@@ -43,32 +49,26 @@ const ReferralTree = () => {
 
         return (
             <div key={user._id} className="flex flex-col items-center relative">
-
-                {/* Kullanıcı kutusu */}
                 <div className={`${getColor(level)} p-4 w-52 rounded-xl shadow text-center border`}>
                     <p className="font-semibold">{user.name}</p>
                     <p className="text-sm text-gray-600">{user.faze}</p>
                     <p className="text-xs text-gray-500">Kod: {user.referralCode}</p>
                 </div>
 
-                {/* Dikey çizgi */}
                 {childUsers.length > 0 && (
                     <div className="w-0.5 h-6 bg-gray-400"></div>
                 )}
 
-                {/* Çocuk kullanıcılar ve çizgiler */}
                 {childUsers.length > 0 && (
                     <div className="flex justify-center items-start relative mt-2">
-
-                        {/* Yatay çizgi */}
                         {childUsers.length === 2 && (
                             <div className="absolute top-3 left-1/2 w-full h-0.5 bg-gray-400 transform -translate-x-1/2 z-0"></div>
                         )}
 
-                        {childUsers.map((childUser, index) => (
+                        {childUsers.map((childUser) => (
                             <div key={childUser._id} className="flex flex-col items-center px-6 z-10">
                                 <div className="w-0.5 h-6 bg-gray-400"></div>
-                                {renderUser(childUser, level + 1)}
+                                {renderUser(childUser, level + 1, renderedUsers)}
                             </div>
                         ))}
                     </div>
@@ -90,7 +90,7 @@ const ReferralTree = () => {
             </div>
 
             <div className="flex flex-col items-center space-y-6">
-                {renderUser(userInfo, 0)}
+                {userInfo && renderUser(userInfo, 0, new Set())}
             </div>
         </div>
     );
