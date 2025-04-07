@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from './Login.module.css';
 import { useLoginMutation } from "../../redux/slices/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
-import 'react-toastify/ReactToastify.css'
-import { IoEyeOutline } from "react-icons/io5";
-import { IoEyeOffOutline } from "react-icons/io5";
-
-
+import 'react-toastify/ReactToastify.css';
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [referralCode, setReferralCode] = useState();
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const navigation = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.auth);
+  const [login, { isLoading }] = useLoginMutation();
 
   useEffect(() => {
     if (userInfo) {
       navigation('/dashboard');
     }
   }, [navigation, userInfo]);
-
-  const dispatch = useDispatch();
-
-  const [login, { isLoading }] = useLoginMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,71 +31,57 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigation('/dashboard');
     } catch (error) {
-      toast.error('Sehv email ya sifre')
+      toast.error('Şifrə və ya email səhvdir');
     }
-  }
+  };
 
   return (
-    <section className={styles.container}>
-      <div className={styles.auth}>
-        <h1>Giriş</h1>
-        <form onSubmit={handleLogin}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-200 px-4">
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Giriş</h1>
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="text"
-            name="email"
-            placeholder="Email or Referral Code"
-            value={email || referralCode} // Hangisi doluysa onu gösterir
+            placeholder="Email və ya Referral Code"
+            value={email || referralCode}
             onChange={(e) => {
               const value = e.target.value;
-              setEmail(value); // Email değerini güncelle
-              setReferralCode(value); // ReferralCode değerini güncelle
+              setEmail(value);
+              setReferralCode(value);
             }}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <div className="password-container" style={{ position: 'relative' }}>
+          <div className="relative">
             <input
               type={isPasswordVisible ? "text" : "password"}
-              name="password"
               placeholder="Şifrə"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.5rem 1rem',
-                border: '1px solid #ccc',
-                borderRadius: '0.375rem',
-                outline: 'none',
-                fontSize: '1rem',
-              }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <span
-              className="password-icon"
-              onClick={() => setIsPasswordVisible((prev) => !prev)}
-              style={{
-                position: 'absolute',
-                top: '60%',
-                right: '0.75rem',
-                transform: 'translateY(-50%)',
-                cursor: 'pointer',
-                color: '#6b6b6b',
-                fontSize: '16px'
-              }}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 text-lg"
+              onClick={() => setIsPasswordVisible(prev => !prev)}
             >
               {isPasswordVisible ? <IoEyeOutline /> : <IoEyeOffOutline />}
             </span>
           </div>
-          <button style={{ backgroundColor: "transparent", color: "grey", fontWeight: "600", padding: "0" }} onClick={() => navigation('/request-password-reset')}>
-            Şifrəni Unutdum
-          </button>
-          {loginError && <div className={styles.error}>{loginError}</div>}
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Giriş edilir...' : 'Giriş'}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition disabled:opacity-50"
+          >
+            {isLoading ? "Giriş edilir..." : "Giriş"}
           </button>
         </form>
-        <p className={styles.loginmessage} onClick={() => navigation('/register')}>
-          <span>Qeydiyyat</span>
+        <p
+          className="text-center text-sm text-gray-600 mt-4 cursor-pointer hover:text-blue-600"
+          onClick={() => navigation('/register')}
+        >
+          Qeydiyyat
         </p>
       </div>
-    </section>
+    </div>
   );
 };
 
