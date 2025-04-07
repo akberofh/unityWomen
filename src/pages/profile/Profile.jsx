@@ -7,29 +7,6 @@ import { useLogoutMutation, useUpdateUserMutation } from "../../redux/slices/use
 import axios from "axios";
 
 const Profile = () => {
-
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [ownerInfo, setOwnerInfo] = useState(null);
-  const [referralChain, setReferralChain] = useState([]);
-
-  const handleUserClick = async (user) => {
-    setSelectedUser(user);
-    setOwnerInfo(null);
-    setReferralChain([]);
-
-    try {
-      // referredBy üçün owner məlumatını al
-      const ownerRes = await axios.get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`);
-      setOwnerInfo(ownerRes.data.owner);
-
-      // referralChain məlumatını al
-      const chainRes = await axios.get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`);
-      setReferralChain(chainRes.data.users);
-    } catch (error) {
-      console.error("Məlumatlar alınarkən xəta baş verdi:", error);
-    }
-  };
-
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [card, setCard] = useState("");
@@ -37,6 +14,8 @@ const Profile = () => {
   const [photo, setPhoto] = useState(null);
   const [updateUser] = useUpdateUserMutation();
   const [referredUsers, setReferredUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
 
   const [referredUserss, setReferredUserss] = useState([]);
 
@@ -105,11 +84,13 @@ const Profile = () => {
     }
   }, [userInfo]);
 
-  useEffect(() => {
+
+  useEffect((user) => {
     if (userInfo) {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPhoto(userInfo.photo);
+      setSelectedUser(user)
       setReferralLink(userInfo.referralCode); // referralCode from user info
 
       // Fetch referred users using referralCode
@@ -152,6 +133,22 @@ const Profile = () => {
     setPhoto(e.target.files[0]);
   };
 
+
+  const [referrerInfo, setReferrerInfo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleNameClick = async (referralCode) => {
+    try {
+      const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${referralCode}`);
+      setReferrerInfo(res.data);
+      setShowModal(true);
+    } catch (error) {
+      setReferrerInfo({ error: "Asıl davetçi tapılmadı" });
+      setShowModal(true);
+    }
+  };
+
+
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -172,23 +169,29 @@ const Profile = () => {
       <div className="space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Profil</h1>
-          {photo && (
+
+          {/* Eğer photo string olarak geldiyse ve base64 formatına dönüştürülmesi gerekiyorsa */}
+          {photo && typeof photo === 'string' && !photo.startsWith("https://") && (
             <img
-              src={`data:image/jpeg;base64,${photo}`}
+              src={`data:image/jpeg;base64,${photo}`} // String'e base64 prefix'i ekliyoruz
               alt="Profile"
               className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
             />
           )}
-          {photo && (
+
+          {/* Eğer photo https formatında ise göster */}
+          {photo && typeof photo === 'string' && photo.startsWith("https://") && (
             <img
-              src={photo}
+              src={photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
               alt="Profile"
               className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
             />
           )}
+
           <div className="mt-4">
             <input
               type="file"
+              accept="image/*"
               onChange={handlePhotoChange}
               className="border-2 border-gray-300 p-2 rounded-lg"
             />
@@ -258,9 +261,9 @@ const Profile = () => {
             Cədvələ Keçin➡
           </button>
 
-          <h2 className="text-2xl font-semibold mb-4">Sağ-Sol Qollar</h2>
+          <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
 
-          {(referredUsers?.length || 0) > 0 ? (
+          {referredUsers.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
                 <tr className="bg-gray-100">
@@ -268,25 +271,23 @@ const Profile = () => {
                   <th className="px-4 py-2 border-b">Kod</th>
                   <th className="px-4 py-2 border-b">Email</th>
                   <th className="px-4 py-2 border-b">Ödəniş</th>
-                  <th className="px-4 py-2 border-b">Kayıt Tarixi</th>
+                  <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
                 </tr>
               </thead>
               <tbody>
-                {(referredUsers || []).map((user) => (
-                  <tr key={user._id} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => handleUserClick(user)}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {user.name}
-                      </button>
+                {referredUsers.map((user) => (
+                  <tr key={user._id} className="border-b">
+                    <td
+                      onClick={() => handleNameClick(user.referralCode)}
+                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+                    >
+                      {user.name}
                     </td>
                     <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
                     <td className="px-4 py-2">
                       <span
-                        className={`text-3xl ${user.payment ? "text-green-500" : "text-red-500"}`}
+                        className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
                       >
                         {user.payment ? "+" : "-"}
                       </span>
@@ -302,43 +303,54 @@ const Profile = () => {
             <p className="text-gray-500">Qol yoxdur.</p>
           )}
 
-          {/* Seçilmiş istifadəçi üçün əlavə məlumatlar */}
-          {selectedUser && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl relative">
-      <button
-        onClick={() => setSelectedUser(null)}
-        className="absolute top-2 right-2 text-2xl text-red-500 hover:text-red-700"
-      >
-        ❌
-      </button>
+          {/* Modal */}
+          {showModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-xl shadow-xl relative w-[90%] max-w-md">
+                <button
+                  className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl"
+                  onClick={() => setShowModal(false)}
+                >
+                  ❌
+                </button>
 
-      <h3 className="text-xl font-semibold text-center mb-4">İstifadəçi Məlumatları</h3>
 
-      {ownerInfo && (
-        <div className="mb-4">
-          <h4 className="text-lg font-medium">👑 Dəvət edən Şəxs:</h4>
-          <p><strong>Ad:</strong> {ownerInfo.name}</p>
-          <p><strong>Email:</strong> {ownerInfo.email}</p>
-        </div>
-      )}
 
-      {referralChain.length > 0 && (
-        <div>
-          <h4 className="text-lg font-medium">🔗 Referral Zənciri:</h4>
-          <ul className="list-disc ml-5 text-sm text-gray-700 mt-2">
-            {referralChain.map((person, index) => (
-              <li key={index}>
-                {person.name} ({person.email})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  </div>
-)}
+                <h4 className="text-xl font-semibold text-center mb-2">✨ Dəvət edən Şəxs:</h4>
 
+                {referrerInfo?.error ? (
+                  <p className="text-red-500">{referrerInfo.error}</p>
+                ) : (
+                  <>
+                    <p><strong>Ad:</strong> {referrerInfo.referrerName}</p>
+                    <p><strong>Email:</strong> {referrerInfo.referrerEmail}</p>
+                    {referrerInfo.referrerPhoto && (
+                      <>
+                        {/* Eğer referrerPhoto base64 formatında ise */}
+                        {typeof referrerInfo.referrerPhoto === 'string' && !referrerInfo.referrerPhoto.startsWith("https://") && (
+                          <img
+                            src={`data:image/jpeg;base64,${referrerInfo.referrerPhoto}`} // String'e base64 prefix'i ekliyoruz
+                            alt="Referrer"
+                            className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+                          />
+                        )}
+
+                        {/* Eğer referrerPhoto URL formatında ise */}
+                        {typeof referrerInfo.referrerPhoto === 'string' && referrerInfo.referrerPhoto.startsWith("https://") && (
+                          <img
+                            src={referrerInfo.referrerPhoto} // URL'den gelen fotoğrafı direkt gösteriyoruz
+                            alt="Referrer"
+                            className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+                          />
+                        )}
+                      </>
+                    )}
+
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
@@ -357,12 +369,8 @@ const Profile = () => {
               <tbody>
                 {referredUserss.map((user) => (
                   <tr key={user._id} className="border-b">
-                    <td className="px-4 py-2">  <button
-                        onClick={() => handleUserClick(user)}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {user.name}
-                      </button></td>
+                    <td onClick={() => handleNameClick(user.referralCode)}
+                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{user.name}</td>
                     <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
                     <td className="px-4 py-2 ">

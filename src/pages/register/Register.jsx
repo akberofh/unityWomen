@@ -72,7 +72,6 @@ const Register = () => {
 
 
 
-
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -96,6 +95,16 @@ const Register = () => {
             formData.append('gender', gender);
             if (photo) {
                 formData.append('photo', photo);
+
+
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const referralLinkOwner = params.get("referral");
+
+            
+            if (referralLinkOwner) {
+                formData.append('referralLinkOwner', referralLinkOwner);
             }
 
             const res = await register(formData).unwrap();
