@@ -1,5 +1,3 @@
-// ReferralTree.jsx
-
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -49,9 +47,9 @@ const ReferralTree = () => {
         if (!user || visited.has(user._id)) return null;
         visited.add(user._id);
 
-        const childUsers = allReferredUsers.filter(
-            (u) => u.referredBy === user.referralCode
-        ).slice(0, 2);
+        const childUsers = allReferredUsers
+            .filter((u) => u.referredBy === user.referralCode)
+            .slice(0, 2);
 
         const getColor = (level) => {
             if (level === 0) return 'bg-blue-100';
@@ -104,7 +102,11 @@ const ReferralTree = () => {
 
             <div
                 ref={containerRef}
-                className="overflow-x-auto w-full min-h-screen hide-scrollbar"
+                className="overflow-x-auto overflow-y-auto w-full min-h-screen"
+                style={{
+                    touchAction: "pinch-zoom", // Sadece pinch-zoom izni veriliyor
+                    WebkitOverflowScrolling: "touch", // iOS için düzgün scroll
+                }}
             >
                 <div
                     ref={treeRef}

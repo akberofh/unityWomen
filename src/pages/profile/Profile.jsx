@@ -135,15 +135,27 @@ const Profile = () => {
 
 
   const [referrerInfo, setReferrerInfo] = useState(null);
+  const [referrerInfoo, setReferrerInfoo] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleNameClick = async (referralCode) => {
     try {
-      const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${referralCode}`);
-      setReferrerInfo(res.data);
+      // İki API çağrısını paralel olarak başlatıyoruz
+      const [res1, res2] = await Promise.all([
+        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${referralCode}`),
+        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${referralCode}`)
+      ]);
+
+      // Yanıtları set ediyoruz
+      setReferrerInfo(res1.data);
+      setReferrerInfoo(res2.data);
+
+      // Modal'ı gösteriyoruz
       setShowModal(true);
     } catch (error) {
+      // Hata durumunda kullanıcıyı bilgilendiriyoruz
       setReferrerInfo({ error: "Asıl davetçi tapılmadı" });
+      setReferrerInfoo({ error: "Asıl davetçi tapılmadı" });
       setShowModal(true);
     }
   };
@@ -306,7 +318,7 @@ const Profile = () => {
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-xl shadow-xl relative w-[90%] max-w-md">
+              <div className="bg-white p-8 rounded-xl shadow-xl relative w-[90%] max-w-lg">
                 <button
                   className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl"
                   onClick={() => setShowModal(false)}
@@ -314,43 +326,73 @@ const Profile = () => {
                   ❌
                 </button>
 
+                <div className="mb-6">
+                  <h4 className="text-2xl font-semibold text-center text-indigo-600 mb-4">✨ Dəvət edən Şəxs:</h4>
 
+                  {referrerInfo?.error ? (
+                    <p className="text-red-500 text-center">{referrerInfo.error}</p>
+                  ) : (
+                    <div className="text-center">
+                      <p><strong className="text-lg">Ad:</strong> {referrerInfo.referrerName}</p>
+                      <p><strong className="text-lg">Email:</strong> {referrerInfo.referrerEmail}</p>
+                      {referrerInfo.referrerPhoto && (
+                        <div className="mt-4">
+                          {/* Fotoğraf Base64 veya URL kontrolü ile */}
+                          {typeof referrerInfo.referrerPhoto === 'string' && !referrerInfo.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={`data:image/jpeg;base64,${referrerInfo.referrerPhoto}`}
+                              alt="Referrer"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                          {typeof referrerInfo.referrerPhoto === 'string' && referrerInfo.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={referrerInfo.referrerPhoto}
+                              alt="Referrer"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-                <h4 className="text-xl font-semibold text-center mb-2">✨ Dəvət edən Şəxs:</h4>
+                <div>
+                  <h4 className="text-2xl font-semibold text-center text-indigo-600 mb-4">✨ Lider:</h4>
 
-                {referrerInfo?.error ? (
-                  <p className="text-red-500">{referrerInfo.error}</p>
-                ) : (
-                  <>
-                    <p><strong>Ad:</strong> {referrerInfo.referrerName}</p>
-                    <p><strong>Email:</strong> {referrerInfo.referrerEmail}</p>
-                    {referrerInfo.referrerPhoto && (
-                      <>
-                        {/* Eğer referrerPhoto base64 formatında ise */}
-                        {typeof referrerInfo.referrerPhoto === 'string' && !referrerInfo.referrerPhoto.startsWith("https://") && (
-                          <img
-                            src={`data:image/jpeg;base64,${referrerInfo.referrerPhoto}`} // String'e base64 prefix'i ekliyoruz
-                            alt="Referrer"
-                            className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-                          />
-                        )}
-
-                        {/* Eğer referrerPhoto URL formatında ise */}
-                        {typeof referrerInfo.referrerPhoto === 'string' && referrerInfo.referrerPhoto.startsWith("https://") && (
-                          <img
-                            src={referrerInfo.referrerPhoto} // URL'den gelen fotoğrafı direkt gösteriyoruz
-                            alt="Referrer"
-                            className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-                          />
-                        )}
-                      </>
-                    )}
-
-                  </>
-                )}
+                  {referrerInfoo?.error ? (
+                    <p className="text-red-500 text-center">{referrerInfoo.error}</p>
+                  ) : (
+                    <div className="text-center">
+                      <p><strong className="text-lg">Ad:</strong> {referrerInfoo.referrerName}</p>
+                      <p><strong className="text-lg">Email:</strong> {referrerInfoo.referrerEmail}</p>
+                      {referrerInfoo.referrerPhoto && (
+                        <div className="mt-4">
+                          {/* Fotoğraf Base64 veya URL kontrolü ile */}
+                          {typeof referrerInfoo.referrerPhoto === 'string' && !referrerInfoo.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={`data:image/jpeg;base64,${referrerInfoo.referrerPhoto}`}
+                              alt="Lider"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                          {typeof referrerInfoo.referrerPhoto === 'string' && referrerInfoo.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={referrerInfoo.referrerPhoto}
+                              alt="Lider"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
+
         </div>
 
         <div>
