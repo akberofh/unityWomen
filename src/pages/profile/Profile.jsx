@@ -85,26 +85,27 @@ const Profile = () => {
   }, [userInfo]);
 
 
-  useEffect((user) => {
-    if (userInfo) {
-      setName(userInfo.name);
-      setEmail(userInfo.email);
-      setPhoto(userInfo.photo);
-      setSelectedUser(user)
-      setReferralLink(userInfo.referralCode); // referralCode from user info
+  const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
 
+  useEffect(() => {
+    if (userInfo) {
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .get(`http://localhost:8000/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res?.data?.users || []);
         })
         .catch((error) => {
           console.error("Referred users fetch error:", error);
         });
-
     }
   }, [userInfo]);
+
+  // Arama fonksiyonu
+  const filteredUsers = referredUserss.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.referralCode.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 
   const copyReferralLink = () => {
@@ -397,7 +398,17 @@ const Profile = () => {
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Qruplar</h2>
-          {referredUserss.length > 0 ? (
+
+          {/* Arama kutusu */}
+          <input
+            type="text"
+            placeholder="Ad və ya Referral Kodu ilə ara"
+            className="p-2 border border-gray-300 rounded mb-4"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
+          />
+
+          {filteredUsers.length > 0 ? (
             <table className="min-w-full border-collapse text-left">
               <thead>
                 <tr className="bg-gray-100">
@@ -409,13 +420,17 @@ const Profile = () => {
                 </tr>
               </thead>
               <tbody>
-                {referredUserss.map((user) => (
+                {filteredUsers.map((user) => (
                   <tr key={user._id} className="border-b">
-                    <td onClick={() => handleNameClick(user.referralCode)}
-                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{user.name}</td>
+                    <td
+                      onClick={() => handleNameClick(user.referralCode)}
+                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+                    >
+                      {user.name}
+                    </td>
                     <td className="px-4 py-2">{user.referralCode}</td>
                     <td className="px-4 py-2">{user.email}</td>
-                    <td className="px-4 py-2 ">
+                    <td className="px-4 py-2">
                       <span
                         className={`${user.payment ? "text-green-500" : "text-red-500"
                           } text-5xl`}
