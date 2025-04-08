@@ -320,44 +320,48 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
 
           {referredUsers.length > 0 ? (
-            <table className="min-w-full border-collapse text-left">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 border-b">Ad</th>
-                  <th className="px-4 py-2 border-b">Kod</th>
-                  <th className="px-4 py-2 border-b">Email</th>
-                  <th className="px-4 py-2 border-b">Ödəniş</th>
-                  <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {referredUsers.map((user) => (
-                  <tr key={user._id} className="border-b">
-                    <td
-                      onClick={() => handleNameClick(user.referralCode)}
-                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
-                    >
-                      {user.name}
-                    </td>
-                    <td className="px-4 py-2">{user.referralCode}</td>
-                    <td className="px-4 py-2">{user.email}</td>
-                    <td className="px-4 py-2">
-                      <span
-                        className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
-                      >
-                        {user.payment ? "+" : "-"}
-                      </span>
-                    </td>
-                    <td className="px-4 py-2">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-gray-500">Qol yoxdur.</p>
-          )}
+  <div className="overflow-x-auto max-w-full">
+    <table className="min-w-[600px] border-collapse text-left w-full">
+      <thead>
+        <tr className="bg-gray-100">
+          <th className="px-4 py-2 border-b">#</th>
+          <th className="px-4 py-2 border-b">Ad</th>
+          <th className="px-4 py-2 border-b">Kod</th>
+          <th className="px-4 py-2 border-b">Email</th>
+          <th className="px-4 py-2 border-b">Ödəniş</th>
+          <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {referredUsers.map((user, index) => (
+          <tr key={user._id} className="border-b">
+            <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
+            <td
+              onClick={() => handleNameClick(user.referralCode)}
+              className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+            >
+              {user.name}
+            </td>
+            <td className="px-4 py-2">{user.referralCode}</td>
+            <td className="px-4 py-2">{user.email}</td>
+            <td className="px-4 py-2">
+              <span
+                className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
+              >
+                {user.payment ? "+" : "-"}
+              </span>
+            </td>
+            <td className="px-4 py-2">
+              {new Date(user.createdAt).toLocaleDateString()}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p className="text-gray-500">Qol yoxdur.</p>
+)}
 
           {/* Modal */}
           {showModal && (
@@ -451,46 +455,50 @@ const Profile = () => {
             onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
           />
 
-          {filteredUsers.length > 0 ? (
-            <table className="min-w-full border-collapse text-left">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 border-b">Ad Soyad</th>
-                  <th className="px-4 py-2 border-b">Kod</th>
-                  <th className="px-4 py-2 border-b">Email</th>
-                  <th className="px-4 py-2 border-b">Ödəniş</th>
-                  <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user) => (
-                  <tr key={user._id} className="border-b">
-                    <td
-                      onClick={() => handleNameClick(user.referralCode)}
-                      className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
-                    >
-                      {user.name}
-                    </td>
-                    <td className="px-4 py-2">{user.referralCode}</td>
-                    <td className="px-4 py-2">{user.email}</td>
-                    <td className="px-4 py-2">
-                      <span
-                        className={`${user.payment ? "text-green-500" : "text-red-500"
-                          } text-5xl`}
-                      >
-                        {user.payment ? "+" : "-"}
-                      </span>
-                    </td>
-                    <td className="px-4 py-2">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-gray-500">Qrup yoxdur.</p>
-          )}
+{filteredUsers.length > 0 ? (
+  <div className="overflow-x-auto max-w-full">
+    <table className="min-w-[600px] border-collapse text-left w-full">
+      <thead>
+        <tr className="bg-gray-100">
+          <th className="px-4 py-2 border-b">#</th> {/* Yeni sütun */}
+          <th className="px-4 py-2 border-b">Ad Soyad</th>
+          <th className="px-4 py-2 border-b">Kod</th>
+          <th className="px-4 py-2 border-b">Email</th>
+          <th className="px-4 py-2 border-b">Ödəniş</th>
+          <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredUsers.map((user, index) => (
+          <tr key={user._id} className="border-b">
+            <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td> {/* Sıra nömrəsi */}
+            <td
+              onClick={() => handleNameClick(user.referralCode)}
+              className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+            >
+              {user.name}
+            </td>
+            <td className="px-4 py-2">{user.referralCode}</td>
+            <td className="px-4 py-2">{user.email}</td>
+            <td className="px-4 py-2">
+              <span
+                className={`${user.payment ? "text-green-500" : "text-red-500"} text-5xl`}
+              >
+                {user.payment ? "+" : "-"}
+              </span>
+            </td>
+            <td className="px-4 py-2">
+              {new Date(user.createdAt).toLocaleDateString()}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p className="text-gray-500">Qrup yoxdur.</p>
+)}
+
         </div>
       </div>
     </div>
