@@ -64,33 +64,13 @@ const Profile = () => {
   };
 
 
-
-  // Fetch user information and referral data
   useEffect(() => {
     if (userInfo) {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPhoto(userInfo.photo);
       setReferralLink(userInfo.referralCode); // referralCode from user info
-
-      // Fetch referred users using referralCode
-      axios
-        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
-        .then((res) => {
-          setReferredUsers(res?.data?.users || []);
-        })
-        .catch((error) => {
-          console.error("Referred users fetch error:", error);
-        });
-
-    }
-  }, [userInfo]);
-
-
-  const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
-
-  useEffect(() => {
-    if (userInfo) {
+  
       // Fetch referred users using referralCode
       axios
         .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
@@ -100,8 +80,22 @@ const Profile = () => {
         .catch((error) => {
           console.error("Referred users fetch error:", error);
         });
+  
+      // Fetch referred users using referralCode for admin
+      axios
+        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUsers(res?.data?.users || []);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
     }
   }, [userInfo]);
+
+  const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
+
+
 
   // Arama fonksiyonu
   const filteredUsers = referredUserss.filter((user) =>
