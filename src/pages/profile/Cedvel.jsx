@@ -1,15 +1,12 @@
-// ReferralTree.jsx
-
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const ReferralTree = () => {
     const { userInfo } = useSelector((state) => state.auth);
     const [allReferredUsers, setAllReferredUsers] = useState([]);
-    const containerRef = useRef(null);
-    const treeRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,22 +33,13 @@ const ReferralTree = () => {
         }
     }, [userInfo]);
 
-    useLayoutEffect(() => {
-        const container = containerRef.current;
-        const tree = treeRef.current;
-        if (container && tree) {
-            const center = (tree.scrollWidth - container.clientWidth) / 2;
-            container.scrollLeft = center;
-        }
-    }, [allReferredUsers]);
-
     const renderUser = (user, level = 0, visited = new Set()) => {
         if (!user || visited.has(user._id)) return null;
         visited.add(user._id);
 
-        const childUsers = allReferredUsers.filter(
-            (u) => u.referredBy === user.referralCode
-        ).slice(0, 2);
+        const childUsers = allReferredUsers
+            .filter((u) => u.referredBy === user.referralCode)
+            .slice(0, 2);
 
         const getColor = (level) => {
             if (level === 0) return 'bg-blue-100';
@@ -102,16 +90,25 @@ const ReferralTree = () => {
                 </button>
             </div>
 
-            <div
-                ref={containerRef}
-                className="overflow-x-auto w-full min-h-screen hide-scrollbar"
-            >
-                <div
-                    ref={treeRef}
-                    className="inline-block min-w-full justify-center"
+            <div className="h-[80vh] w-full border overflow-hidden touch-none">
+                <TransformWrapper
+                    options={{ maxScale: 3, minScale: 0.5 }}
+                    pan={{
+                        disabled: false,
+                        velocityDisabled: false, // Kaygan pan aktif!
+                    }}
+                    pinch={{ disabled: false }}
+                    doubleClick={{ disabled: true }}
+                    wheel={{ step: 50 }}
                 >
-                    {userInfo && renderUser(userInfo, 0, new Set())}
-                </div>
+                    {({ zoomIn, zoomOut, resetTransform }) => (
+                        <TransformComponent>
+                            <div className="flex justify-center items-start min-w-[3000px] min-h-[2000px]">
+                                {userInfo && renderUser(userInfo, 0, new Set())}
+                            </div>
+                        </TransformComponent>
+                    )}
+                </TransformWrapper>
             </div>
         </div>
     );

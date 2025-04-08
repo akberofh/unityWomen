@@ -30,6 +30,7 @@
     "react-simple-chatbot": "^0.6.1",
     "react-stars": "^2.2.5",
     "react-toastify": "^10.0.6",
+    "react-zoom-pan-pinch": "^3.7.0",
     "sass": "^1.80.7",
     "styled-components": "^4.4.1",
     "swiper": "^11.1.14",
