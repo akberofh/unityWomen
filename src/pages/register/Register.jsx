@@ -111,9 +111,16 @@ const Register = () => {
             dispatch(setCredentials({ ...res }));
             navigate("/");
         } catch (error) {
-            toast.error('Registration failed');
+            console.error("Error:", error);  // Konsola da logla hata mesajını
+    
+            // Backend'den gelen hata mesajını al ve Toast ile göster
+            const errorMessage = error?.data?.message || "Sunucu ile bağlantı kurulurken bir hata oluştu.";
+            
+            // Burada error mesajını toast ile ekranda göster
+            toast.error(errorMessage);  // Hata mesajını ekranda göster
         }
     };
+    
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: 'image/*',

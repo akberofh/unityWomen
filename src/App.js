@@ -1,15 +1,16 @@
-import React from 'react'
-import './App.css'
+import { ToastContainer } from 'react-toastify';
 import Router from './router/Router'
-import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
-const App = () => {
-  return (
-    <div>
-      <ToastContainer/>
-      <Router/>
-    </div>
-  )
+function App() {
+    return (
+        <>
+            {/* Diğer componentler */}
+            <Router/>
+
+            <ToastContainer position="top-center" />
+        </>
+    );
 }
 
 export default App
