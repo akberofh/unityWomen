@@ -91,7 +91,7 @@ const Profile = () => {
     if (userInfo) {
       // Fetch referred users using referralCode
       axios
-        .get(`http://localhost:8000/api/users/user/${userInfo.referralCode}`)
+        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res?.data?.users || []);
         })
