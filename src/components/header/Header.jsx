@@ -280,26 +280,31 @@ const Header = ({ theme, setTheme }) => {
           <div className="relative text-center">
             <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profile</Link>
 
-            {userInfo && userInfo.photo ? (
-  userInfo.photo.startsWith('data:image/') ? (
-    // Base64 formatında resim varsa
-    <img
-      src={`data:image/jpeg;base64,${userInfo.photo}`} // String'e base64 prefix'i ekliyoruz
-      alt="Profile"
-      className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-    />
+            {
+  userInfo.photo ? (
+    // Eğer photo base64 formatında ise
+    typeof userInfo.photo === 'string' && !userInfo.photo.startsWith("https://") ? (
+      <img
+        src={`data:image/jpeg;base64,${userInfo.photo}`} // String'e base64 prefix'i ekliyoruz
+        alt="Profile"
+        className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+      />
+    ) : (
+      // Eğer photo https formatında ise göster
+      typeof userInfo.photo === 'string' && userInfo.photo.startsWith("https://") && (
+        <img
+          src={userInfo.photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
+          alt="Profile"
+          className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+        />
+      )
+    )
   ) : (
-    // Eğer photo https formatında ise göster
-    <img
-      src={userInfo.photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
-      alt="Profile"
-      className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-    />
+    // Fotoğraf yoksa varsayılan bir kutu göster
+    <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-4" />
   )
-) : (
-  // Fotoğraf yoksa varsayılan bir kutu göster
-  <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-4" />
-)}
+}
+
 
 
 
