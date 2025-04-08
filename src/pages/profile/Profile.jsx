@@ -448,12 +448,13 @@ const Profile = () => {
 
           {/* Arama kutusu */}
           <input
-            type="text"
-            placeholder="Ad və ya Kodu ilə ara"
-            className="p-2 border border-gray-300 rounded mb-4"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
-          />
+  type="text"
+  placeholder="Ad və ya Referral Kodu ilə ara"
+  className="p-2 border border-gray-300 rounded mb-4 w-full max-w-[300px]"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
+/>
+
 
 {filteredUsers.length > 0 ? (
   <div className="overflow-x-auto max-w-full">
