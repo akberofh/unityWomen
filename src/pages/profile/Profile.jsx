@@ -15,6 +15,8 @@ const Profile = () => {
   const [updateUser] = useUpdateUserMutation();
   const [referredUsers, setReferredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showInfo, setShowInfo] = useState(false);
+
 
 
   const [referredUserss, setReferredUserss] = useState([]);
@@ -266,10 +268,51 @@ const Profile = () => {
           </button>
         </form>
 
+        <div className="bg-gradient-to-br from-white via-gray-100 to-white shadow-2xl p-6 rounded-2xl w-full max-w-3xl mx-auto mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">👤 Şəxsi Məlumatlar</h2>
+            <button
+              onClick={() => setShowInfo(!showInfo)}
+              className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all duration-300 text-sm sm:text-base"
+            >
+              {showInfo ? "🔒 Gizlət" : "👁️ Göstər"}
+            </button>
+          </div>
+
+          {showInfo && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-sm sm:text-base">
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Ad Soyad</strong>
+                <p>{userInfo.name}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Email</strong>
+                <p>{userInfo.email}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Telefon</strong>
+                <p>{userInfo.phone}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">FIN Kod</strong>
+                <p>{userInfo.finCode}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Kart</strong>
+                <p>{userInfo.card}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Ata Adı</strong>
+                <p>{userInfo.faze}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div>
           <button
             onClick={() => navigate("/cedvel")}
-            className="text-blue-500 hover:text-white hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
+            className="text-blue-500 hover:text-white m-10 hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
           >
             Cədvələ Keçin➡
           </button>
