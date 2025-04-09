@@ -20,6 +20,7 @@
     "react-bootstrap": "^2.10.2",
     "react-chatbot": "^0.0.1",
     "react-chatbot-kit": "^2.2.2",
+    "react-d3-tree": "^3.6.6",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.1",
     "react-icons": "^5.2.1",
