@@ -305,7 +305,7 @@ const Profile = () => {
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Ad Soyad</strong>
                 <p   onClick={() => handleNameClickl(userInfo.referralCode)}
-                        className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{userInfo.name}</p>              </div>
+                className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{userInfo.name}</p></div>
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Email</strong>
                 <p>{userInfo.email}</p>

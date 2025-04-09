@@ -22,6 +22,7 @@ import CatagoryAdd from "../Catagory/CatagoryAdd";
 import FavorieProduct from "../pages/Favorie/FavorieProduct";
 import PaymentDetal from "../Payment/PaymentDetal";
 import Cedvel from "../pages/profile/Cedvel";
+import Users from "../pages/profile/Users";
 
 
 const Router = () => {
@@ -29,6 +30,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}  />
+        <Route path="/users" element={<Users />}  />
         <Route path="/cedvel" element={<Cedvel />}  />
         <Route path="/payment" element={<PaymentDetal />}  />
         <Route path="/favorie" element={<FavorieProduct />}  />
