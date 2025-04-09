@@ -135,6 +135,33 @@ const Profile = () => {
   const [referrerInfoo, setReferrerInfoo] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  const [referrerInf, setReferrerInf] = useState(null);
+  const [referrerInfs, setReferrerInfs] = useState(null);
+  const [showModa, setShowModa] = useState(false);
+
+
+  const handleNameClickl = async () => {
+    try {
+      // İki API çağrısını paralel olarak başlatıyoruz
+      const [res1, res2] = await Promise.all([
+        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${userInfo.referralCode}`),
+        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${userInfo.referralCode}`)
+      ]);
+
+      // Yanıtları set ediyoruz
+      setReferrerInf(res1.data);
+      setReferrerInfs(res2.data);
+
+      // Modal'ı gösteriyoruz
+      setShowModa(true);
+    } catch (error) {
+      // Hata durumunda kullanıcıyı bilgilendiriyoruz
+      setReferrerInf({ error: "Asıl davetçi tapılmadı" });
+      setReferrerInfs({ error: "Asıl davetçi tapılmadı" });
+      setShowModa(true);
+    }
+  };
+
   const handleNameClick = async (referralCode) => {
     try {
       // İki API çağrısını paralel olarak başlatıyoruz
@@ -277,8 +304,8 @@ const Profile = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-sm sm:text-base">
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Ad Soyad</strong>
-                <p>{userInfo.name}</p>
-              </div>
+                <p   onClick={() => handleNameClickl(userInfo.referralCode)}
+                        className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{userInfo.name}</p>              </div>
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Email</strong>
                 <p>{userInfo.email}</p>
@@ -298,6 +325,82 @@ const Profile = () => {
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Ata Adı</strong>
                 <p>{userInfo.faze}</p>
+              </div>
+            </div>
+          )}
+           {showModa && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-xl shadow-xl relative w-[90%] max-w-lg">
+                <button
+                  className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl"
+                  onClick={() => setShowModa(false)}
+                >
+                  ❌
+                </button>
+
+                <div className="mb-6">
+                  <h4 className="text-2xl font-semibold text-center text-indigo-600 mb-4">✨ Dəvət edən Şəxs:</h4>
+
+                  {referrerInf?.error ? (
+                    <p className="text-red-500 text-center">{referrerInf.error}</p>
+                  ) : (
+                    <div className="text-center">
+                      <p><strong className="text-lg">Ad:</strong> {referrerInf.referrerName}</p>
+                      <p><strong className="text-lg">Email:</strong> {referrerInf.referrerEmail}</p>
+                      {referrerInf.referrerPhoto && (
+                        <div className="mt-4">
+                          {/* Fotoğraf Base64 veya URL kontrolü ile */}
+                          {typeof referrerInf.referrerPhoto === 'string' && !referrerInf.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={`data:image/jpeg;base64,${referrerInf.referrerPhoto}`}
+                              alt="Referrer"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                          {typeof referrerInf.referrerPhoto === 'string' && referrerInf.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={referrerInf.referrerPhoto}
+                              alt="Referrer"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h4 className="text-2xl font-semibold text-center text-indigo-600 mb-4">✨ Lider:</h4>
+
+                  {referrerInfs?.error ? (
+                    <p className="text-red-500 text-center">{referrerInfs.error}</p>
+                  ) : (
+                    <div className="text-center">
+                      <p><strong className="text-lg">Ad:</strong> {referrerInfs.referrerName}</p>
+                      <p><strong className="text-lg">Email:</strong> {referrerInfs.referrerEmail}</p>
+                      {referrerInfs.referrerPhoto && (
+                        <div className="mt-4">
+                          {/* Fotoğraf Base64 veya URL kontrolü ile */}
+                          {typeof referrerInfs.referrerPhoto === 'string' && !referrerInfs.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={`data:image/jpeg;base64,${referrerInfs.referrerPhoto}`}
+                              alt="Lider"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                          {typeof referrerInfs.referrerPhoto === 'string' && referrerInfs.referrerPhoto.startsWith("https://") && (
+                            <img
+                              src={referrerInfs.referrerPhoto}
+                              alt="Lider"
+                              className="w-32 h-32 object-cover mx-auto rounded-full"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
