@@ -5,12 +5,15 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [searchName, setSearchName] = useState('');
   const [searchReferral, setSearchReferral] = useState('');
+  const [editingUserId, setEditingUserId] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [editedEmail, setEditedEmail] = useState('');
 
-  // API-dən istifadəçiləri çək
+  // Fetch users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://unity-women-backend.vercel.app/api/users');
-      setUsers(response.data.allUsers); // ← allUsers içindən alırıq
+      const response = await axios.get('https://unity-women-backend.vercel.app/api/users/');
+      setUsers(response.data.allUsers);
     } catch (error) {
       console.error('İstifadəçilər alınarkən xəta:', error);
     }
@@ -20,7 +23,7 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  // İstifadəçini sil
+  // Delete user
   const handleDelete = async (id) => {
     if (!window.confirm('Bu istifadəçini silmək istədiyinizə əminsiniz?')) return;
 
@@ -39,7 +42,34 @@ const Users = () => {
     }
   };
 
-  // Axtarış filteri
+  // Start editing
+  const handleEdit = (user) => {
+    setEditingUserId(user._id);
+    setEditedName(user.name);
+    setEditedEmail(user.email);
+  };
+
+  // Save changes
+  const handleSave = async (id) => {
+    try {
+      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, {
+        name: editedName,
+        email: editedEmail,
+      });
+
+      if (response.data.success) {
+        const updatedUsers = users.map((user) =>
+          user._id === id ? { ...user, name: editedName, email: editedEmail } : user
+        );
+        setUsers(updatedUsers);
+        setEditingUserId(null);
+      }
+    } catch (error) {
+      console.error('Yenilənmə zamanı xəta:', error);
+    }
+  };
+
+  // Filtered list
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchName.toLowerCase()) &&
     user.referralCode.toLowerCase().includes(searchReferral.toLowerCase())
@@ -49,7 +79,6 @@ const Users = () => {
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-4">İstifadəçi Siyahısı</h1>
 
-      {/* Axtarış inputları */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <input
           type="text"
@@ -67,7 +96,6 @@ const Users = () => {
         />
       </div>
 
-      {/* İstifadəçi cədvəli */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-xl shadow">
           <thead>
@@ -81,16 +109,49 @@ const Users = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user._id} className="border-t">
-                <td className="p-4">{user.name}</td>
-                <td className="p-4">{user.email}</td>
-                <td className="p-4">{user.referralCode}</td>
                 <td className="p-4">
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
-                  >
-                    Sil
-                  </button>
+                  {editingUserId === user._id ? (
+                    <input
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      className="p-2 border rounded w-full"
+                    />
+                  ) : (
+                    <span onClick={() => handleEdit(user)} className="cursor-pointer hover:underline">
+                      {user.name}
+                    </span>
+                  )}
+                </td>
+                <td className="p-4">
+                  {editingUserId === user._id ? (
+                    <input
+                      value={editedEmail}
+                      onChange={(e) => setEditedEmail(e.target.value)}
+                      className="p-2 border rounded w-full"
+                    />
+                  ) : (
+                    <span onClick={() => handleEdit(user)} className="cursor-pointer hover:underline">
+                      {user.email}
+                    </span>
+                  )}
+                </td>
+                <td className="p-4">{user.referralCode}</td>
+                <td className="p-4 space-x-2">
+                  {editingUserId === user._id ? (
+                    <button
+                      onClick={() => handleSave(user._id)}
+                      className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600"
+                    >
+                      Yadda saxla
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
+                    >
+                      Sil
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
