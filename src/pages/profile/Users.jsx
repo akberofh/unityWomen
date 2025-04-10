@@ -103,6 +103,7 @@ const Users = () => {
         <table className="min-w-full bg-white rounded-lg shadow">
           <thead>
             <tr className="bg-indigo-600 text-white">
+              <th className="p-4">#</th>
               <th className="p-4">Ad</th>
               <th className="p-4">Email</th>
               <th className="p-4">Referral Kodu</th>
@@ -111,8 +112,10 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+            {filteredUsers.map((user,index) => (
               <tr key={user._id} className="border-t hover:bg-gray-100">
+                                                      <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
+
                 <td className="p-4">
                   {editingUserId === user._id ? (
                     <input
