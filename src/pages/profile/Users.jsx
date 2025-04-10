@@ -9,6 +9,7 @@ const Users = () => {
   const [editedName, setEditedName] = useState('');
   const [editedEmail, setEditedEmail] = useState('');
   const [editedPayment, setEditedPayment] = useState(false);
+  const [editedPassword, setEditedPassword] = useState(''); // Şifreyi düzenlemek için
 
   // Fetch users
   const fetchUsers = async () => {
@@ -49,16 +50,23 @@ const Users = () => {
     setEditedName(user.name);
     setEditedEmail(user.email);
     setEditedPayment(user.payment);
+    setEditedPassword(''); // Şifreyi sıfırlıyoruz
   };
 
   // Save changes
   const handleSave = async (id) => {
     try {
-      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, {
+      const updatedData = {
         name: editedName,
         email: editedEmail,
         payment: editedPayment,
-      });
+      };
+
+      if (editedPassword) {
+        updatedData.password = editedPassword; // Şifreyi de ekliyoruz
+      }
+
+      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, updatedData);
 
       if (response.data.success) {
         const updatedUsers = users.map((user) =>
@@ -66,6 +74,7 @@ const Users = () => {
         );
         setUsers(updatedUsers);
         setEditingUserId(null);
+        setEditedPassword(''); // Şifreyi sıfırlıyoruz
       }
     } catch (error) {
       console.error('Yenilənmə zamanı xəta:', error);
@@ -103,7 +112,7 @@ const Users = () => {
         <table className="min-w-full bg-white rounded-lg shadow">
           <thead>
             <tr className="bg-indigo-600 text-white">
-              <th className="p-4">#</th>
+              <th className="px-4 py-2 border-b">#</th>
               <th className="p-4">Ad</th>
               <th className="p-4">Email</th>
               <th className="p-4">Referral Kodu</th>
@@ -112,9 +121,9 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user,index) => (
+            {filteredUsers.map((user, index) => (
               <tr key={user._id} className="border-t hover:bg-gray-100">
-                                                      <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
+                <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
 
                 <td className="p-4">
                   {editingUserId === user._id ? (
@@ -159,12 +168,21 @@ const Users = () => {
                 </td>
                 <td className="p-4 space-x-2">
                   {editingUserId === user._id ? (
-                    <button
-                      onClick={() => handleSave(user._id)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
-                    >
-                      Yadda saxla
-                    </button>
+                    <>
+                      <input
+                        type="password"
+                        placeholder="Yeni şifrə"
+                        value={editedPassword}
+                        onChange={(e) => setEditedPassword(e.target.value)}
+                        className="p-2 border rounded-lg w-full"
+                      />
+                      <button
+                        onClick={() => handleSave(user._id)}
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
+                      >
+                        Yadda saxla
+                      </button>
+                    </>
                   ) : (
                     <button
                       onClick={() => handleDelete(user._id)}
@@ -178,7 +196,7 @@ const Users = () => {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan="5" className="text-center p-4 text-gray-500">
+                <td colSpan="6" className="text-center p-4 text-gray-500">
                   Heç bir istifadəçi tapılmadı.
                 </td>
               </tr>
