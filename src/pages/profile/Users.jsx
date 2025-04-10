@@ -8,6 +8,7 @@ const Users = () => {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedEmail, setEditedEmail] = useState('');
+  const [editedPayment, setEditedPayment] = useState(false);
 
   // Fetch users
   const fetchUsers = async () => {
@@ -47,6 +48,7 @@ const Users = () => {
     setEditingUserId(user._id);
     setEditedName(user.name);
     setEditedEmail(user.email);
+    setEditedPayment(user.payment);
   };
 
   // Save changes
@@ -55,11 +57,12 @@ const Users = () => {
       const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, {
         name: editedName,
         email: editedEmail,
+        payment: editedPayment,
       });
 
       if (response.data.success) {
         const updatedUsers = users.map((user) =>
-          user._id === id ? { ...user, name: editedName, email: editedEmail } : user
+          user._id === id ? { ...user, name: editedName, email: editedEmail, payment: editedPayment } : user
         );
         setUsers(updatedUsers);
         setEditingUserId(null);
@@ -76,8 +79,8 @@ const Users = () => {
   );
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">İstifadəçi Siyahısı</h1>
+    <div className="p-6 max-w-7xl mx-auto bg-gray-50">
+      <h1 className="text-4xl font-bold text-gray-800 mb-6">İstifadəçi Siyahısı</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <input
@@ -85,39 +88,40 @@ const Users = () => {
           placeholder="Ada görə axtar..."
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
-          className="p-3 rounded-xl border shadow w-full"
+          className="p-3 rounded-lg border shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
         />
         <input
           type="text"
           placeholder="Referral koda görə axtar..."
           value={searchReferral}
           onChange={(e) => setSearchReferral(e.target.value)}
-          className="p-3 rounded-xl border shadow w-full"
+          className="p-3 rounded-lg border shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
         />
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-xl shadow">
+      <div className="overflow-x-auto rounded-lg bg-white shadow-md">
+        <table className="min-w-full bg-white rounded-lg shadow">
           <thead>
-            <tr className="bg-gray-100 text-left">
+            <tr className="bg-indigo-600 text-white">
               <th className="p-4">Ad</th>
               <th className="p-4">Email</th>
               <th className="p-4">Referral Kodu</th>
+              <th className="p-4">Ödəniş Durumu</th>
               <th className="p-4">Əməliyyat</th>
             </tr>
           </thead>
           <tbody>
             {filteredUsers.map((user) => (
-              <tr key={user._id} className="border-t">
+              <tr key={user._id} className="border-t hover:bg-gray-100">
                 <td className="p-4">
                   {editingUserId === user._id ? (
                     <input
                       value={editedName}
                       onChange={(e) => setEditedName(e.target.value)}
-                      className="p-2 border rounded w-full"
+                      className="p-2 border rounded-lg w-full"
                     />
                   ) : (
-                    <span onClick={() => handleEdit(user)} className="cursor-pointer hover:underline">
+                    <span onClick={() => handleEdit(user)} className="cursor-pointer text-indigo-600 hover:underline">
                       {user.name}
                     </span>
                   )}
@@ -127,27 +131,41 @@ const Users = () => {
                     <input
                       value={editedEmail}
                       onChange={(e) => setEditedEmail(e.target.value)}
-                      className="p-2 border rounded w-full"
+                      className="p-2 border rounded-lg w-full"
                     />
                   ) : (
-                    <span onClick={() => handleEdit(user)} className="cursor-pointer hover:underline">
+                    <span onClick={() => handleEdit(user)} className="cursor-pointer text-indigo-600 hover:underline">
                       {user.email}
                     </span>
                   )}
                 </td>
                 <td className="p-4">{user.referralCode}</td>
+                <td className="p-4">
+                  {editingUserId === user._id ? (
+                    <select
+                      value={editedPayment}
+                      onChange={(e) => setEditedPayment(e.target.value === 'true')}
+                      className="p-2 border rounded-lg w-full"
+                    >
+                      <option value={true}>Ödendi</option>
+                      <option value={false}>Ödenmedi</option>
+                    </select>
+                  ) : (
+                    <span>{user.payment ? 'Ödendi' : 'Ödenmedi'}</span>
+                  )}
+                </td>
                 <td className="p-4 space-x-2">
                   {editingUserId === user._id ? (
                     <button
                       onClick={() => handleSave(user._id)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600"
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
                     >
                       Yadda saxla
                     </button>
                   ) : (
                     <button
                       onClick={() => handleDelete(user._id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none"
                     >
                       Sil
                     </button>
@@ -157,7 +175,7 @@ const Users = () => {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan="4" className="text-center p-4 text-gray-500">
+                <td colSpan="5" className="text-center p-4 text-gray-500">
                   Heç bir istifadəçi tapılmadı.
                 </td>
               </tr>
