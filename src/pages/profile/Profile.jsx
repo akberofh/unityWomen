@@ -77,13 +77,13 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
-        .then((res) => {
-          setReferredUserss(res?.data?.users || []);
-        })
-        .catch((error) => {
-          console.error("Referred users fetch error:", error);
-        });
+      .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+      .then((res) => {
+        setReferredUserss(res?.data?.users || []);
+      })
+      .catch((error) => {
+        console.error("Referred users fetch error:", error);
+      });
 
       // Fetch referred users using referralCode for admin
       axios
