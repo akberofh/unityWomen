@@ -106,7 +106,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchKollarinGruplari = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/users/admin/${userReferralCode}`);
+        const res = await axios.get(`http://localhost:8000/api/users/admin/${userInfo.referralCode}`);
         const { users } = res.data;
 
         if (users.length >= 2) {
@@ -131,7 +131,7 @@ const Profile = () => {
     };
 
     fetchKollarinGruplari();
-  }, [userReferralCode]);
+  }, [userInfo]);
 
   if (loading) return <p>Yükleniyor...</p>;
 
