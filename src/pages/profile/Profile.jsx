@@ -103,6 +103,41 @@ const Profile = () => {
     user.referralCode.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  useEffect(() => {
+    const fetchKollarinGruplari = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/api/users/admin/${userReferralCode}`);
+        const { users } = res.data;
+
+        if (users.length >= 2) {
+          const sagKol = users[0];
+          const solKol = users[1];
+
+          const [sagRes, solRes] = await Promise.all([
+            axios.get(`http://localhost:8000/api/users/user/${sagKol.referralCode}`),
+            axios.get(`http://localhost:8000/api/users/user/${solKol.referralCode}`),
+          ]);
+
+          setSagGrupSayisi(sagRes.data.count);
+          setSolGrupSayisi(solRes.data.count);
+        } else {
+          console.warn("Yeterli kol sayısı yok.");
+        }
+      } catch (error) {
+        console.error("Kol grupları çekilirken hata oluştu:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchKollarinGruplari();
+  }, [userReferralCode]);
+
+  if (loading) return <p>Yükleniyor...</p>;
+
+  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
+  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const copyReferralLink = () => {
     navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
@@ -405,6 +440,16 @@ const Profile = () => {
           </button>
 
           <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
+            <div className="flex gap-10 mt-6">
+      <div className="bg-green-100 p-6 rounded-xl shadow w-64 text-center">
+        <h3 className="font-bold text-xl text-green-700">Sağ Kol Grubu</h3>
+        <p className="text-2xl mt-2">{sagGrupSayisi} kişi</p>
+      </div>
+      <div className="bg-blue-100 p-6 rounded-xl shadow w-64 text-center">
+        <h3 className="font-bold text-xl text-blue-700">Sol Kol Grubu</h3>
+        <p className="text-2xl mt-2">{solGrupSayisi} kişi</p>
+      </div>
+    </div>
 
           {referredUsers.length > 0 ? (
   <div className="overflow-x-auto max-w-full">
