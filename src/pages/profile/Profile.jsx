@@ -17,6 +17,10 @@ const Profile = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
 
+  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
+  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
+  const [sagKolAdi, setSagKolAdi] = useState("");
+  const [solKolAdi, setSolKolAdi] = useState("");
 
 
   const [referredUserss, setReferredUserss] = useState([]);
@@ -70,7 +74,7 @@ const Profile = () => {
       setEmail(userInfo.email);
       setPhoto(userInfo.photo);
       setReferralLink(userInfo.referralCode); // referralCode from user info
-  
+
       // Fetch referred users using referralCode
       axios
         .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
@@ -80,12 +84,29 @@ const Profile = () => {
         .catch((error) => {
           console.error("Referred users fetch error:", error);
         });
-  
+
       // Fetch referred users using referralCode for admin
       axios
         .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
-        .then((res) => {
+        .then(async (res) => {
           setReferredUsers(res?.data?.users || []);
+
+          const { users } = res.data;
+          if (users.length >= 2) {
+            const sagKol = users[0];
+            const solKol = users[1];
+
+            setSagKolAdi(sagKol.name);
+            setSolKolAdi(solKol.name);
+
+            const [sagRes, solRes] = await Promise.all([
+              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${sagKol.referralCode}`),
+              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${solKol.referralCode}`),
+            ]);
+
+            setSolGrupSayisi(sagRes.data.count); // Sağ kolun altı => Sol kolun karşısı
+            setSagGrupSayisi(solRes.data.count); // Sol kolun altı => Sağ kolun karşısı
+          }
         })
         .catch((error) => {
           console.error("Referred users fetch error:", error);
@@ -206,23 +227,13 @@ const Profile = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold">Profil</h1>
 
-          {/* Eğer photo string olarak geldiyse ve base64 formatına dönüştürülmesi gerekiyorsa */}
-          {photo && typeof photo === 'string' && !photo.startsWith("https://") && (
-            <img
-              src={`data:image/jpeg;base64,${photo}`} // String'e base64 prefix'i ekliyoruz
-              alt="Profile"
-              className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-            />
-          )}
 
           {/* Eğer photo https formatında ise göster */}
-          {photo && typeof photo === 'string' && photo.startsWith("https://") && (
-            <img
-              src={photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
-              alt="Profile"
-              className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-            />
-          )}
+          <img
+            src={photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
+            alt="Profile"
+            className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+          />
 
           <div className="mt-4">
             <input
@@ -304,8 +315,8 @@ const Profile = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-sm sm:text-base">
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Ad Soyad</strong>
-                <p   onClick={() => handleNameClickl(userInfo.referralCode)}
-                className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{userInfo.name}</p></div>
+                <p onClick={() => handleNameClickl(userInfo.referralCode)}
+                  className="px-4 py-2 text-blue-600 cursor-pointer hover:underline">{userInfo.name}</p></div>
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Email</strong>
                 <p>{userInfo.email}</p>
@@ -328,7 +339,7 @@ const Profile = () => {
               </div>
             </div>
           )}
-           {showModa && (
+          {showModa && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-xl shadow-xl relative w-[90%] max-w-lg">
                 <button
@@ -417,48 +428,57 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
 
           {referredUsers.length > 0 ? (
-  <div className="overflow-x-auto max-w-full">
-    <table className="min-w-[600px] border-collapse text-left w-full">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="px-4 py-2 border-b">#</th>
-          <th className="px-4 py-2 border-b">Ad</th>
-          <th className="px-4 py-2 border-b">Kod</th>
-          <th className="px-4 py-2 border-b">Email</th>
-          <th className="px-4 py-2 border-b">Ödəniş</th>
-          <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {referredUsers.map((user, index) => (
-          <tr key={user._id} className="border-b">
-            <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
-            <td
-              onClick={() => handleNameClick(user.referralCode)}
-              className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
-            >
-              {user.name}
-            </td>
-            <td className="px-4 py-2">{user.referralCode}</td>
-            <td className="px-4 py-2">{user.email}</td>
-            <td className="px-4 py-2">
-              <span
-                className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
-              >
-                {user.payment ? "+" : "-"}
-              </span>
-            </td>
-            <td className="px-4 py-2">
-              {new Date(user.createdAt).toLocaleDateString()}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-) : (
-  <p className="text-gray-500">Qol yoxdur.</p>
-)}
+            <div className="overflow-x-auto max-w-full">
+              <table className="min-w-[600px] border-collapse text-left w-full">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2 border-b">#</th>
+                    <th className="px-4 py-2 border-b">Ad</th>
+                    <th className="px-4 py-2 border-b">Kod</th>
+                    <th className="px-4 py-2 border-b">Email</th>
+                    <th className="px-4 py-2 border-b">Ödəniş</th>
+                    <th className="px-4 py-2 border-b">Qrup Sayı</th>
+                    <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {referredUsers.map((user, index) => (
+                    <tr key={user._id} className="border-b">
+                      <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
+                      <td
+                        onClick={() => handleNameClick(user.referralCode)}
+                        className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+                      >
+                        {user.name}
+                      </td>
+                      <td className="px-4 py-2">{user.referralCode}</td>
+                      <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">
+                        <span
+                          className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
+                        >
+                          {user.payment ? "+" : "-"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2">
+                        {index === 0 && referredUsers.length >= 2
+                          ? `${solGrupSayisi ?? 0} nəfər`
+                          : index === 1 && referredUsers.length >= 2
+                            ? `${sagGrupSayisi ?? 0} nəfər`
+                            : "-"}
+                      </td>
+
+                      <td className="px-4 py-2">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500">Qol yoxdur.</p>
+          )}
 
           {/* Modal */}
           {showModal && (
@@ -545,57 +565,57 @@ const Profile = () => {
 
           {/* Arama kutusu */}
           <input
-  type="text"
-  placeholder="Ad və ya Referral Kodu ilə ara"
-  className="p-2 border border-gray-300 rounded mb-4 w-full max-w-[300px]"
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
-/>
+            type="text"
+            placeholder="Ad və ya Referral Kodu ilə ara"
+            className="p-2 border border-gray-300 rounded mb-4 w-full max-w-[300px]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
+          />
 
 
-{filteredUsers.length > 0 ? (
-  <div className="overflow-x-auto max-w-full">
-    <table className="min-w-[600px] border-collapse text-left w-full">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="px-4 py-2 border-b">#</th> {/* Yeni sütun */}
-          <th className="px-4 py-2 border-b">Ad Soyad</th>
-          <th className="px-4 py-2 border-b">Kod</th>
-          <th className="px-4 py-2 border-b">Email</th>
-          <th className="px-4 py-2 border-b">Ödəniş</th>
-          <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredUsers.map((user, index) => (
-          <tr key={user._id} className="border-b">
-            <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td> {/* Sıra nömrəsi */}
-            <td
-              onClick={() => handleNameClick(user.referralCode)}
-              className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
-            >
-              {user.name}
-            </td>
-            <td className="px-4 py-2">{user.referralCode}</td>
-            <td className="px-4 py-2">{user.email}</td>
-            <td className="px-4 py-2">
-              <span
-                className={`${user.payment ? "text-green-500" : "text-red-500"} text-5xl`}
-              >
-                {user.payment ? "+" : "-"}
-              </span>
-            </td>
-            <td className="px-4 py-2">
-              {new Date(user.createdAt).toLocaleDateString()}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-) : (
-  <p className="text-gray-500">Qrup yoxdur.</p>
-)}
+          {filteredUsers.length > 0 ? (
+            <div className="overflow-x-auto max-w-full">
+              <table className="min-w-[600px] border-collapse text-left w-full">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2 border-b">#</th> {/* Yeni sütun */}
+                    <th className="px-4 py-2 border-b">Ad Soyad</th>
+                    <th className="px-4 py-2 border-b">Kod</th>
+                    <th className="px-4 py-2 border-b">Email</th>
+                    <th className="px-4 py-2 border-b">Ödəniş</th>
+                    <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user, index) => (
+                    <tr key={user._id} className="border-b">
+                      <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td> {/* Sıra nömrəsi */}
+                      <td
+                        onClick={() => handleNameClick(user.referralCode)}
+                        className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+                      >
+                        {user.name}
+                      </td>
+                      <td className="px-4 py-2">{user.referralCode}</td>
+                      <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">
+                        <span
+                          className={`${user.payment ? "text-green-500" : "text-red-500"} text-5xl`}
+                        >
+                          {user.payment ? "+" : "-"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500">Qrup yoxdur.</p>
+          )}
 
         </div>
       </div>
