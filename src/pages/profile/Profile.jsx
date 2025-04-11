@@ -17,10 +17,7 @@ const Profile = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
-  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
-  const [sagKolAdi, setSagKolAdi] = useState("");
-  const [solKolAdi, setSolKolAdi] = useState("");
+
 
 
   const [referredUserss, setReferredUserss] = useState([]);
@@ -77,13 +74,13 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-      .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
-      .then((res) => {
-        setReferredUserss(res?.data?.users || []);
-      })
-      .catch((error) => {
-        console.error("Referred users fetch error:", error);
-      });
+        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUserss(res?.data?.users || []);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
 
       // Fetch referred users using referralCode for admin
       axios
@@ -113,6 +110,7 @@ const Profile = () => {
         });
     }
   }, [userInfo]);
+
 
   const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
 
@@ -204,6 +202,11 @@ const Profile = () => {
       setShowModal(true);
     }
   };
+
+  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
+  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
+  const [sagKolAdi, setSagKolAdi] = useState("");
+  const [solKolAdi, setSolKolAdi] = useState("");
 
 
   return (
