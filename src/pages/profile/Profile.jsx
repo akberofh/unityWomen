@@ -16,6 +16,8 @@ const Profile = () => {
   const [referredUsers, setReferredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
+  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
 
 
 
@@ -125,19 +127,14 @@ const Profile = () => {
         }
       } catch (error) {
         console.error("Kol grupları çekilirken hata oluştu:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchKollarinGruplari();
   }, [userInfo]);
 
-  if (loading) return <p>Yükleniyor...</p>;
 
-  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
-  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
-  const [loading, setLoading] = useState(true);
+ 
 
   const copyReferralLink = () => {
     navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
