@@ -119,10 +119,12 @@ const Profile = () => {
             axios.get(`https://unity-women-backend.vercel.app/api/users/user/${sagKol.referralCode}`),
             axios.get(`https://unity-women-backend.vercel.app/api/users/user/${solKol.referralCode}`),
           ]);
-           console.log('saq qolun ref kodu', sagKol.referralCode);
            
           setSagGrupSayisi(sagRes.data.count);
           setSolGrupSayisi(solRes.data.count);
+
+          console.log('sol qrup', solRes.data.count);
+          
         } else {
           console.warn("Yeterli kol sayısı yok.");
         }
