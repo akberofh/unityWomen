@@ -106,7 +106,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchKollarinGruplari = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/users/admin/${userInfo.referralCode}`);
+        const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`);
         const { users } = res.data;
 
         if (users.length >= 2) {
@@ -114,8 +114,8 @@ const Profile = () => {
           const solKol = users[1];
 
           const [sagRes, solRes] = await Promise.all([
-            axios.get(`http://localhost:8000/api/users/user/${sagKol.referralCode}`),
-            axios.get(`http://localhost:8000/api/users/user/${solKol.referralCode}`),
+            axios.get(`https://unity-women-backend.vercel.app/api/users/user/${sagKol.referralCode}`),
+            axios.get(`https://unity-women-backend.vercel.app/api/users/user/${solKol.referralCode}`),
           ]);
 
           setSagGrupSayisi(sagRes.data.count);
