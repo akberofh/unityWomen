@@ -72,7 +72,7 @@ const Catagory = () => {
                 className="text-center hover:scale-105 transition-transform duration-200"
               >
                 <img
-                  src={`data:image/jpeg;base64,${category.photo}`}
+                  src={category.photo}
                   alt={category.title}
                   className="w-10 h-10 object-cover rounded-full shadow-lg mb-2 border-2 border-gray-300"
                 />

@@ -65,7 +65,7 @@ const Baxim = () => {
                         >
                             {item.photo && (
                                 <img
-                                    src={`data:image/jpeg;base64,${item.photo}`}
+                                    src={item.photo}
                                     alt="Thumbnail"
                                     className="w-full h-40 object-cover rounded-md mb-4"
                                 />

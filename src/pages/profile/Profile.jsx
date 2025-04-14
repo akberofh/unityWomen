@@ -225,7 +225,7 @@ const Profile = () => {
     // Backend API'ye istekte bulunuyoruz
     const fetchSalaryData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/salary/${userInfo.referralCode}`); // API endpointini doğru şekilde ayarla
+        const response = await axios.get(`https://unity-women-backend.vercel.app/api/users/salary/${userInfo.referralCode}`); // API endpointini doğru şekilde ayarla
         setSalaryData(response.data); // Backend'den gelen veriyi alıyoruz
       } catch (error) {
         console.error('Maaş verisi alınırken bir hata oluştu:', error);
