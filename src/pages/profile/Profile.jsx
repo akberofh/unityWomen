@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { logout, setCredentials } from "../../redux/slices/authSlice";
 import { useLogoutMutation, useUpdateUserMutation } from "../../redux/slices/usersApiSlice";
 import axios from "axios";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from "recharts";
 
 const Profile = () => {
   const [email, setEmail] = useState("");
