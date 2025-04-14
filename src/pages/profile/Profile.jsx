@@ -235,9 +235,6 @@ const Profile = () => {
     fetchSalaryData();
   }, []);
 
-  if (!salaryData) {
-    return <div>Veriler yükleniyor...</div>;
-  }
 
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
@@ -334,57 +331,58 @@ const Profile = () => {
         </form>
 
         <div className="overflow-x-auto p-6 bg-gray-50 rounded-2xl shadow-lg">
-          <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
-            <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
-              <tr>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {salaryData.periodSalaries.length > 0 ? (
-                salaryData.periodSalaries.map((period, index) => (
-                  <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
-                    <td className="py-4 px-6">
-                      <img
-                        src={period.photo}
-                        alt="Profil"
-                        className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-                      />
-                    </td>
-                    <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
-                    <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
-                    <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
-                    <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="py-6 px-6 text-center text-sm text-gray-500">
-                    Veriler yükleniyor...
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+  {/* Veriler boşsa veya yükleniyorsa gösterilecek mesaj */}
+  {(!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
+    <div className="py-6 px-6 text-center text-sm text-gray-500">
+      Veriler yükleniyor...
+    </div>
+  ) : (
+    <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
+      <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
+        <tr>
+          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
+          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
+          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
+          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
+          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {salaryData.periodSalaries.map((period, index) => (
+          <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
+            <td className="py-4 px-6">
+              <img
+                src={period.photo}
+                alt="Profil"
+                className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
+              />
+            </td>
+            <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
+            <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
+            <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
+            <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
 
-          {/* Ekstra Bilgiler */}
-          <div className="mt-10 bg-white p-6 rounded-xl shadow-md border border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Ümumi Məlumat</h3>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-              <li className="flex items-center gap-2"><FaMoneyBillWave className="text-green-500" /> <strong>Ümumi Dövriyyə:</strong> {salaryData.total.toFixed(2)} ₼</li>
-              <li className="flex items-center gap-2"><FaUsers className="text-blue-500" /> <strong>Sağ Qol Dövriyyə:</strong> {salaryData.rightTotal.toFixed(2)} ₼</li>
-              <li className="flex items-center gap-2"><FaUsers className="text-purple-500" /> <strong>Sol Qol Dövriyyə:</strong> {salaryData.leftTotal.toFixed(2)} ₼</li>
-              <li className="flex items-center gap-2"><FaMedal className="text-yellow-500" /> <strong>Rütbə:</strong> {salaryData.rank}</li>
-              <li className="flex items-center gap-2"><FaPercentage className="text-indigo-500" /> <strong>Maaşın Faiz Dərəcəsi:</strong> %{salaryData.rate}</li>
-              <li className="flex items-center gap-2"><FaBalanceScale className="text-gray-500" /> <strong>Bölmə Faktor:</strong> {salaryData.splitFactor}</li>
-            </ul>
-          </div>
+  {/* Ekstra Bilgiler */}
+  {salaryData && salaryData.total && (
+    <div className="mt-10 bg-white p-6 rounded-xl shadow-md border border-gray-200">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Ümumi Məlumat</h3>
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+        <li className="flex items-center gap-2"><FaMoneyBillWave className="text-green-500" /> <strong>Ümumi Dövriyyə:</strong> {salaryData.total.toFixed(2)} ₼</li>
+        <li className="flex items-center gap-2"><FaUsers className="text-blue-500" /> <strong>Sağ Qol Dövriyyə:</strong> {salaryData.rightTotal.toFixed(2)} ₼</li>
+        <li className="flex items-center gap-2"><FaUsers className="text-purple-500" /> <strong>Sol Qol Dövriyyə:</strong> {salaryData.leftTotal.toFixed(2)} ₼</li>
+        <li className="flex items-center gap-2"><FaMedal className="text-yellow-500" /> <strong>Rütbə:</strong> {salaryData.rank}</li>
+        <li className="flex items-center gap-2"><FaPercentage className="text-indigo-500" /> <strong>Maaşın Faiz Dərəcəsi:</strong> %{salaryData.rate}</li>
+        <li className="flex items-center gap-2"><FaBalanceScale className="text-gray-500" /> <strong>Bölmə Faktor:</strong> {salaryData.splitFactor}</li>
+      </ul>
+    </div>
+  )}
+</div>
 
-        </div>
 
         <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
           <h2 className="text-3xl font-bold text-center text-gray-800">Davet Kazanç Bilgileri</h2>
