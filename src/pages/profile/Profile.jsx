@@ -356,14 +356,14 @@ const Profile = () => {
         {/* Kazanç Dönemleri Tablosu */}
         {stats && (
           <div className="mt-10">
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">Kazanç Dönemleri</h3>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Qazanc Dönəmləri</h3>
             <div className="overflow-x-auto">
               <table className="table-auto w-full border-collapse border border-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-4 py-2 border">Dönem</th>
+                    <th className="px-4 py-2 border">Dönəm</th>
                     <th className="px-4 py-2 border">Kişi Sayısı</th>
-                    <th className="px-4 py-2 border">Kazanç (AZN)</th>
+                    <th className="px-4 py-2 border">Qazanc (AZN)</th>
                   </tr>
                 </thead>
                 <tbody>
