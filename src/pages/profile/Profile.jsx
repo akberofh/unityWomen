@@ -318,15 +318,15 @@ const Profile = () => {
         {stats ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="bg-gray-100 p-4 rounded-2xl shadow">
-              <p className="text-gray-500">İsim</p>
+              <p className="text-gray-500">Ad</p>
               <p className="text-lg font-semibold">{stats.referrerName}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-2xl shadow">
-              <p className="text-gray-500">Toplam Davet</p>
+              <p className="text-gray-500">Toplam Dəvət</p>
               <p className="text-lg font-semibold">{stats.totalInvited} kişi</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-2xl shadow">
-              <p className="text-gray-500">Toplam Kazanç</p>
+              <p className="text-gray-500">Toplam Qazanc</p>
               <p className="text-lg font-semibold">{stats.totalEarned} AZN</p>
             </div>
           </div>
@@ -337,7 +337,7 @@ const Profile = () => {
         {/* 15 Günlük Kazanç Grafiği */}
         {stats && (
           <div className="mt-10">
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Kazanç Grafiği</h3>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Qazanc Qrafiki</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart
                 data={stats.periodEarnings}
