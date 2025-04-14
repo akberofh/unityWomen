@@ -235,6 +235,9 @@ const Profile = () => {
     fetchSalaryData();
   }, []);
 
+  if (!salaryData) {
+    return <div>Veriler yükleniyor...</div>;
+  }
 
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
