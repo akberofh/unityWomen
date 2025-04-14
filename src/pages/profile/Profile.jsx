@@ -206,7 +206,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/users/referral-stats/${userInfo.referralCode}`);
+        const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/referral-stats/${userInfo.referralCode}`);
         setStats(res.data);
       } catch (error) {
         console.error("Veriler alınamadı:", error);
