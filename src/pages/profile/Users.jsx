@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -9,9 +10,9 @@ const Users = () => {
   const [editedName, setEditedName] = useState('');
   const [editedEmail, setEditedEmail] = useState('');
   const [editedPayment, setEditedPayment] = useState(false);
-  const [editedPassword, setEditedPassword] = useState(''); // Şifreyi düzenlemek için
+  const [editedPassword, setEditedPassword] = useState('');
+  const [editedPhoto, setEditedPhoto] = useState('');
 
-  // Fetch users
   const fetchUsers = async () => {
     try {
       const response = await axios.get('https://unity-women-backend.vercel.app/api/users/');
@@ -25,7 +26,6 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  // Delete user
   const handleDelete = async (id) => {
     if (!window.confirm('Bu istifadəçini silmək istədiyinizə əminsiniz?')) return;
 
@@ -44,44 +44,53 @@ const Users = () => {
     }
   };
 
-  // Start editing
   const handleEdit = (user) => {
     setEditingUserId(user._id);
     setEditedName(user.name);
     setEditedEmail(user.email);
     setEditedPayment(user.payment);
-    setEditedPassword(''); // Şifreyi sıfırlıyoruz
+    setEditedPassword('');
+    setEditedPhoto(user.photo || '');
   };
 
-  // Save changes
   const handleSave = async (id) => {
     try {
-      const updatedData = {
-        name: editedName,
-        email: editedEmail,
-        payment: editedPayment,
-      };
-
-      if (editedPassword) {
-        updatedData.password = editedPassword; // Şifreyi de ekliyoruz
-      }
-
-      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, updatedData);
-
+      const formData = new FormData();
+      formData.append('name', editedName);
+      formData.append('email', editedEmail);
+      formData.append('payment', editedPayment);
+      if (editedPassword) formData.append('password', editedPassword);
+      if (editedPhoto) formData.append('photo', editedPhoto);
+  
+      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
       if (response.data.success) {
         const updatedUsers = users.map((user) =>
-          user._id === id ? { ...user, name: editedName, email: editedEmail, payment: editedPayment } : user
+          user._id === id
+            ? { ...user, name: editedName, email: editedEmail, payment: editedPayment, photo: editedPhoto }
+            : user
         );
         setUsers(updatedUsers);
         setEditingUserId(null);
-        setEditedPassword(''); // Şifreyi sıfırlıyoruz
+        setEditedPassword('');
       }
     } catch (error) {
-      console.error('Yenilənmə zamanı xəta:', error);
+      console.error('Güncelleme hatası:', error);
     }
   };
+  
 
-  // Filtered list
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      setEditedPhoto(acceptedFiles[0]); // Base64 değil, direkt File
+    }
+    
+  });
+
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchName.toLowerCase()) &&
     user.referralCode.toLowerCase().includes(searchReferral.toLowerCase())
@@ -113,6 +122,7 @@ const Users = () => {
           <thead>
             <tr className="bg-indigo-600 text-white">
               <th className="px-4 py-2 border-b">#</th>
+              <th className="p-4">Foto</th>
               <th className="p-4">Ad</th>
               <th className="p-4">Email</th>
               <th className="p-4">Referral Kodu</th>
@@ -124,7 +134,13 @@ const Users = () => {
             {filteredUsers.map((user, index) => (
               <tr key={user._id} className="border-t hover:bg-gray-100">
                 <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td>
-
+                <td className="p-4">
+                  <img
+                    src={user.photo || 'https://via.placeholder.com/40'}
+                    alt="Profil"
+                    className="w-12 h-12 rounded-full object-cover border"
+                  />
+                </td>
                 <td className="p-4">
                   {editingUserId === user._id ? (
                     <input
@@ -166,7 +182,7 @@ const Users = () => {
                     <span>{user.payment ? 'Ödendi' : 'Ödenmedi'}</span>
                   )}
                 </td>
-                <td className="p-4 space-x-2">
+                <td className="p-4 space-y-2">
                   {editingUserId === user._id ? (
                     <>
                       <input
@@ -174,11 +190,18 @@ const Users = () => {
                         placeholder="Yeni şifrə"
                         value={editedPassword}
                         onChange={(e) => setEditedPassword(e.target.value)}
-                        className="p-2 border rounded-lg w-full"
+                        className="p-2 border rounded-lg w-full mb-2"
                       />
+                      <div {...getRootProps()} className="cursor-pointer text-center p-2 border rounded-lg bg-gray-100">
+                        <input {...getInputProps()} />
+                        <p className="text-sm text-gray-600">Yeni foto yüklə</p>
+                      </div>
+                      {editedPhoto && (
+                        <img src={editedPhoto} alt="Yeni Foto" className="w-12 h-12 rounded-full mt-2 mx-auto" />
+                      )}
                       <button
                         onClick={() => handleSave(user._id)}
-                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
+                        className="bg-green-500 text-white px-4 py-2 mt-2 rounded-lg hover:bg-green-600 focus:outline-none w-full"
                       >
                         Yadda saxla
                       </button>
@@ -196,7 +219,7 @@ const Users = () => {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan="6" className="text-center p-4 text-gray-500">
+                <td colSpan="7" className="text-center p-4 text-gray-500">
                   Heç bir istifadəçi tapılmadı.
                 </td>
               </tr>

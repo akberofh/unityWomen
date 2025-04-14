@@ -18,12 +18,13 @@ const Profile = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
   const [solGrupSayisi, setSolGrupSayisi] = useState(0);
-
-
-
-
+  const [referrerInfo, setReferrerInfo] = useState(null);
+  const [referrerInfoo, setReferrerInfoo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [referrerInf, setReferrerInf] = useState(null);
+  const [referrerInfs, setReferrerInfs] = useState(null);
+  const [showModa, setShowModa] = useState(false);
   const [referredUserss, setReferredUserss] = useState([]);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
@@ -103,9 +104,8 @@ const Profile = () => {
 
 
 
-            setSolGrupSayisi(sagRes.data.count); // Sağ kolun altı => Sol kolun karşısı
-            setSagGrupSayisi(solRes.data.count); // Sol kolun altı => Sağ kolun karşısı
-            console.log('saq qolun ref kodu', sagRes.data.count);
+            setSolGrupSayisi(sagRes.data.count); 
+            setSagGrupSayisi(solRes.data.count); 
           }
         })
         .catch((error) => {
@@ -152,13 +152,6 @@ const Profile = () => {
   };
 
 
-  const [referrerInfo, setReferrerInfo] = useState(null);
-  const [referrerInfoo, setReferrerInfoo] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-
-  const [referrerInf, setReferrerInf] = useState(null);
-  const [referrerInfs, setReferrerInfs] = useState(null);
-  const [showModa, setShowModa] = useState(false);
 
 
   const handleNameClickl = async () => {
@@ -204,6 +197,21 @@ const Profile = () => {
       setShowModal(true);
     }
   };
+
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/api/users/referral-stats/${userInfo.referralCode}`);
+        setStats(res.data);
+      } catch (error) {
+        console.error("Veriler alınamadı:", error);
+      }
+    };
+
+    fetchStats();
+  }, [userInfo]);
 
 
   return (
@@ -299,6 +307,76 @@ const Profile = () => {
             Güncelle
           </button>
         </form>
+
+        <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800">Davet Kazanç Bilgileri</h2>
+
+        {/* stats null kontrolü */}
+        {stats ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="bg-gray-100 p-4 rounded-2xl shadow">
+              <p className="text-gray-500">İsim</p>
+              <p className="text-lg font-semibold">{stats.referrerName}</p>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-2xl shadow">
+              <p className="text-gray-500">Toplam Davet</p>
+              <p className="text-lg font-semibold">{stats.totalInvited} kişi</p>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-2xl shadow">
+              <p className="text-gray-500">Toplam Kazanç</p>
+              <p className="text-lg font-semibold">{stats.totalEarned} AZN</p>
+            </div>
+          </div>
+        ) : (
+          <p>Yükleniyor...</p>
+        )}
+
+        {/* 15 Günlük Kazanç Grafiği */}
+        {stats && (
+          <div className="mt-10">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Kazanç Grafiği</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={stats.periodEarnings}
+                margin={{ top: 10, right: 30, left: 0, bottom: 50 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="periodLabel" angle={-20} textAnchor="end" interval={0} height={70} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="earned" fill="#4f46e5" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Kazanç Dönemleri Tablosu */}
+        {stats && (
+          <div className="mt-10">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Kazanç Dönemleri</h3>
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full border-collapse border border-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-2 border">Dönem</th>
+                    <th className="px-4 py-2 border">Kişi Sayısı</th>
+                    <th className="px-4 py-2 border">Kazanç (AZN)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.periodEarnings.map((period, idx) => (
+                    <tr key={idx} className="text-center border-t">
+                      <td className="px-4 py-2 border">{period.periodLabel}</td>
+                      <td className="px-4 py-2 border">{period.userCount}</td>
+                      <td className="px-4 py-2 border">{period.earned} AZN</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
 
         <div className="bg-gradient-to-br from-white via-gray-100 to-white shadow-2xl p-6 rounded-2xl w-full max-w-3xl mx-auto mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
