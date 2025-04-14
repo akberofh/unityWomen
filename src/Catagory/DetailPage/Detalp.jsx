@@ -114,7 +114,7 @@ const Detalp = () => {
                     {/* Ürün Görseli */}
                     <div className="flex  justify-center items-center">
                         <img
-                            src={product.thumbnail}
+                            src={product.photo}
                             alt={product.title}
                             className="w-full max-w-md lg:max-w-lg object-cover rounded-lg shadow-md"
                         />

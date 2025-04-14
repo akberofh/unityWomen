@@ -96,7 +96,7 @@ const Catos = ({ catagory }) => {
       
                 {/* Ürün Görseli */}
                 <img
-                  src={product.thumbnail}
+                  src={product.photo}
                   alt={product.title}
                   className="h-28 w-28 sm:h-40 sm:w-40 object-cover mb-4 sm:mb-6 rounded-md"
                   onClick={() => navigate(`/product/${product._id}`)}
