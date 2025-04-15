@@ -367,20 +367,7 @@ const Profile = () => {
     </table>
   )}
 
-  {/* Ekstra Bilgiler */}
-  {salaryData && salaryData.total && (
-    <div className="mt-10 bg-white p-6 rounded-xl shadow-md border border-gray-200">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">Ümumi Məlumat</h3>
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-        <li className="flex items-center gap-2"><FaMoneyBillWave className="text-green-500" /> <strong>Ümumi Dövriyyə:</strong> {salaryData.total.toFixed(2)} ₼</li>
-        <li className="flex items-center gap-2"><FaUsers className="text-blue-500" /> <strong>Sağ Qol Dövriyyə:</strong> {salaryData.rightTotal.toFixed(2)} ₼</li>
-        <li className="flex items-center gap-2"><FaUsers className="text-purple-500" /> <strong>Sol Qol Dövriyyə:</strong> {salaryData.leftTotal.toFixed(2)} ₼</li>
-        <li className="flex items-center gap-2"><FaMedal className="text-yellow-500" /> <strong>Rütbə:</strong> {salaryData.rank}</li>
-        <li className="flex items-center gap-2"><FaPercentage className="text-indigo-500" /> <strong>Maaşın Faiz Dərəcəsi:</strong> %{salaryData.rate}</li>
-        <li className="flex items-center gap-2"><FaBalanceScale className="text-gray-500" /> <strong>Bölmə Faktor:</strong> {salaryData.splitFactor}</li>
-      </ul>
-    </div>
-  )}
+
 </div>
 
 
