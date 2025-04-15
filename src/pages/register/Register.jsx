@@ -109,7 +109,7 @@ const Register = () => {
 
             const res = await register(formData).unwrap();
             dispatch(setCredentials({ ...res }));
-            navigate("/");
+            navigate("/profile");
         } catch (error) {
             console.error("Error:", error);  // Konsola da logla hata mesajını
     
