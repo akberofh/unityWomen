@@ -82,7 +82,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res?.data?.users || []);
         })
@@ -92,7 +92,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode for admin
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/admin/${userInfo.referralCode}`)
         .then(async (res) => {
           setReferredUsers(res?.data?.users || []);
 
@@ -103,8 +103,8 @@ const Profile = () => {
 
 
             const [sagRes, solRes] = await Promise.all([
-              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${sagKol.referralCode}`),
-              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${solKol.referralCode}`),
+              axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/user/${sagKol.referralCode}`),
+              axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/user/${solKol.referralCode}`),
             ]);
 
 
@@ -163,8 +163,8 @@ const Profile = () => {
     try {
       // İki API çağrısını paralel olarak başlatıyoruz
       const [res1, res2] = await Promise.all([
-        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${userInfo.referralCode}`),
-        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${userInfo.referralCode}`)
+        axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/get-link-owner/${userInfo.referralCode}`),
+        axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/referredBykod/${userInfo.referralCode}`)
       ]);
 
       // Yanıtları set ediyoruz
@@ -185,8 +185,8 @@ const Profile = () => {
     try {
       // İki API çağrısını paralel olarak başlatıyoruz
       const [res1, res2] = await Promise.all([
-        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${referralCode}`),
-        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${referralCode}`)
+        axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/get-link-owner/${referralCode}`),
+        axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/referredBykod/${referralCode}`)
       ]);
 
       // Yanıtları set ediyoruz
@@ -208,7 +208,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/referral-stats/${userInfo.referralCode}`);
+        const res = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/referral-stats/${userInfo.referralCode}`);
         setStats(res.data);
       } catch (error) {
         console.error("Veriler alınamadı:", error);
@@ -225,7 +225,7 @@ const Profile = () => {
     // Backend API'ye istekte bulunuyoruz
     const fetchSalaryData = async () => {
       try {
-        const response = await axios.get(`https://unity-women-backend.vercel.app/api/users/salary/${userInfo.referralCode}`); // API endpointini doğru şekilde ayarla
+        const response = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/salary/${userInfo.referralCode}`); // API endpointini doğru şekilde ayarla
         setSalaryData(response.data); // Backend'den gelen veriyi alıyoruz
       } catch (error) {
         console.error('Maaş verisi alınırken bir hata oluştu:', error);
@@ -331,44 +331,44 @@ const Profile = () => {
         </form>
 
         <div className="overflow-x-auto p-6 bg-gray-50 rounded-2xl shadow-lg">
-  {/* Veriler boşsa veya yükleniyorsa gösterilecek mesaj */}
-  {(!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
-    <div className="py-6 px-6 text-center text-sm text-gray-500">
-      Veriler yükleniyor...
-    </div>
-  ) : (
-    <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
-      <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
-        <tr>
-          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
-          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
-          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
-          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
-          <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {salaryData.periodSalaries.map((period, index) => (
-          <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
-            <td className="py-4 px-6">
-              <img
-                src={period.photo}
-                alt="Profil"
-                className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-              />
-            </td>
-            <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
-            <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
-            <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
-            <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )}
+          {/* Veriler boşsa veya yükleniyorsa gösterilecek mesaj */}
+          {(!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
+            <div className="py-6 px-6 text-center text-sm text-gray-500">
+              Veriler yükleniyor...
+            </div>
+          ) : (
+            <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
+              <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
+                <tr>
+                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
+                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
+                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
+                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
+                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {salaryData.periodSalaries.map((period, index) => (
+                  <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
+                    <td className="py-4 px-6">
+                      <img
+                        src={period.photo}
+                        alt="Profil"
+                        className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
+                      />
+                    </td>
+                    <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
+                    <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
 
-</div>
+        </div>
 
 
         <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">

@@ -11,7 +11,7 @@ const Email = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://unity-women-backend.vercel.app/api/users/verifyEmail", {
+      const response = await axios.post("https://unitywomen-48288fd0e24a.herokuapp.com/api/users/verifyEmail", {
         email,
         verficationToken,
       });

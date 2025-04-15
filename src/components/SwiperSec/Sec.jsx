@@ -8,13 +8,13 @@ import { EffectCoverflow, Navigation, Autoplay } from "swiper/modules";
 
 const Sec = () => {
   const images = [
-    "https://unitywomen.com/assets/images/17151633908ad27cd6-dcf2-4b52-9f37-80cfa57a695c.jpeg",
-    "https://unitywomen.com/assets/images/1725358631Sage%20Green%20Minimalist%20Business%20Proposal%20Presentation.zip%20-%204.png",
-    "https://unitywomen.com/assets/images/17151634310f9233f3-112b-4e14-a05f-83f1c1ec17df.jpeg",
-    "https://unitywomen.com/assets/images/fLmDSage%20Green%20Minimalist%20Business%20Proposal%20Presentation.zip%20-%207.png",
-    "https://unitywomen.com/assets/images/1725358661Sage%20Green%20Minimalist%20Business%20Proposal%20Presentation.zip%20-%201.png",
-    "https://unitywomen.com/assets/images/1715163340f1989c4f-9a85-4fbd-b37e-10d9b6c52779.jpeg",
-    "https://unitywomen.com/assets/images/1715163524e75e9c08-1477-42bd-bb24-0bd54db7650b.jpeg",
+    "https://unitywomen.com/assets/images/1740237994Minimalist%20Website%20Launch%20Computer%20Mockup%20Instagram%20Post.png",
+    "https://unitywomen.com/assets/images/1740238098%C3%9Cz%20baxim%20vasi.png",
+    "https://unitywomen.com/assets/images/1740239328%C3%9Cz%20baxim%20vasi.png",
+    "https://unitywomen.com/assets/images/1740240107%C3%9Cz%20baxim%20vasi.png",
+    "https://unitywomen.com/assets/images/1740240181Minimalist%20Website%20Launch%20Computer%20Mockup%20Instagram%20Post.png",
+    "https://unitywomen.com/assets/images/1740240274Untitled%20design.png",
+    "https://unitywomen.com/assets/images/1740240641%C3%9Cz%20baxim%20vasi.png",
   ];
 
   const photo = [

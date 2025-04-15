@@ -15,7 +15,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://unity-women-backend.vercel.app/api/users/');
+      const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/users/');
       setUsers(response.data.allUsers);
     } catch (error) {
       console.error('İstifadəçilər alınarkən xəta:', error);
@@ -30,7 +30,7 @@ const Users = () => {
     if (!window.confirm('Bu istifadəçini silmək istədiyinizə əminsiniz?')) return;
 
     try {
-      const response = await fetch(`https://unity-women-backend.vercel.app/api/users/delete/${id}`, {
+      const response = await fetch(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/delete/${id}`, {
         method: 'DELETE',
       });
 
@@ -62,7 +62,7 @@ const Users = () => {
       if (editedPassword) formData.append('password', editedPassword);
       if (editedPhoto) formData.append('photo', editedPhoto);
   
-      const response = await axios.put(`https://unity-women-backend.vercel.app/api/users/update/${id}`, formData, {
+      const response = await axios.put(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -36,7 +36,7 @@ const AddNewTodo = () => {
         dispatch({ type: 'todo/addTodo', payload: newQolbaq });
       }, 1000);
 
-      navigate('/dashboard');
+      navigate('/profile');
     } catch (err) {
       console.error('Failed to add the todo:', err);
     }
