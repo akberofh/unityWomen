@@ -12,6 +12,8 @@ const Users = () => {
   const [editedPayment, setEditedPayment] = useState(false);
   const [editedPassword, setEditedPassword] = useState('');
   const [editedPhoto, setEditedPhoto] = useState('');
+  const [editedReferralLinkOwner, setEditedReferralLinkOwner] = useState('');
+
 
   const fetchUsers = async () => {
     try {
@@ -51,6 +53,8 @@ const Users = () => {
     setEditedPayment(user.payment);
     setEditedPassword('');
     setEditedPhoto(user.photo || '');
+    setEditedReferralLinkOwner(user.referralLinkOwner || '');
+
   };
 
   const handleSave = async (id) => {
@@ -61,6 +65,8 @@ const Users = () => {
       formData.append('payment', editedPayment);
       if (editedPassword) formData.append('password', editedPassword);
       if (editedPhoto) formData.append('photo', editedPhoto);
+      formData.append('referralLinkOwner', editedReferralLinkOwner);
+
   
       const response = await axios.put(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/update/${id}`, formData, {
         headers: {
@@ -126,8 +132,11 @@ const Users = () => {
               <th className="p-4">Ad</th>
               <th className="p-4">Email</th>
               <th className="p-4">Referral Kodu</th>
+              <th className="p-4">Dəvət Sahibi</th>
+
               <th className="p-4">Ödəniş Durumu</th>
               <th className="p-4">Əməliyyat</th>
+              <th className="p-4">pul</th>
             </tr>
           </thead>
           <tbody>
@@ -168,6 +177,21 @@ const Users = () => {
                   )}
                 </td>
                 <td className="p-4">{user.referralCode}</td>
+                <td>
+                  {editingUserId === user._id ? (
+                    <input
+                      type="text"
+                      placeholder="Referral Link Sahibi"
+                      value={editedReferralLinkOwner}
+                      onChange={(e) => setEditedReferralLinkOwner(e.target.value)}
+                      className="p-2 border rounded-lg w-full mb-2"
+                    />
+                  ) : (
+                    <span onClick={() => handleEdit(user)} className="cursor-pointer text-indigo-600 hover:underline">
+                    {user.referralLinkOwner}
+                  </span>// Və ya boş saxlamaq istəyirsənsə '' yaza bilərsən
+                  )}
+                </td>
                 <td className="p-4">
                   {editingUserId === user._id ? (
                     <select
@@ -215,6 +239,8 @@ const Users = () => {
                     </button>
                   )}
                 </td>
+                <td className="p-4">{user.dailyEarnings}</td>
+
               </tr>
             ))}
             {filteredUsers.length === 0 && (
