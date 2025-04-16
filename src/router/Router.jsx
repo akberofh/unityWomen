@@ -23,6 +23,7 @@ import FavorieProduct from "../pages/Favorie/FavorieProduct";
 import PaymentDetal from "../Payment/PaymentDetal";
 import Cedvel from "../pages/profile/Cedvel";
 import Users from "../pages/profile/Users";
+import Maas from "../pages/profile/Maas";
 
 
 const Router = () => {
@@ -46,6 +47,7 @@ const Router = () => {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/add-new-todo" element={<AddNewTodo />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/maas" element={<Maas />} />
         <Route path="/kategori" element={<Catagory />} />
         <Route path="/catagoryadd" element={<CatagoryAdd />} />
         <Route path="/reset-password/:token" element={<  ResertPass/>} />
