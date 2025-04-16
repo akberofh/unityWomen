@@ -53,7 +53,7 @@ const Users = () => {
     setEditedPayment(user.payment);
     setEditedPassword('');
     setEditedPhoto(user.photo || '');
-    setEditedReferralLinkOwner(user.referralLinkOwner || '');
+    setEditedReferralLinkOwner(user.referralLinkOwner);
 
   };
 
@@ -77,7 +77,7 @@ const Users = () => {
       if (response.data.success) {
         const updatedUsers = users.map((user) =>
           user._id === id
-            ? { ...user, name: editedName, email: editedEmail, payment: editedPayment, photo: editedPhoto }
+            ? { ...user, name: editedName, email: editedEmail, payment: editedPayment, photo: editedPhoto ,referralLinkOwner : editedReferralLinkOwner }
             : user
         );
         setUsers(updatedUsers);
@@ -180,7 +180,6 @@ const Users = () => {
                 <td>
                   {editingUserId === user._id ? (
                     <input
-                      type="text"
                       placeholder="Referral Link Sahibi"
                       value={editedReferralLinkOwner}
                       onChange={(e) => setEditedReferralLinkOwner(e.target.value)}
