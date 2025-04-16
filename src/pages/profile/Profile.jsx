@@ -210,8 +210,11 @@ const Profile = () => {
       try {
         const res = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/referral-stats/${userInfo.referralCode}`);
         setStats(res.data);
+        setErrors(null);
       } catch (error) {
-        console.error("Veriler alınamadı:", error);
+        const errorMessage =
+          error.response?.data?.message || "Veriler alınamadı.";
+        setErrors(errorMessage);
       }
     };
 
@@ -222,18 +225,25 @@ const Profile = () => {
   const [salaryData, setSalaryData] = useState(null);
 
   useEffect(() => {
-    // Backend API'ye istekte bulunuyoruz
     const fetchSalaryData = async () => {
       try {
-        const response = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/salary/${userInfo.referralCode}`); // API endpointini doğru şekilde ayarla
-        setSalaryData(response.data); // Backend'den gelen veriyi alıyoruz
+        const response = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/salary/${userInfo.referralCode}`);
+        setSalaryData(response.data);
+        setError(null); // hata varsa önceki temizlenir
       } catch (error) {
-        console.error('Maaş verisi alınırken bir hata oluştu:', error);
+        const errorMessage =
+          error.response?.data?.message || "Maaş verisi alınarkən bir xəta baş verdi.";
+        setError(errorMessage);
       }
     };
 
     fetchSalaryData();
   }, []);
+
+
+  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState(null);
+
 
 
   return (
@@ -330,114 +340,122 @@ const Profile = () => {
           </button>
         </form>
 
-        <div className="overflow-x-auto p-6 bg-gray-50 rounded-2xl shadow-lg">
-          {/* Veriler boşsa veya yükleniyorsa gösterilecek mesaj */}
-          {(!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
+        <div className="w-full px-4 py-6 bg-gray-50 rounded-2xl shadow-lg">
+          {error ? (
+            <div className="py-6 px-6 text-center text-sm text-red-500 font-medium">
+              {error}
+            </div>
+          ) : (!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
             <div className="py-6 px-6 text-center text-sm text-gray-500">
               Veriler yükleniyor...
             </div>
           ) : (
-            <table className="min-w-full bg-white border border-gray-200 rounded-xl shadow-md">
-              <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
-                <tr>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {salaryData.periodSalaries.map((period, index) => (
-                  <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
-                    <td className="py-4 px-6">
-                      <img
-                        src={period.photo}
-                        alt="Profil"
-                        className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-                      />
-                    </td>
-                    <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
-                    <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
-                    <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
-                    <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-
-        </div>
-
-
-        <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
-          <h2 className="text-3xl font-bold text-center text-gray-800">Davet Kazanç Bilgileri</h2>
-
-          {/* stats null kontrolü */}
-          {stats ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                <p className="text-gray-500">Ad</p>
-                <p className="text-lg font-semibold">{stats.referrerName}</p>
-              </div>
-              <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                <p className="text-gray-500">Toplam Dəvət</p>
-                <p className="text-lg font-semibold">{stats.totalInvited} kişi</p>
-              </div>
-              <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                <p className="text-gray-500">Toplam Qazanc</p>
-                <p className="text-lg font-semibold">{stats.totalEarned} AZN</p>
-              </div>
-            </div>
-          ) : (
-            <p>Yükleniyor...</p>
-          )}
-
-          {/* 15 Günlük Kazanç Grafiği */}
-          {stats && (
-            <div className="mt-10">
-              <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Qazanc Qrafiki</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart
-                  data={stats.periodEarnings}
-                  margin={{ top: 10, right: 30, left: 0, bottom: 50 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="periodLabel" angle={-20} textAnchor="end" interval={0} height={70} />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="earned" fill="#4f46e5" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-
-          {/* Kazanç Dönemleri Tablosu */}
-          {stats && (
-            <div className="mt-10">
-              <h3 className="text-xl font-semibold mb-4 text-gray-700">Qazanc Dönəmləri</h3>
-              <div className="overflow-x-auto">
-                <table className="table-auto w-full border-collapse border border-gray-200">
-                  <thead className="bg-gray-100">
+            <div className="overflow-x-auto">
+              <div className="max-h-[500px] overflow-y-auto">
+                <table className="w-full min-w-[800px] bg-white border border-gray-200 rounded-xl shadow-md">
+                  <thead className="bg-gradient-to-r from-gray-100 to-gray-200 sticky top-0 z-10">
                     <tr>
-                      <th className="px-4 py-2 border">Dönəm</th>
-                      <th className="px-4 py-2 border">Kişi Sayısı</th>
-                      <th className="px-4 py-2 border">Qazanc (AZN)</th>
+                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
+                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
+                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
+                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
+                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {stats.periodEarnings.map((period, idx) => (
-                      <tr key={idx} className="text-center border-t">
-                        <td className="px-4 py-2 border">{period.periodLabel}</td>
-                        <td className="px-4 py-2 border">{period.userCount}</td>
-                        <td className="px-4 py-2 border">{period.earned} AZN</td>
+                    {salaryData.periodSalaries.map((period, index) => (
+                      <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
+                        <td className="py-4 px-6">
+                          <img
+                            src={period.photo}
+                            alt="Profil"
+                            className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
+                          />
+                        </td>
+                        <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
+                        <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
+                        <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
+                        <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </div>
+          )}
+        </div>
+
+
+        <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
+          <h2 className="text-3xl font-bold text-center text-gray-800">Dəvət Qazanc Məlumatları</h2>
+
+          {/* stats null kontrolü */}
+          {errors ? (
+            <div className="text-center text-red-500 font-medium">{errors}</div>
+          ) : stats ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div className="bg-gray-100 p-4 rounded-2xl shadow">
+                  <p className="text-gray-500">Ad</p>
+                  <p className="text-lg font-semibold">{stats.referrerName}</p>
+                </div>
+                <div className="bg-gray-100 p-4 rounded-2xl shadow">
+                  <p className="text-gray-500">Toplam Dəvət</p>
+                  <p className="text-lg font-semibold">{stats.totalInvited} İnsan</p>
+                </div>
+                <div className="bg-gray-100 p-4 rounded-2xl shadow">
+                  <p className="text-gray-500">Toplam Qazanc</p>
+                  <p className="text-lg font-semibold">{stats.totalEarned} AZN</p>
+                </div>
+              </div>
+
+
+              {/* 15 Günlük Kazanç Grafiği */}
+              {stats && (
+                <div className="mt-10">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Qazanc Qrafiki</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                      data={stats.periodEarnings}
+                      margin={{ top: 10, right: 30, left: 0, bottom: 50 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="periodLabel" angle={-20} textAnchor="end" interval={0} height={70} />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="earned" fill="#4f46e5" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+
+              <div className="mt-10">
+                <h3 className="text-xl font-semibold mb-4 text-gray-700">Qazanc Dönəmləri</h3>
+                <div className="overflow-x-auto">
+                  <table className="table-auto w-full border-collapse border border-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 border">Dönəm</th>
+                        <th className="px-4 py-2 border">İnsan Sayı</th>
+                        <th className="px-4 py-2 border">Qazanc (AZN)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.periodEarnings.map((period, idx) => (
+                        <tr key={idx} className="text-center border-t">
+                          <td className="px-4 py-2 border">{period.periodLabel}</td>
+                          <td className="px-4 py-2 border">{period.userCount}</td>
+                          <td className="px-4 py-2 border">{period.earned} AZN</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="text-center text-sm text-gray-500">Yükleniyor...</p>
           )}
         </div>
 
@@ -473,6 +491,10 @@ const Profile = () => {
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Kart</strong>
                 <p>{userInfo.card}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <strong className="block text-gray-500 mb-1">Ödəniş</strong>
+                <p>{userInfo.payment ? "Ödəniş edilib" : "Ödəniş edilməyib"}</p>
               </div>
               <div className="bg-white rounded-xl p-4 shadow">
                 <strong className="block text-gray-500 mb-1">Ata Adı</strong>
