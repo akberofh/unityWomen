@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Maas = () => {
-  const LIMIT = 9;
+  const LIMIT = 7;
   const [currentPage, setCurrentPage] = useState(1);
   const [cachedData, setCachedData] = useState({});
   const [loading, setLoading] = useState(true);
