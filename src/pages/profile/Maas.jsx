@@ -76,10 +76,10 @@ const Maas = () => {
                     <td className="p-4">{user.name}</td>
                     <td className="p-4">{user.email}</td>
                     <td className="p-4">{user.rank}</td>
-                    <td className="p-4">{user.total} ₺</td>
-                    <td className="p-4">{user.rightTotal} ₺</td>
-                    <td className="p-4">{user.leftTotal} ₺</td>
-                    <td className="p-4 font-semibold text-green-600">{user.salary} ₺</td>
+                    <td className="p-4">{user.total} AZN</td>
+                    <td className="p-4">{user.rightTotal} AZN</td>
+                    <td className="p-4">{user.leftTotal} AZN</td>
+                    <td className="p-4 font-semibold text-green-600">{user.salary} AZN</td>
                     <td className="p-4">{user.mode}{user.side ? ` (${user.side})` : ""}</td>
                     <td className="p-4">{user.rate?.toFixed(1)}%</td>
                     <td className="p-4">{user.splitFactor}</td>
