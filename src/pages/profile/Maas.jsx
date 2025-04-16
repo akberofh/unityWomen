@@ -1,46 +1,36 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const LIMIT = 15;
-
 const Maas = () => {
-  const [cachedData, setCachedData] = useState({});
+  const LIMIT = 15;
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [cachedData, setCachedData] = useState({});
+  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [maxPage, setMaxPage] = useState(1);
 
+  // Veriyi getiren fonksiyon
   const fetchSalaries = async (page) => {
-    if (cachedData[page]) return; // önceden çekilmişse yeniden çekme
-
-    setLoading(true);
     try {
       const response = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/oral/allUsers?page=${page}&limit=${LIMIT}`);
-      const newSalaries = response.data.results;
-
-      setCachedData((prev) => ({
-        ...prev,
-        [page]: newSalaries,
-      }));
-
-      if (newSalaries.length < LIMIT) {
-        setHasMore(false);
-      } else {
-        setMaxPage((prev) => Math.max(prev, page + 1)); // bir sonraki sayfayı hazırlamak için
-      }
-
+      const data = response.data.results;
+      setCachedData((prev) => ({ ...prev, [page]: data }));
+      if (data.length < LIMIT) setHasMore(false);
     } catch (error) {
       console.error("Maaşlar alınamadı:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
+  // İlk sayfa yüklensin
   useEffect(() => {
-    fetchSalaries(currentPage);
-  }, [currentPage]);
+    const loadFirstPage = async () => {
+      setLoading(true);
+      await fetchSalaries(1);
+      setLoading(false);
+    };
+    loadFirstPage();
+  }, []);
 
-  // Arka planda önceden verileri getir
+  // Yeni sayfa yüklendiğinde sonraki sayfayı arka planda al
   useEffect(() => {
     const preloadNextPage = async () => {
       if (hasMore && !cachedData[currentPage + 1]) {
@@ -50,21 +40,21 @@ const Maas = () => {
     preloadNextPage();
   }, [currentPage, cachedData, hasMore]);
 
-  const handlePageClick = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = (pageNum) => {
+    setCurrentPage(pageNum);
   };
 
-  const salaries = cachedData[currentPage] || [];
+  const totalPages = Object.keys(cachedData).length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Aylık Maaş Raporu</h1>
 
-      {loading && salaries.length === 0 ? (
+      {loading ? (
         <div className="text-center text-xl p-8">Yükleniyor...</div>
       ) : (
         <>
-          <div className="overflow-x-auto mb-6">
+          <div className="overflow-x-auto">
             <table className="min-w-full bg-white shadow-md rounded-xl overflow-hidden">
               <thead className="bg-gray-100">
                 <tr className="text-left text-sm text-gray-700">
@@ -81,7 +71,7 @@ const Maas = () => {
                 </tr>
               </thead>
               <tbody>
-                {salaries.map((user, i) => (
+                {(cachedData[currentPage] || []).map((user, i) => (
                   <tr key={i} className="border-b hover:bg-gray-50">
                     <td className="p-4">{user.name}</td>
                     <td className="p-4">{user.email}</td>
@@ -91,7 +81,7 @@ const Maas = () => {
                     <td className="p-4">{user.leftTotal} ₺</td>
                     <td className="p-4 font-semibold text-green-600">{user.salary} ₺</td>
                     <td className="p-4">{user.mode}{user.side ? ` (${user.side})` : ""}</td>
-                    <td className="p-4">{user.rate.toFixed(1)}%</td>
+                    <td className="p-4">{user.rate?.toFixed(1)}%</td>
                     <td className="p-4">{user.splitFactor}</td>
                   </tr>
                 ))}
@@ -99,18 +89,42 @@ const Maas = () => {
             </table>
           </div>
 
-          {/* Sayfa numaraları */}
-          <div className="flex justify-center gap-2">
-            {Array.from({ length: maxPage }, (_, i) => i + 1).map((pageNum) => (
-              <button
-                key={pageNum}
-                className={`px-4 py-2 rounded ${pageNum === currentPage ? "bg-blue-600 text-white" : "bg-gray-200 text-black"} hover:bg-blue-500`}
-                onClick={() => handlePageClick(pageNum)}
-              >
-                {pageNum}
-              </button>
-            ))}
+          {/* Sayfalama */}
+          <div className="flex justify-center mt-6 flex-wrap gap-2">
+            {totalPages > 1 &&
+              Array.from({ length: totalPages }, (_, index) => index + 1)
+                .filter((pageNum) => {
+                  return (
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    Math.abs(pageNum - currentPage) <= 1
+                  );
+                })
+                .reduce((acc, pageNum, index, array) => {
+                  if (index > 0 && pageNum - array[index - 1] > 1) {
+                    acc.push("...");
+                  }
+                  acc.push(pageNum);
+                  return acc;
+                }, [])
+                .map((page, index) =>
+                  page === "..." ? (
+                    <span key={index} className="px-3 py-2 text-gray-500 select-none">...</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => handlePageChange(page)}
+                      className={`px-4 py-2 rounded ${currentPage === page
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 hover:bg-gray-300"
+                        }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
           </div>
+
         </>
       )}
     </div>
