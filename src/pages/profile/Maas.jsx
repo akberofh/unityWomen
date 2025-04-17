@@ -14,7 +14,7 @@ const Maas = () => {
   useEffect(() => {
     const fetchSalaries = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/maas");
+        const response = await axios.get("https://unitywomen-48288fd0e24a.herokuapp.com/api/maas");
         setAllData(response.data);
         setFilteredData(response.data);
       } catch (error) {
