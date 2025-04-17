@@ -24,6 +24,7 @@ import PaymentDetal from "../Payment/PaymentDetal";
 import Cedvel from "../pages/profile/Cedvel";
 import Users from "../pages/profile/Users";
 import Maas from "../pages/profile/Maas";
+import Qazanc from "../pages/profile/Qazanc";
 
 
 const Router = () => {
@@ -31,6 +32,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}  />
+        <Route path="/qazanc" element={<Qazanc />}  />
         <Route path="/users" element={<Users />}  />
         <Route path="/cedvel" element={<Cedvel />}  />
         <Route path="/payment" element={<PaymentDetal />}  />
