@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Maas = () => {
+const Qazanc = () => {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    salary: null,
-    mode: null,
+    earnedAboveZero: null,
+    invitedAboveZero: null,
   });
 
   useEffect(() => {
-    const fetchSalaries = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/maas");
+        const response = await axios.get("https://unitywomen-48288fd0e24a.herokuapp.com/api/qazanc");
         setAllData(response.data);
         setFilteredData(response.data);
       } catch (error) {
-        console.error("Maaşlar alınamadı:", error);
+        console.error("Veri alınamadı:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchSalaries();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -39,15 +39,15 @@ const Maas = () => {
       );
     }
 
-    if (filters.salary !== null) {
+    if (filters.earnedAboveZero !== null) {
       tempData = tempData.filter((item) =>
-        filters.salary ? item.salary > 0 : item.salary <= 0
+        filters.earnedAboveZero ? item.totalEarned > 0 : item.totalEarned <= 0
       );
     }
 
-    if (filters.mode) {
+    if (filters.invitedAboveZero !== null) {
       tempData = tempData.filter((item) =>
-        item.mode?.toLowerCase().includes(filters.mode.toLowerCase())
+        filters.invitedAboveZero ? item.totalInvited > 0 : item.totalInvited <= 0
       );
     }
 
@@ -63,7 +63,6 @@ const Maas = () => {
 
   const handleSuggestionClick = (name) => {
     setSearch(name);
-    setFilters((prev) => ({ ...prev })); // tetikle
   };
 
   const filterButton = (label, key, value) => (
@@ -81,7 +80,7 @@ const Maas = () => {
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Aylık Maaş Raporu</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Kullanıcı Raporu</h1>
 
       {/* Arama ve Öneri Alanı */}
       <div className="relative flex flex-col items-center mb-4">
@@ -116,10 +115,10 @@ const Maas = () => {
 
       {/* Filtre Butonları */}
       <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {filterButton("Maaş Alanlar", "salary", true)}
-        {filterButton("Maaş Almayanlar", "salary", false)}
-        {filterButton("Dual Side", "mode", "Dual Side")}
-        {filterButton("Single Side", "mode", "Single Side")}
+        {filterButton("Kazançı Olanlar", "earnedAboveZero", true)}
+        {filterButton("Kazançı Olmayanlar", "earnedAboveZero", false)}
+        {filterButton("Davet Ettiği Olanlar", "invitedAboveZero", true)}
+        {filterButton("Davet Etmeyenler", "invitedAboveZero", false)}
       </div>
 
       {/* Tablo */}
@@ -134,14 +133,9 @@ const Maas = () => {
                   <th className="px-4 py-2">#</th>
                   <th className="p-4">Kullanıcı</th>
                   <th className="p-4">Email</th>
-                  <th className="p-4">Unvan</th>
-                  <th className="p-4">Kazanç Toplamı</th>
-                  <th className="p-4">Sağ Toplamı</th>
-                  <th className="p-4">Sol Toplamı</th>
-                  <th className="p-4">Maaş</th>
-                  <th className="p-4">Mod</th>
-                  <th className="p-4">Oran (%)</th>
-                  <th className="p-4">Bölme Faktörü</th>
+                  <th className="p-4">Toplam Kazanç</th>
+                  <th className="p-4">Davet Edilen</th>
+                  <th className="p-4">Toplam Ödeme</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,14 +144,9 @@ const Maas = () => {
                     <td className="px-4 py-2 font-bold text-gray-700">{i + 1}</td>
                     <td className="p-4">{user.name}</td>
                     <td className="p-4">{user.email}</td>
-                    <td className="p-4">{user.rank || "-"}</td>
-                    <td className="p-4">{user.total} AZN</td>
-                    <td className="p-4">{user.rightTotal} AZN</td>
-                    <td className="p-4">{user.leftTotal} AZN</td>
-                    <td className="p-4 font-semibold text-green-600">{user.salary} AZN</td>
-                    <td className="p-4">{user.mode}</td>
-                    <td className="p-4">{user.rate?.toFixed(1)}%</td>
-                    <td className="p-4">{user.splitFactor}</td>
+                    <td className="p-4">{user.totalEarned} AZN</td>
+                    <td className="p-4">{user.totalInvited}</td>
+                    <td className="p-4">{user.totalPaymentTrue} AZN</td>
                   </tr>
                 ))}
               </tbody>
@@ -173,4 +162,4 @@ const Maas = () => {
   );
 };
 
-export default Maas;
+export default Qazanc;
