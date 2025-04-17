@@ -81,13 +81,13 @@ const Maas = () => {
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Aylık Maaş Raporu</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Aylıq Maaş Raporu</h1>
 
       {/* Arama ve Öneri Alanı */}
       <div className="relative flex flex-col items-center mb-4">
         <input
           type="text"
-          placeholder="İsimle ara..."
+          placeholder="Adın axtar..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-md p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -118,8 +118,8 @@ const Maas = () => {
       <div className="flex flex-wrap justify-center gap-3 mb-6">
         {filterButton("Maaş Alanlar", "salary", true)}
         {filterButton("Maaş Almayanlar", "salary", false)}
-        {filterButton("Dual Side", "mode", "Dual Side")}
-        {filterButton("Single Side", "mode", "Single Side")}
+        {filterButton("İki Qol", "mode", "Dual Side")}
+        {filterButton("Tək Qol", "mode", "Single Side")}
       </div>
 
       {/* Tablo */}
@@ -132,16 +132,16 @@ const Maas = () => {
               <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
                 <tr>
                   <th className="px-4 py-2">#</th>
-                  <th className="p-4">Kullanıcı</th>
+                  <th className="p-4">İstifadəçi</th>
                   <th className="p-4">Email</th>
-                  <th className="p-4">Unvan</th>
-                  <th className="p-4">Kazanç Toplamı</th>
+                  <th className="p-4">Rütbə</th>
+                  <th className="p-4">Qazanc Toplamı</th>
                   <th className="p-4">Sağ Toplamı</th>
                   <th className="p-4">Sol Toplamı</th>
                   <th className="p-4">Maaş</th>
                   <th className="p-4">Mod</th>
-                  <th className="p-4">Oran (%)</th>
-                  <th className="p-4">Bölme Faktörü</th>
+                  <th className="p-4">Dərəcəsi (%)</th>
+                  <th className="p-4">Bölme Faktoru</th>
                 </tr>
               </thead>
               <tbody>
@@ -165,7 +165,7 @@ const Maas = () => {
           </div>
 
           {filteredData.length === 0 && (
-            <p className="text-center text-gray-500 mt-6">Sonuç bulunamadı.</p>
+            <p className="text-center text-gray-500 mt-6">Tapılmadı.</p>
           )}
         </>
       )}
