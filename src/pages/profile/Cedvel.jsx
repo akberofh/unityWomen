@@ -16,16 +16,13 @@ const getRandomColor = () => {
 const ReferralTreeBinary = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [treeData, setTreeData] = useState(null);
-  const [translate, setTranslate] = useState({
-    x: window.innerWidth / 2,
-    y: 100,
-  });
+  const [translate, setTranslate] = useState({ x: window.innerWidth / 2, y: 100 });
   const [zoom, setZoom] = useState(1);
   const [allUsers, setAllUsers] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Başlangıçta true!
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +36,6 @@ const ReferralTreeBinary = () => {
         ]);
 
         const all = [...(adminRes.data?.users || []), ...(userRes.data?.users || [])];
-
         const unique = {};
         all.forEach((u) => {
           if (!unique[u._id]) unique[u._id] = u;
@@ -50,6 +46,8 @@ const ReferralTreeBinary = () => {
         buildTree(selectedUser || userInfo, users);
       } catch (err) {
         console.error("Referral ağacı yüklenemedi:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -84,10 +82,7 @@ const ReferralTreeBinary = () => {
         if (rightNode) childNodes.push(rightNode);
       }
 
-      if (childNodes.length > 0) {
-        node.children = childNodes;
-      }
-
+      if (childNodes.length > 0) node.children = childNodes;
       return node;
     };
 
@@ -115,7 +110,7 @@ const ReferralTreeBinary = () => {
     if (found) {
       setLoading(true);
       setSelectedUser(found);
-      setTimeout(() => setLoading(false), 1000); // Simülasyon için
+      setTimeout(() => setLoading(false), 500); // Simülasyon
     }
   };
 
@@ -145,37 +140,13 @@ const ReferralTreeBinary = () => {
           stroke="black"
           strokeWidth="2"
         />
-        <text
-          textAnchor="middle"
-          x="0"
-          y="-12"
-          fontSize="14"
-          fill="black"
-          stroke="black"
-          strokeWidth="0.5"
-        >
+        <text textAnchor="middle" x="0" y="-12" fontSize="14" fill="black">
           {nodeDatum.name}
         </text>
-        <text
-          textAnchor="middle"
-          x="0"
-          y="10"
-          fontSize="14"
-          fill="white"
-          stroke="white"
-          strokeWidth="0.5"
-        >
+        <text textAnchor="middle" x="0" y="10" fontSize="14" fill="white">
           Ata: {nodeDatum.attributes?.Ata}
         </text>
-        <text
-          textAnchor="middle"
-          x="0"
-          y="25"
-          fontSize="14"
-          fill="white"
-          stroke="white"
-          strokeWidth="0.5"
-        >
+        <text textAnchor="middle" x="0" y="25" fontSize="14" fill="white">
           Kod: {nodeDatum.attributes?.Kod}
         </text>
       </g>
@@ -200,7 +171,6 @@ const ReferralTreeBinary = () => {
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("wheel", handleWheel);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("wheel", handleWheel);
@@ -211,7 +181,7 @@ const ReferralTreeBinary = () => {
     <div style={{ width: "100%", height: "100vh" }}>
       <h2 className="text-3xl font-bold text-center mt-4 mb-2">Referans Ağacı 🌳</h2>
 
-      <div className="flex items-center justify-between p-4 gap-4 flex-wrap">
+      <div className="flex flex-wrap items-center justify-center gap-4 p-4">
         <button
           onClick={handleBackClick}
           className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-900"
@@ -219,7 +189,7 @@ const ReferralTreeBinary = () => {
           ← Geri Dön
         </button>
 
-        <div className="relative w-full max-w-md">
+        <div className="relative w-full max-w-md flex-shrink-0">
           <input
             type="text"
             value={searchInput}
@@ -229,7 +199,7 @@ const ReferralTreeBinary = () => {
           />
           {suggestions.length > 0 && (
             <ul className="absolute left-0 right-0 max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded-md shadow-md z-10">
-            {suggestions.map((user) => (
+              {suggestions.map((user) => (
                 <li
                   key={user._id}
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -257,25 +227,25 @@ const ReferralTreeBinary = () => {
         </button>
       </div>
 
-      {loading && (
+      {loading ? (
         <p className="text-center text-lg text-blue-600 font-semibold mb-4 animate-pulse">
-          🔍 Aranıyor...
+          ⏳ Yükleniyor...
         </p>
-      )}
-
-      {treeData && (
-        <Tree
-          data={treeData}
-          orientation="vertical"
-          translate={translate}
-          zoom={zoom}
-          collapsible={false}
-          pathFunc="step"
-          separation={{ siblings: 2, nonSiblings: 3 }}
-          renderCustomNodeElement={renderCustomNode}
-          zoomable={true}
-          draggable={true}
-        />
+      ) : (
+        treeData && (
+          <Tree
+            data={treeData}
+            orientation="vertical"
+            translate={translate}
+            zoom={zoom}
+            collapsible={false}
+            pathFunc="step"
+            separation={{ siblings: 2, nonSiblings: 3 }}
+            renderCustomNodeElement={renderCustomNode}
+            zoomable={true}
+            draggable={true}
+          />
+        )
       )}
     </div>
   );
