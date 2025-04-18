@@ -25,6 +25,7 @@ import Cedvel from "../pages/profile/Cedvel";
 import Users from "../pages/profile/Users";
 import Maas from "../pages/profile/Maas";
 import Qazanc from "../pages/profile/Qazanc";
+import UserMaas from "../pages/profile/UserMaas";
 
 
 const Router = () => {
@@ -32,6 +33,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}  />
+        <Route path="/userMaas" element={<UserMaas />}  />
         <Route path="/qazanc" element={<Qazanc />}  />
         <Route path="/users" element={<Users />}  />
         <Route path="/cedvel" element={<Cedvel />}  />

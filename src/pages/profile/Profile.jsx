@@ -737,11 +737,11 @@ const Profile = () => {
 
 
           {filteredUsers.length > 0 ? (
-            <div className="overflow-x-auto max-w-full">
-              <table className="min-w-[600px] border-collapse text-left w-full">
-                <thead>
+            <div className="overflow-x-auto max-h-[600px] overflow-y-auto border rounded-xl shadow-lg">
+              <table className="min-w-full bg-white text-sm">
+                <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
                   <tr className="bg-gray-100">
-                    <th className="px-4 py-2 border-b">#</th> {/* Yeni sütun */}
+                    <th className="px-4 py-2 border-b">#</th> 
                     <th className="px-4 py-2 border-b">Ad Soyad</th>
                     <th className="px-4 py-2 border-b">Kod</th>
                     <th className="px-4 py-2 border-b">Email</th>
