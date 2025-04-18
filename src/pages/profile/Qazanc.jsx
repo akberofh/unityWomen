@@ -83,13 +83,13 @@ const Qazanc = () => {
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Kullanıcı Raporu</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Mükafat Raporu</h1>
 
       {/* Arama ve Öneri Alanı */}
       <div className="relative flex flex-col items-center mb-4">
         <input
           type="text"
-          placeholder="İsimle ara..."
+          placeholder="Adla ara..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-md p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -118,10 +118,10 @@ const Qazanc = () => {
 
       {/* Filtre Butonları */}
       <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {filterButton("Kazançı Olanlar", "earnedAboveZero", true)}
-        {filterButton("Kazançı Olmayanlar", "earnedAboveZero", false)}
-        {filterButton("Davet Ettiği Olanlar", "invitedAboveZero", true)}
-        {filterButton("Davet Etmeyenler", "invitedAboveZero", false)}
+        {filterButton("Qazancı Olanlar", "earnedAboveZero", true)}
+        {filterButton("Qazancı Olmayanlar", "earnedAboveZero", false)}
+        {filterButton("Dəvət Etdiyi Olanlar", "invitedAboveZero", true)}
+        {filterButton("Dəvet Etməyənler", "invitedAboveZero", false)}
       </div>
 
       {/* Tablo */}
@@ -134,11 +134,11 @@ const Qazanc = () => {
               <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
                 <tr>
                   <th className="px-4 py-2">#</th>
-                  <th className="p-4">Kullanıcı</th>
+                  <th className="p-4">İstifadəçi</th>
                   <th className="p-4">Email</th>
-                  <th className="p-4">Toplam Kazanç</th>
-                  <th className="p-4">Davet Edilen</th>
-                  <th className="p-4">Toplam Ödeme</th>
+                  <th className="p-4">Toplam Qazanc</th>
+                  <th className="p-4">Dəvət Edilən</th>
+                  <th className="p-4">Ödəniş Edənlər</th>
                 </tr>
               </thead>
               <tbody>
