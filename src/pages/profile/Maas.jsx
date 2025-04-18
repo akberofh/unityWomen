@@ -11,7 +11,10 @@ const SalaryFilter = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/maas');
+        const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/mine',
+          {withCredentials: true,}
+
+        );
         setData(response.data);
 
         const all = response.data.flatMap(user => user.periodSalaries.map(p => p.periodLabel));
@@ -70,7 +73,7 @@ const SalaryFilter = () => {
       <div className="mb-6">
         <input
           type="text"
-          placeholder="Kullanıcı ara..."
+          placeholder="İstifadəçi ara..."
           className="p-3 w-full rounded border shadow"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -84,8 +87,7 @@ const SalaryFilter = () => {
               <th className="p-4 text-left">Fotoğraf</th>
               <th className="p-4 text-left">Ad</th>
               <th className="p-4 text-left">Email</th>
-              <th className="p-4 text-left">Rütbe</th>
-              <th className="p-4 text-left">Dönem Maaşı</th>
+              <th className="p-4 text-left">Tarix Maaşı</th>
               <th className="p-4 text-left">Toplam Maaş</th>
             </tr>
           </thead>
@@ -101,7 +103,6 @@ const SalaryFilter = () => {
                 </td>
                 <td className="p-4">{user.name}</td>
                 <td className="p-4">{user.email}</td>
-                <td className="p-4">{user.rank}</td>
                 <td className="p-4">{user.salary} AZN</td>
                 <td className="p-4">{user.totalUserSalary} AZN</td>
               </tr>

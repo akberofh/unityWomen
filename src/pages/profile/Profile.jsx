@@ -33,6 +33,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
+  const [paymentFilter, setPaymentFilter] = useState(null);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -124,10 +125,15 @@ const Profile = () => {
 
 
   // Arama fonksiyonu
-  const filteredUsers = referredUserss.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.referralCode.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = referredUserss
+    .filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.referralCode.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((user) => {
+      if (paymentFilter === null) return true;
+      return paymentFilter ? user.payment === true : user.payment === false;
+    });
 
 
   const copyReferralLink = () => {
@@ -587,6 +593,18 @@ const Profile = () => {
           >
             Cədvələ Keçin➡
           </button>
+          <button
+            onClick={() => navigate("/qazanc")}
+            className="text-blue-500 hover:text-white m-10 hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
+          >
+            Mükafat Bölməsinə Keçin➡
+          </button>
+          <button
+            onClick={() => navigate("/maas")}
+            className="text-blue-500 hover:text-white m-10 hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
+          >
+            Maaş Bölməsinə Keçin➡
+          </button>
 
           <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
 
@@ -734,6 +752,21 @@ const Profile = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
           />
+
+<select
+            value={paymentFilter === null ? "" : paymentFilter ? "paid" : "unpaid"}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "paid") setPaymentFilter(true);
+              else if (val === "unpaid") setPaymentFilter(false);
+              else setPaymentFilter(null);
+            }}
+            className="p-2 border ml-2 mb-2 border-gray-300 rounded"
+          >
+            <option value="">Bütün ödənişlər</option>
+            <option value="paid">Ödəniş edənlər</option>
+            <option value="unpaid">Ödəniş etməyənlər</option>
+          </select>
 
 
           {filteredUsers.length > 0 ? (
