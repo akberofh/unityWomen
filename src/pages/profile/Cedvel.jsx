@@ -13,7 +13,6 @@ const getRandomColor = () => {
   return color;
 };
 
-
 const ReferralTreeBinary = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [treeData, setTreeData] = useState(null);
@@ -23,7 +22,7 @@ const ReferralTreeBinary = () => {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Başlangıçta true!
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -129,7 +128,7 @@ const ReferralTreeBinary = () => {
     const randomColor = getRandomColor();
     const rectWidth = Math.max(140, nodeDatum.name.length * 9);
     const rectX = -(rectWidth / 2);
-  
+
     return (
       <g>
         <rect
@@ -142,7 +141,7 @@ const ReferralTreeBinary = () => {
           strokeWidth="2"
           rx="5"
         />
-  
+
         <foreignObject x={rectX} y="-30" width={rectWidth} height="75">
           <div xmlns="http://www.w3.org/1999/xhtml" style={{
             fontFamily: 'Arial, sans-serif',
@@ -190,7 +189,7 @@ const ReferralTreeBinary = () => {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div className="referral-tree-container" style={{ width: "100%", height: "100vh", overflowY: "scroll" }}>
       <h2 className="text-3xl font-bold text-center mt-4 mb-2">Referans Ağacı 🌳</h2>
 
       <div className="flex flex-wrap items-center justify-center gap-4 p-4">
@@ -228,7 +227,7 @@ const ReferralTreeBinary = () => {
           onClick={handleSearch}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800"
         >
-          Axtarış et
+          Ara
         </button>
 
         <button
