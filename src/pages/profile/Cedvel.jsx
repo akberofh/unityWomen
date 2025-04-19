@@ -127,29 +127,40 @@ const ReferralTreeBinary = () => {
 
   const renderCustomNode = ({ nodeDatum }) => {
     const randomColor = getRandomColor();
-    const rectWidth = Math.max(120, nodeDatum.name.length * 8, 200);
+    const rectWidth = Math.max(140, nodeDatum.name.length * 9);
     const rectX = -(rectWidth / 2);
-
+  
     return (
       <g>
         <rect
           width={rectWidth}
-          height="65"
+          height="75"
           x={rectX}
           y="-30"
           fill={randomColor}
           stroke="black"
           strokeWidth="2"
+          rx="5"
         />
-        <text textAnchor="middle" x="0" y="-12" fontSize="14" fill="black">
-          {nodeDatum.name}
-        </text>
-        <text textAnchor="middle" x="0" y="10" fontSize="14" fill="white">
-          Ata: {nodeDatum.attributes?.Ata}
-        </text>
-        <text textAnchor="middle" x="0" y="25" fontSize="14" fill="white">
-          Kod: {nodeDatum.attributes?.Kod}
-        </text>
+  
+        <foreignObject x={rectX} y="-30" width={rectWidth} height="75">
+          <div xmlns="http://www.w3.org/1999/xhtml" style={{
+            fontFamily: 'Arial, sans-serif',
+            fontWeight: '500',
+            fontSize: '11px',
+            color: 'black',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            textAlign: 'center',
+          }}>
+            <div style={{ color: 'black' }}>{nodeDatum.name}</div>
+            <div style={{ color: 'black' }}>Ata: {nodeDatum.attributes?.Ata}</div>
+            <div style={{ color: 'black' }}>Kod: {nodeDatum.attributes?.Kod}</div>
+          </div>
+        </foreignObject>
       </g>
     );
   };
