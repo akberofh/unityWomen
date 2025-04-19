@@ -64,7 +64,7 @@ function Chat({ theme }) {
           steps={[
             {
               id: '1',
-              message: 'Adınız nedir?',
+              message: 'Adınız nədir?',
               trigger: '2',
             },
             {
@@ -74,12 +74,12 @@ function Chat({ theme }) {
             },
             {
               id: '3',
-              message: 'Merhaba {previousValue}, tanıştığımıza sevindim!',
+              message: 'Salam {previousValue}, Tanışdığımıza sevindim!',
               trigger: '4',
             },
             {
               id: '4',
-              message: 'Sosyal medya hesaplarımdan biriyle iletişime geçmek ister misiniz?',
+              message: 'Sosial media hesablarımdan biriylə əlaqəyə keçmək istəyirsiz?',
               trigger: '5',
             },
             {
@@ -107,19 +107,19 @@ function Chat({ theme }) {
             },
             {
               id: 'back-to-options',
-              message: 'Başka bir platform seçmek ister misiniz?',
+              message: 'Başqa bir platform seçmək istəyirsiz??',
               trigger: 'back-options',
             },
             {
               id: 'back-options',
               options: [
-                { value: 'yes', label: 'Evet', trigger: '5' },
-                { value: 'no', label: 'Hayır', trigger: 'end-message' },
+                { value: 'yes', label: 'Bəli', trigger: '5' },
+                { value: 'no', label: 'Xeyir', trigger: 'end-message' },
               ],
             },
             {
               id: 'end-message',
-              message: 'Yardımcı olabildiysem ne mutlu! İyi günler dilerim!',
+              message: 'Kömək edə bildiysəm nə xoş!',
               end: true,
             },
           ]}

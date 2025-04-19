@@ -150,7 +150,7 @@ const Header = ({ theme, setTheme }) => {
                 data-aos="custom-border"
                 data-aos-duration="1000"
               >
-                Sevimliler
+                Sevimlilər
               </Link>
               <Link
                 to="/about"
@@ -278,7 +278,7 @@ const Header = ({ theme, setTheme }) => {
           className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 h-full z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="relative text-center">
-            <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profile</Link>
+            <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profilə Keçin➡</Link>
 
             {
               userInfo.photo ? (
@@ -303,7 +303,7 @@ const Header = ({ theme, setTheme }) => {
 
                 {/* Ad Soyad */}
                 <div className="flex flex-col space-y-1">
-                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">Ad</label>
+                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">Adınız</label>
                   <h2 className="text-xl text-gray-800 dark:text-white">{userInfo.name}</h2>
                 </div>
 
@@ -311,7 +311,7 @@ const Header = ({ theme, setTheme }) => {
 
                 {/* Email */}
                 <div className="flex flex-col space-y-1 mt-4">
-                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">Email</label>
+                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">Emailiniz</label>
                   <h2 className="text-xl text-gray-800 dark:text-white">{userInfo.email}</h2>
                 </div>
               </>
@@ -321,7 +321,7 @@ const Header = ({ theme, setTheme }) => {
                   to="/login"
                   className="bg-blue-500  text-white px-6 py-3 rounded-lg text-xl hover:bg-blue-600"
                 >
-                  Giriş Et
+                  Giriş Ed
                 </Link>
 
                 <div className=" h-6"></div>
@@ -349,7 +349,7 @@ const Header = ({ theme, setTheme }) => {
           {/* Linkler */}
           <div className="space-y-4 mt-6">
             <Link to="/favorie" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
-              data-aos-duration="1000">Sevimliler</Link>
+              data-aos-duration="1000">Sevimlilər</Link>
             <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Haqqımızda</Link>
             <Link to="/contact" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
@@ -369,7 +369,7 @@ const Header = ({ theme, setTheme }) => {
           <div className="search-containerr   w-[600px] relative">
             <input
               type="text"
-              placeholder="Arama yap..."
+              placeholder="Axtar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)} // Input değiştiğinde queryyi güncelle
               className="search-input  dark:text-white  dark:bg-black p-2 w-full border rounded-md outline-none"
@@ -377,7 +377,7 @@ const Header = ({ theme, setTheme }) => {
             {searchQuery.length > 0 && (
               <ul className="search-results absolute top-full left-0 w-full bg-white dark:bg-black shadow-md rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
                 {loading ? (
-                  <p className="text-center text-gray-500">Yükleniyor...</p>
+                  <p className="text-center text-gray-500">Yüklənir...</p>
                 ) : filteredItems.length > 0 ? (
                   filteredItems.map((item, index) => (
                     <li
@@ -404,7 +404,7 @@ const Header = ({ theme, setTheme }) => {
                     </li>
                   ))
                 ) : (
-                  <li className="p-4 text-gray-600 dark:text-gray-300">Hiç ürün bulunamadı</li>
+                  <li className="p-4 text-gray-600 dark:text-gray-300">Məhsul Yoxdur</li>
                 )}
               </ul>
             )}

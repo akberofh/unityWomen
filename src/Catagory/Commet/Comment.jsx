@@ -45,12 +45,12 @@ const Comment = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-8 py-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Yorum Yapın</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Rəy Bildir</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              İsim:
+              Ad Soyad:
             </label>
             <input
               type="text"
@@ -78,7 +78,7 @@ const Comment = () => {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Puan:</label>
+          <label className="block text-sm font-medium text-gray-700">Qiymət Bildir:</label>
           <ReactStars
             count={5}
             value={rating}
@@ -90,7 +90,7 @@ const Comment = () => {
         </div>
         <div>
           <label htmlFor="review" className="block text-sm font-medium text-gray-700">
-            Yorum:
+            Rəy:
           </label>
           <textarea
             id="review"
@@ -102,7 +102,7 @@ const Comment = () => {
         </div>
         <div>
           <label htmlFor="catagory" className="block text-sm font-medium text-gray-700">
-            Category:
+            Kateqori:
           </label>
           <select
             id="catagory"
@@ -111,7 +111,7 @@ const Comment = () => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             required
           >
-            <option value="">Kategoriya Seçin</option>
+            <option value="">Kateqoriya Seçin</option>
             <option value="dest">Dest</option>
             <option value="temizleyici">Temizleyici</option>
             <option value="uzuk">Uzuk</option>
@@ -133,7 +133,7 @@ const Comment = () => {
           </select>
         </div>
         <button type="submit" className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
-          Gönder
+          Göndər
         </button>
       </form>
     </div>

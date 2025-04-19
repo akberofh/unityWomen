@@ -36,11 +36,11 @@ const EtirComment = () => {
   
 
   if (loading) {
-    return <div className="flex justify-center items-center h-screen">Yükleniyor...</div>;
+    return <div className="flex justify-center items-center h-screen">Yüklənir...</div>;
   }
 
   if (error) {
-    return <div className="flex justify-center items-center h-screen">Hata: {error}</div>;
+    return <div className="flex justify-center items-center h-screen">Xəta: {error}</div>;
   }
 
   const truncateText = (text, maxLength) => {
@@ -55,16 +55,16 @@ const EtirComment = () => {
       <div className="container px-4 mx-auto">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 sm:text-4xl">
-            Müşteri Yorumları ve Puanları
+          Müşdəri Rəyləri ve Qiyməntləndirməsi
           </h2>
           <p className="text-center text-gray-600">
-            Müşterilerimizin ürün ve hizmetlerimizle ilgili yorumları burada yer alıyor.
+          Müşdərilərimizin məhsul ve xidmətlərimizlə bağlı rəyləri burada yer alır.
           </p>
         </div>
 
         {charms.length === 0 ? (
           <div className="text-center text-gray-700">
-            <p>Henüz bu kategoriye ait yorum bulunmamaktadır.</p>
+            <p>Bu kateqoriye aid rəy yoxdur.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -101,15 +101,15 @@ const EtirComment = () => {
                 <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
                 <p className="text-gray-700 dark:text-white">
-                  Komment: {truncateText(review.review, 40)}
+                  Rəy: {truncateText(review.review, 40)}
                 </p>
                 <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
-                <p className="text-gray-700 dark:text-white">Kategoriya: {review.catagory}</p>
+                <p className="text-gray-700 dark:text-white">Kateqoriya: {review.catagory}</p>
                 <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
                 <p className="text-sm text-gray-500 mt-2 dark:text-white">
-                  Gönderilme Tarihi:{' '}
+                  Göndərilmə Tarixi:{' '}
                   {review.addedAt ? new Date(review.addedAt).toLocaleString() : 'Belirtilmemiş'}
                 </p>
               </div>

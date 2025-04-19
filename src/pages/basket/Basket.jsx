@@ -97,7 +97,7 @@ const Basket = () => {
   return (
     <div className="container min-h-[740px] mx-auto p-6">
       {isLoading ? (
-        <p className="text-center text-gray-600">Yükleniyor...</p>
+        <p className="text-center text-gray-600">Yüklənir...</p>
       ) : (
         data && data.map((product) => (
           <div key={product._id} className=" dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
@@ -117,9 +117,9 @@ const Basket = () => {
             <div className="flex flex-col w-full items-center mt-4">
               <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Fiyat: {product.totalPrice} ₼</p>
               {product.stock === 1 ? (
-                <p className="text-red-500 mb-2">Son 1 ürün kaldı!</p>
+                <p className="text-red-500 mb-2">Son 1 məhsul qaldı!</p>
               ) : product.stock === 0 ? (
-                <p className="text-red-500 mb-2">Bu ürün stokta yok!</p>
+                <p className="text-red-500 mb-2">Bu məhsul stokda yoxdur!</p>
               ) : null}
             </div>
           </div>
@@ -127,8 +127,8 @@ const Basket = () => {
       )}
 
       <div className="flex justify-between items-center mt-6">
-        <p className="text-xl font-semibold dark:text-white text-gray-800">Sepet Toplamı: {calculateTotalPrice} ₼</p>
-        <button onClick={handleConfirmCart} disabled={!isStockAvailable} className={`px-6 py-2 rounded text-white ${!isStockAvailable ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600 transition-all"}`}>Sepeti Onayla</button>
+        <p className="text-xl font-semibold dark:text-white text-gray-800">Səbət Toplamı: {calculateTotalPrice} ₼</p>
+        <button onClick={handleConfirmCart} disabled={!isStockAvailable} className={`px-6 py-2 rounded text-white ${!isStockAvailable ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600 transition-all"}`}>Səbəti Təsdiqlə</button>
       </div>
     </div>
 

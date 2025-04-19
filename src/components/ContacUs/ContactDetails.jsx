@@ -65,7 +65,7 @@ const ContactDetails = () => {
   return (
     <div className="container py-5 dark:bg-black dark:text-white">
       <div className="section-title text-center">
-        <h3>Contact Us</h3>
+        <h3>Bizimlə Əlaqə</h3>
       </div>
       <div className="content">
         <div className="map">
@@ -85,10 +85,10 @@ const ContactDetails = () => {
           <form ref={form} onSubmit={sendEmail}>
             <div className="input-group">
               <div className="input-field">
-                <p className="label dark:text-white text-white">Name</p>
+                <p className="label dark:text-white text-white">Ad Soyad</p>
                 <input className="dark:bg-black dark:text-white"
                   type="text"
-                  placeholder="Enter Name"
+                  placeholder="Ad Soyadınızı yazın"
                   name="to_name"
                   value={formData.to_name}
                   onChange={handleChange}
@@ -99,7 +99,7 @@ const ContactDetails = () => {
                 <p className="label">Email</p>
                 <input className="dark:bg-black dark:text-white"
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="Emailinizi yazın"
                   name="from_name"
                   value={formData.from_name}
                   onChange={handleChange}
@@ -108,10 +108,10 @@ const ContactDetails = () => {
               </div>
             </div>
             <div className="input-field">
-              <p className="label">Kategoriya</p>
+              <p className="label">Kateqoriya</p>
               <input className="dark:bg-black dark:text-white"
                 type="text"
-                placeholder="Enter Kategoriya"
+                placeholder="Kateqoriya yazın"
                 name="kategoriya"
                 value={formData.subject}
                 onChange={handleChange}
@@ -119,9 +119,9 @@ const ContactDetails = () => {
               <MdSubject className="icon" size={20} />
             </div>
             <div className="input-field">
-              <p className="label">Message</p>
+              <p className="label">Not</p>
               <textarea className="dark:bg-black dark:text-white"
-                placeholder="Enter your message"
+                placeholder="Notunuzu yazın"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}

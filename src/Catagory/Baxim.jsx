@@ -40,11 +40,11 @@ const Baxim = () => {
     }, [catagory]); // Kategori değiştiğinde yeniden veri çeker
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">Yükleniyor...</div>;
+        return <div className="flex justify-center items-center h-screen">Yüklənir...</div>;
     }
 
     if (error) {
-        return <div className="flex justify-center items-center h-screen">Hata: {error}</div>;
+        return <div className="flex justify-center items-center h-screen">Xəta: {error}</div>;
     }
 
     return (
@@ -75,12 +75,12 @@ const Baxim = () => {
                                 onClick={() => navigate(`/product/${item._id}`)}
                                 className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"
                             >
-                                Details
+                                Məhsul Haqqında.
                             </button>
                         </div>
                     ))
                 ) : (
-                    <div className="text-center col-span-full">Ürün bulunamadı.</div>
+                    <div className="text-center col-span-full">Məhsul yoxdu.</div>
                 )}
             </div>
             <EtirComment/>

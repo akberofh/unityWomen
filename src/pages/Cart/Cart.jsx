@@ -119,7 +119,7 @@ const Cart = () => {
             className={`text-sm sm:text-base font-medium mb-4 ${product.stock > 0 ? "text-green-600" : "text-red-600"
               }`}
           >
-            {product.stock > 0 ? "Stokta Var" : "Stokta Yok"}
+            {product.stock > 0 ? "Stokda Var" : "Stokda Yoxdur"}
           </p>
 
           {/* Sepete Ekle Butonu */}
@@ -131,13 +131,13 @@ const Cart = () => {
                 : "bg-blue-600 hover:bg-blue-700"
               } transition-colors duration-200`}
           >
-            {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
+            {product.stock === 0 ? "Stokda Yoxdu" : "Səbətə Əlavə Et"}
           </button>
         </div>
       ))
     ) : (
       <p className="text-center dark:text-white text-gray-600">
-        Ürünler yükleniyor...
+        Məhsullar yüklənir...
       </p>
     )}
   </div>
@@ -149,7 +149,7 @@ const Cart = () => {
         onClick={loadMore}
         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
       >
-        Daha Fazla Göster
+        Daha Çox Gösdər
       </button>
     </div>
   )}

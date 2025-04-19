@@ -21,7 +21,7 @@ const Confirmed = () => {
     return (
         <div className="container mx-auto p-4">
             {isLoading ? (
-                <p className="text-center text-gray-600">Yükleniyor...</p>
+                <p className="text-center text-gray-600">Yüklənir...</p>
             ) : (
                 <>
                     {data?.confirmedCarts?.length > 0 ? (
@@ -36,8 +36,8 @@ const Confirmed = () => {
                                     cart.products.map((product) => (
                                         <div key={product._id} className="border-t mt-2 pt-2">
                                             <p>Quantity: {product.quantity}</p> {/* number */}
-                                            {product.thumbnail && typeof product.thumbnail === "string" ? (
-                                                <img src={product.thumbnail} alt="Product Thumbnail" className="w-16 h-16" />
+                                            {product.photo && typeof product.photo === "string" ? (
+                                                <img src={product.photo} alt="Product Thumbnail" className="w-16 h-16" />
                                             ) : (
                                                 <p>No Thumbnail Available</p>
                                             )}

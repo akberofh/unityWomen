@@ -5,24 +5,17 @@ import Register from "../pages/register/Register";
 import Profile from "../pages/profile/Profile";
 import PrivateRoute from "../components/PrivateRoute";
 import Home from "../pages/home/Home";
-import Dashboard from "../pages/dashboard/Dashboard";
-import EmailVerification from "../pages/EmailVerification/Email"
-import ResertPass from "../pages/login/ResertPass";
-import RequestPass from "../pages/login/RequestPass";
 import Cart from "../pages/Cart/Cart";
 import Confirmed from "../pages/Confirmed/Confirmerd";
 import ContactComp from "../components/ContacUs/ContactComp";
 import DetalPage from "../Catagory/DetailPage/DetalPage";
 import Baxim from "../Catagory/Baxim";
-import AddNewTodo from "../pages/addTodo/AddNewTodo";
 import BasketProduct from "../pages/basket/BaketProduct";
 import Comment from "../Catagory/Commet/Comment";
 import Catagory from "../Catagory/Catagory";
-import CatagoryAdd from "../Catagory/CatagoryAdd";
 import FavorieProduct from "../pages/Favorie/FavorieProduct";
 import PaymentDetal from "../Payment/PaymentDetal";
 import Cedvel from "../pages/profile/Cedvel";
-import Users from "../pages/profile/Users";
 import Maas from "../pages/profile/Maas";
 import Qazanc from "../pages/profile/Qazanc";
 
@@ -33,7 +26,6 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />}  />
         <Route path="/qazanc" element={<Qazanc />}  />
-        <Route path="/users" element={<Users />}  />
         <Route path="/cedvel" element={<Cedvel />}  />
         <Route path="/payment" element={<PaymentDetal />}  />
         <Route path="/favorie" element={<FavorieProduct />}  />
@@ -45,15 +37,9 @@ const Router = () => {
         <Route path="/basket" element={<BasketProduct />}  />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/EmailVerification" element={< EmailVerification/>} />
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/add-new-todo" element={<AddNewTodo />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/maas" element={<Maas />} />
         <Route path="/kategori" element={<Catagory />} />
-        <Route path="/catagoryadd" element={<CatagoryAdd />} />
-        <Route path="/reset-password/:token" element={<  ResertPass/>} />
-        <Route path="/request-password-reset" element={<  RequestPass/>} />
         <Route path="" element={<PrivateRoute/>}>
           <Route path="/profile" element={<Profile/>} />
         </Route>

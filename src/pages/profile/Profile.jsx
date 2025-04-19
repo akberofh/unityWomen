@@ -265,7 +265,7 @@ const Profile = () => {
           onClick={handleLogout}
           className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
         >
-          Çıkış
+          Çıxış
         </button>
       </div>
 
@@ -461,7 +461,7 @@ const Profile = () => {
               </div>
             </>
           ) : (
-            <p className="text-center text-sm text-gray-500">Yükleniyor...</p>
+            <p className="text-center text-sm text-gray-500">Yüklənir...</p>
           )}
         </div>
 
@@ -619,7 +619,7 @@ const Profile = () => {
                     <th className="px-4 py-2 border-b">Email</th>
                     <th className="px-4 py-2 border-b">Ödəniş</th>
                     <th className="px-4 py-2 border-b">Qrup Sayı</th>
-                    <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                    <th className="px-4 py-2 border-b">Qeydiyyat Tarixi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -779,7 +779,7 @@ const Profile = () => {
                     <th className="px-4 py-2 border-b">Kod</th>
                     <th className="px-4 py-2 border-b">Email</th>
                     <th className="px-4 py-2 border-b">Ödəniş</th>
-                    <th className="px-4 py-2 border-b">Kayıt Tarihi</th>
+                    <th className="px-4 py-2 border-b">Qeydiyyat Tarixi</th>
                   </tr>
                 </thead>
                 <tbody>

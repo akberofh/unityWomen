@@ -57,10 +57,10 @@ React.useEffect(() => {
       <div className="container absolute top-20 right-0 left-0 px-4 mx-auto">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white sm:text-4xl">
-            Müşteri Yorumları ve Puanları
+            Müşdəri Rəyləri ve Qiyməntləndirməsi
           </h2>
           <p className="text-center dark:text-white text-gray-600">
-            Müşterilerimizin ürün ve hizmetlerimizle ilgili yorumları burada yer alıyor.
+            Müşdərilərimizin məhsul ve xidmətlərimizlə bağlı rəyləri burada yer alır.
           </p>
         </div>
 
@@ -97,14 +97,14 @@ React.useEffect(() => {
               </div>
               <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
-              <p className="text-gray-700 dark:text-white">Komment: {truncateText(review.review, 40)}</p>
+              <p className="text-gray-700 dark:text-white">Rəy: {truncateText(review.review, 40)}</p>
               <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
-              <p className="text-gray-700 dark:text-white">Kategoriya: {review.catagory}</p>
+              <p className="text-gray-700 dark:text-white">Kateqoriya: {review.catagory}</p>
               <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
               <p className="text-sm text-gray-500 mt-2 dark:text-white">
-                Gönderilme Tarihi: {review.createdAt ? new Date(review.createdAt).toLocaleString() : 'Belirtilmemiş'}
+                Göndərilme Tarixi: {review.createdAt ? new Date(review.createdAt).toLocaleString() : 'yazilmiyib'}
               </p>
             </div>
           ))}

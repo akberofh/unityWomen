@@ -59,27 +59,14 @@ const Catos = ({ catagory }) => {
     }, [catagory]);
 
     if (loading) {
-        return <div>Yükleniyor...</div>;
+        return <div>Yüklənir...</div>;
     }
 
     if (products.length === 0) {
-        return <div>Kategoriye uygun başka ürün bulunamadı.</div>;
+        return <div>Kateqoriyə uyğun başqa məhsul yoxdur.</div>;
     }
 
     return (
-        // <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        //     {products.map((product) => (
-        //         <div key={product._id} className="bg-white shadow-md rounded-lg p-4">
-        //             <img
-        //                 src={product.thumbnail}
-        //                 alt={product.title}
-        //                 className="w-full h-40 object-cover rounded-md mb-2"
-        //             />
-        //             <h3 className="text-lg font-semibold">{product.title}</h3>
-        //             <p className="text-blue-600 font-semibold">{product.price}₼</p>
-        //         </div>
-        //     ))}
-        // </div>
 
         <div className="w-[97%] mx-auto p-4 sm:p-6">
         <div className="grid gap-4 sm:gap-6 dark:text-white grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
@@ -135,7 +122,7 @@ const Catos = ({ catagory }) => {
             ))
           ) : (
             <p className="text-center dark:text-white text-gray-600">
-              Ürünler yükleniyor...
+              Məhsullar yüklənir...
             </p>
           )}
         </div>
@@ -147,7 +134,7 @@ const Catos = ({ catagory }) => {
               onClick={loadMore}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
             >
-              Daha Fazla Göster
+              Daha Çox Gösdər
             </button>
           </div>
         )}
