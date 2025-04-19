@@ -41,7 +41,7 @@ const Catos = ({ catagory }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://unity-women-backend.vercel.app/api/qolbaq'); // Ürünleri çek
+                const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/qolbaq'); // Ürünleri çek
                 const data = response.data.allQolbaq;
                 if (data && data.length > 0) {
                     // Gelen ürünleri kategoriye göre filtrele

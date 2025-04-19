@@ -25,7 +25,7 @@ const Favorie = () => {
             ) : (
                 data && data.map(product => (
                     <div className=" dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-                        <img  onClick={() => navigate(`/product/${product._id}`)} src={product.photo} alt="Thumbnail" className="w-32 h-32 object-cover rounded-full mb-4 md:mb-0 md:mr-6 border border-gray-200" />
+                        <img  onClick={() => navigate(`/product/${product.productId}`)} src={product.photo} alt="Thumbnail" className="w-32 h-32 object-cover rounded-full mb-4 md:mb-0 md:mr-6 border border-gray-200" />
                         <div className="w-full flex flex-col items-center">
                             <h3 className="text-lg font-semibold dark:text-white  text-gray-800">{product.title}</h3>
                         </div>

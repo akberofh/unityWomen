@@ -21,7 +21,7 @@ const Baxim = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await axios.get(`https://unity-women-backend.vercel.app/api/qolbaq/${catagory}`);
+                const res = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/qolbaq/${catagory}`);
                 setItems(res.data.allQolbaq); // API'den doğrudan filtrelenmiş veriyi alıyoruz
                 setLoading(false);
             }   catch (error) {
@@ -63,20 +63,12 @@ const Baxim = () => {
                             className="bg-white shadow-lg rounded-lg p-6"
                             data-aos="fade-up"
                         >
-                            {item.photo && (
                                 <img
                                     src={item.photo}
                                     alt="Thumbnail"
                                     className="w-full h-40 object-cover rounded-md mb-4"
                                 />
-                            )}
-                            {item.thumbnail && (
-                                <img
-                                    src={item.thumbnail}
-                                    alt="Thumbnail"
-                                    className="w-full h-40 object-cover rounded-md mb-4"
-                                />
-                            )}
+                    
                             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
                             <p className="text-gray-600 mb-4">{item.price}</p>
                             <button
