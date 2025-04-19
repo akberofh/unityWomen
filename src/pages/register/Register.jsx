@@ -25,7 +25,7 @@ const Register = () => {
     const [referralCode, setReferralCode] = useState("");
     const [gender, setGender] = useState("");
 
-    const navigate = useNavigate();
+    const navigation = useNavigate();
     const dispatch = useDispatch();
 
     const [register, { isLoading }] = useRegisterMutation();
@@ -109,7 +109,7 @@ const Register = () => {
 
             const res = await register(formData).unwrap();
             dispatch(setCredentials({ ...res }));
-            navigate("/profile");
+            navigation("/");
         } catch (error) {
             console.error("Error:", error);  // Konsola da logla hata mesajını
     
@@ -405,7 +405,7 @@ const Register = () => {
                         </div>
                     </div>
                 )}
-                <p className="text-center mt-6 text-md text-gray-700 cursor-pointer" onClick={() => navigate('/login')}>
+                <p className="text-center mt-6 text-md text-gray-700 cursor-pointer" onClick={() => navigation('/login')}>
                     Mövcud Hesabın Var? <span className="text-blue-600 hover:text-blue-800">Giriş et.</span>
                 </p>
             </div>
