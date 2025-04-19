@@ -189,7 +189,18 @@ const ReferralTreeBinary = () => {
   }, []);
 
   return (
-    <div className="referral-tree-container" style={{ width: "100%", height: "100vh", overflowY: "scroll" }}>
+    <div
+      className="referral-tree-container"
+      style={{
+        width: "100%",
+        height: "100vh",
+        overflowY: "scroll",
+        overflowX: "hidden", // x yönünde kaydırmayı engelle
+        minHeight: "100vh", // Yüksekliği en az ekran boyutu kadar yap
+        display: "flex", // Kaydırma çubuğunun her zaman görünmesini sağlamak için display flex
+        flexDirection: "column", // Yüksekliği düzgün şekilde ayarlamak
+      }}
+    >
       <h2 className="text-3xl font-bold text-center mt-4 mb-2">Referans Ağacı 🌳</h2>
 
       <div className="flex flex-wrap items-center justify-center gap-4 p-4">
