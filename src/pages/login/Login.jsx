@@ -20,7 +20,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigation('/profile');
+      navigation('/');
     }
   }, [navigation, userInfo]);
 
@@ -29,7 +29,7 @@ const Login = () => {
     try {
       const res = await login({ email, password, referralCode }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigation('/profile');
+      navigation('/');
     } catch (error) {
       toast.error('Şifrə və ya email səhvdir');
     }
