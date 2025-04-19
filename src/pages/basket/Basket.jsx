@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const Basket = () => {
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetTodosQuery();
+  const { data, isLoading ,refetch} = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [addConfirm] = useAddConfirmMutation();
   const [addPayment] = useAddPaymentMutation();
@@ -35,6 +35,7 @@ const Basket = () => {
     try {
       await removeTodo(_id).unwrap();
       alert("Ürün sepetten silindi!");
+      await refetch();
     } catch (err) {
       console.error("Failed to remove the product:", err);
     }
