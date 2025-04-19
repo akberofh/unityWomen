@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const getRandomColor = () => {
-  const letters = "0123456789ABCDEF";
+  const letters = "CDEF"; // sadece açık tonlar
   let color = "#";
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
+    color += letters[Math.floor(Math.random() * letters.length)];
   }
   return color;
 };
+
 
 const ReferralTreeBinary = () => {
   const { userInfo } = useSelector((state) => state.auth);
