@@ -95,8 +95,8 @@ const ReferralTreeBinary = () => {
     setSearchInput(value);
 
     const filtered = allUsers.filter((user) =>
-      user.name.toLowerCase().includes(value.toLowerCase())
-    );
+      user.name.toLowerCase().includes(value.toLowerCase()) ||
+    user.referralCode.toLowerCase().includes(value.toLowerCase())    );
     setSuggestions(filtered);
   };
 
@@ -106,19 +106,25 @@ const ReferralTreeBinary = () => {
   };
 
   const handleSearch = () => {
-    const found = allUsers.find((u) => u.name === searchInput);
+    const input = searchInput.toLowerCase();
+    const found = allUsers.find(
+      (u) =>
+        u.name.toLowerCase() === input ||
+        u.referralCode.toLowerCase() === input
+    );
     if (found) {
-      setLoading(true);
-      setSelectedUser(found);
-      setTimeout(() => setLoading(false), 500); // Simülasyon
+      setLoading(true);        // Yeni veri yükleneceği için true yapıyoruz
+      setSelectedUser(found);  // Seçilen kullanıcıyı ayarlıyoruz, bu da useEffect'i tetikliyor
     }
   };
 
   const handleReset = () => {
-    setSelectedUser(null);
-    setSearchInput("");
-    setSuggestions([]);
+    setLoading(true);         // Yükleniyor moduna geç
+    setSelectedUser(null);    // selectedUser'ı sıfırla → useEffect tetiklenir
+    setSearchInput("");       // Arama kutusunu temizle
+    setSuggestions([]);       // Önerileri temizle
   };
+  
 
   const handleBackClick = () => {
     navigate("/profile");
@@ -227,8 +233,8 @@ const ReferralTreeBinary = () => {
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={() => handleSuggestionClick(user)}
                 >
-                  {user.name}
-                </li>
+  {user.name} ({user.referralCode})
+  </li>
               ))}
             </ul>
           )}
