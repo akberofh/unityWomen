@@ -116,35 +116,56 @@ const Detalp = () => {
             <div className="container mx-auto px-4 lg:px-16 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Ürün Görseli */}
-                    <Swiper
-                        spaceBetween={10}
-                        slidesPerView={1}
-                        pagination={{ clickable: true }}
-                        navigation={{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }} // Navigation setup
-                        modules={[Navigation]} // Make sure to add Navigation module
-                        className="w-64 h-64 rounded-xl"
-                    >
-                        {product.photo && Array.isArray(product.photo) ? (
-                            product.photo.map((photo, index) => (
-                                <SwiperSlide key={index}>
-                                    <img
-                                        src={photo}
-                                        alt={`product-${index}`}
-                                        className="w-full h-full object-cover rounded-xl"
-                                        onClick={() => navigate(`/product/${product._id}`)}
-                                    />
+                    <div className="w-full max-w-xl mx-auto">
+                        {/* Büyük Slider */}
+                        <Swiper
+                            spaceBetween={10}
+                            navigation={true}
+                            thumbs={{ swiper: thumbsSwiper }}
+                            modules={[Navigation, Thumbs]}
+                            className="rounded-xl mb-4"
+                        >
+                            {product.photo && Array.isArray(product.photo) ? (
+                                product.photo.map((photo, index) => (
+                                    <SwiperSlide key={index}>
+                                        <img
+                                            src={photo}
+                                            alt={`product-${index}`}
+                                            className="w-full h-96 object-cover rounded-xl cursor-pointer"
+                                            onClick={() => navigate(`/product/${product._id}`)}
+                                        />
+                                    </SwiperSlide>
+                                ))
+                            ) : (
+                                <SwiperSlide>
+                                    <div className="w-full h-80 flex items-center justify-center bg-gray-200 rounded-xl text-gray-500">
+                                        Görsel bulunamadı
+                                    </div>
                                 </SwiperSlide>
-                            ))
-                        ) : (
-                            <div>Ürün görselleri yüklenemedi.</div> // Fallback if photos are missing
-                        )}
+                            )}
+                        </Swiper>
 
-                        {/* Left and Right navigation buttons */}
-                        <div className="swiper-button-prev text-white absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
-                            =                        </div>
-                        <div className="swiper-button-next text-white absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-                        </div>
-                    </Swiper>
+                        {/* Küçük Thumbnails */}
+                        <Swiper
+                            onSwiper={setThumbsSwiper}
+                            spaceBetween={10}
+                            slidesPerView={product.photo?.length > 4 ? 4 : product.photo?.length || 1}
+                            modules={[Thumbs]}
+                            watchSlidesProgress
+                            className="rounded-md"
+                        >
+                            {product.photo && Array.isArray(product.photo) &&
+                                product.photo.map((photo, index) => (
+                                    <SwiperSlide key={index}>
+                                        <img
+                                            src={photo}
+                                            alt={`thumb-${index}`}
+                                            className="h-20 w-full object-cover rounded-md border cursor-pointer hover:opacity-80"
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
+                    </div>
 
                     {/* Ürün Detayları */}
                     <div className="flex dark:text-white flex-col justify-center">
