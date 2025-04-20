@@ -10,9 +10,10 @@ import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
 import {  useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
+import 'swiper/css/thumbs';
 
 
 const Detalp = () => {
