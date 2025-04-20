@@ -11,7 +11,7 @@ const SalaryFilter = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/mine',
+        const response = await axios.get('https://unity-women-backend.vercel.app/api/mine',
           {withCredentials: true,}
 
         );

@@ -26,7 +26,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://unitywomen-48288fd0e24a.herokuapp.com/api/qolbaq/');
+        const response = await axios.get('https://unity-women-backend.vercel.app/api/qolbaq/');
         console.log(response.data); // Gelen veriyi kontrol et
         setData(response.data.allQolbaq || []); // Eğer undefined ise boş dizi ata
       } catch (error) {

@@ -59,7 +59,7 @@ const Header = ({ theme, setTheme }) => {
   useEffect(() => {
     if (searchQuery.length >= 1) {
       setLoading(true);
-      axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/qolbaq?search=${searchQuery}`)
+      axios.get(`https://unity-women-backend.vercel.app/api/qolbaq?search=${searchQuery}`)
         .then(response => {
           setItems(response.data.allQolbaq); // API'den gelen verileri state'e kaydet
           setLoading(false);

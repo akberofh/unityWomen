@@ -18,7 +18,7 @@ const EtirComment = () => {
   useEffect(() => {
     const fetchreviews = async () => {
       try {
-        const res = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/reviews/${catagory}`);
+        const res = await axios.get(`https://unity-women-backend.vercel.app/api/reviews/${catagory}`);
         setCharms(res.data.reviews);
       } catch (error) {
         if (error.response && error.response.status === 404) {

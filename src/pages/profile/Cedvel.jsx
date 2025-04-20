@@ -31,8 +31,8 @@ const ReferralTreeBinary = () => {
 
       try {
         const [adminRes, userRes] = await Promise.all([
-          axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/admin/${userInfo.referralCode}`),
-          axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/users/user/${userInfo.referralCode}`),
+          axios.get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`),
+          axios.get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`),
         ]);
 
         const all = [...(adminRes.data?.users || []), ...(userRes.data?.users || [])];
