@@ -8,12 +8,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductCard from './Catos';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
-import {  useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
+import { useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+
 
 
 const Detalp = () => {
@@ -24,33 +25,26 @@ const Detalp = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [addTodoo] = useAddsTodoMutation();
-    
 
-    const [visibleLength, setVisibleLength] = useState(100);
-    const [visibleLengthh, setVisibleLengthh] = useState(100);
+
+    const [visibleLength, setVisibleLength] = useState(100); // Başlangıçta 100 karakter göster
 
     const handleShowMore = () => {
         setVisibleLength((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
     };
 
-    const handleShowMoree = () => {
-        setVisibleLengthh((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
-    };
-
-    const handleShowLesss = () => {
-        setVisibleLengthh(100); // Reset to the default 100 characters
+    const handleShowLess = () => {
+        setVisibleLength(100); // Reset to the default 100 characters
     };
 
     const isFullVisible = visibleLength >= product?.description?.length;
-
-    const isFullVisiblee = visibleLengthh >= product?.distance?.length;
 
     const [addTodo] = useAddTodoMutation();
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://unitywomen-48288fd0e24a.herokuapp.com/api/qolbaq/id/${qolbaq_id}`);
+                const response = await axios.get(`http://localhost:8000/api/qolbaq/id/${qolbaq_id}`);
                 const data = response.data;
                 if (data && data.getById) {
                     setProduct(data.getById);
@@ -87,17 +81,17 @@ const Detalp = () => {
     };
 
     const handleAddToFavorie = async (product) => {
-   
-  
+
+
         try {
             const itemWithDetails = { productId: product._id };
-    
+
             // API çağrısı
             const newFavorie = await addTodoo(itemWithDetails).unwrap();
-    
+
             // Redux'a ekle
             dispatch({ type: 'favorie/add', payload: newFavorie });
-    
+
             // Favoriler sayfasına yönlendir
             navigate('/favorie');
         } catch (err) {
@@ -106,9 +100,12 @@ const Detalp = () => {
         }
     };
 
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+
     // Yükleniyor, hata, veya ürün bulunamadı durumları
     if (loading) {
-        return <div className={styles.loading}>Yüklənir...</div>;
+        return <div className={styles.loading}>Yükleniyor...</div>;
     }
 
     if (error) {
@@ -116,7 +113,7 @@ const Detalp = () => {
     }
 
     if (!product) {
-        return <div className={styles.error}>Məhsul Yoxdur.</div>;
+        return <div className={styles.error}>Ürün bulunamadı.</div>;
     }
 
     return (
@@ -175,12 +172,14 @@ const Detalp = () => {
                         </Swiper>
                     </div>
 
+
+
+
                     {/* Ürün Detayları */}
                     <div className="flex dark:text-white flex-col justify-center">
                         <h1 className="text-3xl font-semibold mb-4">{product.title}</h1>
                         <p className="text-xl text-blue-600 font-semibold mb-6">Fiyat: {product.price}$</p>
                         <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
-
                         <div className="text-gray-700 dark:text-white mb-6">
                             {/* Açıklama Metni */}
                             <p>
@@ -196,7 +195,7 @@ const Detalp = () => {
                                         onClick={handleShowMore}
                                         className="text-blue-600 font-semibold mr-4"
                                     >
-                                        Daha Çox Gösdər
+                                        Daha Fazla Göster
                                     </button>
                                 )}
                                 {visibleLength > 100 && (
@@ -204,40 +203,12 @@ const Detalp = () => {
                                         onClick={handleShowLess}
                                         className="text-blue-600 font-semibold"
                                     >
-                                        Daha Az Gösdər
+                                        Daha Az Göster
                                     </button>
                                 )}
                             </div>
                         </div>
-                        <div className="text-gray-700 dark:text-white mb-6">
-                            {/* Açıklama Metni */}
-                            <p>
-                                {(product.distance || "").slice(0, visibleLengthh)}
-                                {visibleLengthh < (product.distance || "").length && "..."}
-                            </p>
-
-
-                            {/* Butonlar */}
-                            <div className="mt-2">
-                                {!isFullVisiblee && (
-                                    <button
-                                        onClick={handleShowMoree}
-                                        className="text-blue-600 font-semibold mr-4"
-                                    >
-                                        Daha Çox Gösdər
-                                    </button>
-                                )}
-                                {visibleLengthh > 100 && (
-                                    <button
-                                        onClick={handleShowLesss}
-                                        className="text-blue-600 font-semibold"
-                                    >
-                                        Daha Az Gösdər
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                        <p className="text-sm text-gray-500 italic mb-6">Kateqori: {product.catagory}</p>
+                        <p className="text-sm text-gray-500 italic mb-6">Kategori: {product.catagory}</p>
                         <div className="flex items-center gap-1 text-yellow-500 text-xl mb-8">
                             <FaStar />
                             <FaStar />
@@ -252,14 +223,14 @@ const Detalp = () => {
                                 : "bg-blue-600 hover:bg-blue-700"
                                 }`}
                         >
-                            {product.stock === 0 ? "Stokqa Yoxdu" : "Səbətə Əlavə Et"}
+                            {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
                         </button>
                         <div className='h-[20px]'></div>
                         <button
                             onClick={() => handleAddToFavorie(product)}
                             className="py-3 w-[250px] px-6 bg-green-700  hover:bg-green-900  rounded-lg font-semibold text-white shadow-md transition"
                         >
-                            Sevimlilərə Elavə Et
+                            Sevimlilere Ekle
                         </button>
                     </div>
                 </div>
@@ -267,7 +238,7 @@ const Detalp = () => {
                 {/* Diğer Ürünler */}
             </div>
             <div className="mt-16 dark:text-white w-[95%]">
-                <h2 className="text-2xl dark:text-white font-semibold mb-8">Digər Məhsullar</h2>
+                <h2 className="text-2xl dark:text-white font-semibold mb-8">Diğer Ürünler</h2>
                 <ProductCard catagory={product.catagory} />
             </div>
 
