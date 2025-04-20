@@ -9,6 +9,10 @@ import ProductCard from './Catos';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useDispatch } from "react-redux";
 import {  useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
 
 
 const Detalp = () => {
@@ -112,13 +116,35 @@ const Detalp = () => {
             <div className="container mx-auto px-4 lg:px-16 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Ürün Görseli */}
-                    <div className="flex  justify-center items-center">
-                        <img
-                            src={product.photo}
-                            alt={product.title}
-                            className="w-full max-w-md lg:max-w-lg object-cover rounded-lg shadow-md"
-                        />
-                    </div>
+                    <Swiper
+                        spaceBetween={10}
+                        slidesPerView={1}
+                        pagination={{ clickable: true }}
+                        navigation={{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }} // Navigation setup
+                        modules={[Navigation]} // Make sure to add Navigation module
+                        className="w-64 h-64 rounded-xl"
+                    >
+                        {product.photo && Array.isArray(product.photo) ? (
+                            product.photo.map((photo, index) => (
+                                <SwiperSlide key={index}>
+                                    <img
+                                        src={photo}
+                                        alt={`product-${index}`}
+                                        className="w-full h-full object-cover rounded-xl"
+                                        onClick={() => navigate(`/product/${product._id}`)}
+                                    />
+                                </SwiperSlide>
+                            ))
+                        ) : (
+                            <div>Ürün görselleri yüklenemedi.</div> // Fallback if photos are missing
+                        )}
+
+                        {/* Left and Right navigation buttons */}
+                        <div className="swiper-button-prev text-white absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
+                            =                        </div>
+                        <div className="swiper-button-next text-white absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+                        </div>
+                    </Swiper>
 
                     {/* Ürün Detayları */}
                     <div className="flex dark:text-white flex-col justify-center">
