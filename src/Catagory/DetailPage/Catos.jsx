@@ -114,7 +114,6 @@ const Catos = ({ catagory }) => {
                   {product.price}₼
                 </h4>
       
-                {/* Stok Durumu */}
                 <p
                   className={`text-sm sm:text-base font-medium mb-4 ${product.stock > 0 ? "text-green-600" : "text-red-600"
                     }`}

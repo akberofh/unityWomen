@@ -25,17 +25,24 @@ const Detalp = () => {
     const [addTodoo] = useAddsTodoMutation();
     
 
-    const [visibleLength, setVisibleLength] = useState(100); // Başlangıçta 100 karakter göster
+    const [visibleLength, setVisibleLength] = useState(100);
+    const [visibleLengthh, setVisibleLengthh] = useState(100);
 
     const handleShowMore = () => {
         setVisibleLength((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
     };
 
-    const handleShowLess = () => {
-        setVisibleLength(100); // Reset to the default 100 characters
+    const handleShowMoree = () => {
+        setVisibleLengthh((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
+    };
+
+    const handleShowLesss = () => {
+        setVisibleLengthh(100); // Reset to the default 100 characters
     };
 
     const isFullVisible = visibleLength >= product?.description?.length;
+
+    const isFullVisiblee = visibleLengthh >= product?.distance?.length;
 
     const [addTodo] = useAddTodoMutation();
 
@@ -172,6 +179,7 @@ const Detalp = () => {
                         <h1 className="text-3xl font-semibold mb-4">{product.title}</h1>
                         <p className="text-xl text-blue-600 font-semibold mb-6">Fiyat: {product.price}$</p>
                         <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
+
                         <div className="text-gray-700 dark:text-white mb-6">
                             {/* Açıklama Metni */}
                             <p>
@@ -193,6 +201,34 @@ const Detalp = () => {
                                 {visibleLength > 100 && (
                                     <button
                                         onClick={handleShowLess}
+                                        className="text-blue-600 font-semibold"
+                                    >
+                                        Daha Az Gösdər
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        <div className="text-gray-700 dark:text-white mb-6">
+                            {/* Açıklama Metni */}
+                            <p>
+                                {(product.distance || "").slice(0, visibleLengthh)}
+                                {visibleLengthh < (product.distance || "").length && "..."}
+                            </p>
+
+
+                            {/* Butonlar */}
+                            <div className="mt-2">
+                                {!isFullVisiblee && (
+                                    <button
+                                        onClick={handleShowMoree}
+                                        className="text-blue-600 font-semibold mr-4"
+                                    >
+                                        Daha Çox Gösdər
+                                    </button>
+                                )}
+                                {visibleLengthh > 100 && (
+                                    <button
+                                        onClick={handleShowLesss}
                                         className="text-blue-600 font-semibold"
                                     >
                                         Daha Az Gösdər
