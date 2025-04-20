@@ -63,11 +63,27 @@ const Baxim = () => {
                             className="bg-white shadow-lg rounded-lg p-6"
                             data-aos="fade-up"
                         >
-                                <img
-                                    src={item.photo}
-                                    alt="Thumbnail"
-                                    className="w-full h-40 object-cover rounded-md mb-4"
-                                />
+                              <div className="flex justify-center mb-4 sm:mb-6 w-full">
+                                {Array.isArray(item.photo) && item.photo.length > 0 ? (
+                                    <div className="relative w-full h-64 sm:h-80">
+                                        <img
+                                            src={item.photo[0]} // Sadece ilk fotoğrafı göster
+                                            alt={`item-image`}
+                                            className="object-cover w-full h-full rounded-md cursor-pointer"
+                                            onClick={() => navigate(`/product/${item._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-full h-64 sm:h-80 flex items-center justify-center">
+                                        <img
+                                            src={item.photo}
+                                            alt={item.title}
+                                            className="object-cover w-full h-full rounded-md cursor-pointer"
+                                            onClick={() => navigate(`/product/${item._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
+                                        />
+                                    </div>
+                                )}
+                            </div>
                     
                             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
                             <p className="text-gray-600 mb-4">{item.price}</p>

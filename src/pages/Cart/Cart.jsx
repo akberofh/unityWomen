@@ -97,12 +97,27 @@ const Cart = () => {
           </button>
 
           {/* Ürün Görseli */}
-          <img
-            src={product.photo}
-            alt={product.title}
-            className="h-28 w-28 sm:h-40 sm:w-40 object-cover mb-4 sm:mb-6 rounded-md"
-            onClick={() => navigate(`/product/${product._id}`)}
-          />
+          <div className="flex justify-center mb-4 sm:mb-6 w-full">
+  {Array.isArray(product.photo) && product.photo.length > 0 ? (
+    <div className="relative w-full h-64 sm:h-80">
+      <img
+        src={product.photo[0]} // Sadece ilk fotoğrafı göster
+        alt={`product-image`}
+        className="object-cover w-full h-full rounded-md cursor-pointer"
+        onClick={() => navigate(`/product/${product._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
+      />
+    </div>
+  ) : (
+    <div className="w-full h-64 sm:h-80 flex items-center justify-center">
+      <img
+        src={product.photo}
+        alt={product.title}
+        className="object-cover w-full h-full rounded-md cursor-pointer"
+        onClick={() => navigate(`/product/${product._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
+      />
+    </div>
+  )}
+</div>
 
           {/* Ürün Başlık ve Fiyat */}
           <h3 className="text-sm sm:text-lg font-semibold mb-2 text-gray-800 dark:text-white text-center h-10 overflow-hidden">
