@@ -35,7 +35,7 @@
     "recharts": "^2.15.2",
     "sass": "^1.80.7",
     "styled-components": "^4.4.1",
-    "swiper": "^11.1.14",
+    "swiper": "^11.2.6",
     "tailwindcss": "^3.4.14",
     "toast": "^0.5.4",
     "web-vitals": "^2.1.4"
