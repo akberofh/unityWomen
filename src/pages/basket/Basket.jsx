@@ -25,6 +25,7 @@ const Basket = () => {
   const updateQuantity = async (productId, quantity) => {
     try {
       await updateTodo({ productId, quantity }).unwrap();
+      await refetch();
     } catch (err) {
       console.error("Failed to update the quantity:", err);
     }

@@ -67,7 +67,7 @@ const Profile = () => {
       const res = await updateUser(formData).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Profil başarıyla güncellendi!");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       toast.error(error?.data?.message || error.message || "Bir hata oluştu.");
     }
