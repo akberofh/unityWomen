@@ -258,25 +258,25 @@ const Profile = () => {
     const checkPaymentStatus = async () => {
       try {
         const { data } = await axios.get(
-          `https://unity-women-backend.vercel.app/api/users/getuser/${userInfo._id}`,
-          { withCredentials: true }
+          `https://unity-women-backend.vercel.app/api/users/getuser/${userInfo._id}`
         );
-  
+
         if (data.payment === false) {
           MySwal.fire({
             title: `💳 Salam, ${data.name}!`,
             html: `
-              <p class="text-lg">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
-              <div class="bg-gray-100 rounded-lg px-4 py-2 mt-3 text-lg font-semibold text-green-700">
-                💳 Kart nömrəsi: <span id="copyCard" style="cursor: pointer; color: #2563EB;">5522 0993 7821 1379</span>
+              <p class="text-lg mb-2">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
+              <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between cursor-pointer border border-gray-300"
+                   id="copyCard">
+                <span class="font-mono text-lg">5522 0993 7821 1379</span>
+                <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
               </div>
-              <p class="text-sm text-gray-500 mt-2">Kart nömrəsinə klikləyərək kopyalaya bilərsiniz.</p>
+              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş sonrası tam giriş aktivləşəcək ✅</p>
             `,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: '💸 Ödəniş etdim',
+            showConfirmButton: false,
             cancelButtonText: 'Sonra',
-            confirmButtonColor: '#10B981',
             cancelButtonColor: '#F87171',
             background: '#f9fafb',
             customClass: {
@@ -284,22 +284,32 @@ const Profile = () => {
               title: 'text-2xl font-semibold text-gray-800',
             },
             didOpen: () => {
-              const copyTarget = document.getElementById('copyCard');
-              if (copyTarget) {
-                copyTarget.addEventListener('click', () => {
+              const copyDiv = document.getElementById('copyCard');
+              if (copyDiv) {
+                copyDiv.addEventListener('click', () => {
                   navigator.clipboard.writeText('5522099378211379');
-                  copyTarget.innerText = 'Kopyalandı ✅';
-                  copyTarget.style.color = '#16A34A'; // Tailwind green-600
+                  Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Kart nömrəsi kopyalandı!',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    background: '#ecfdf5',
+                    color: '#065f46',
+                  });
                 });
               }
-            }
+            },
           });
+
         }
       } catch (error) {
         console.error('Xəta:', error);
       }
     };
-  
+
     if (userInfo?._id) {
       checkPaymentStatus();
     }
