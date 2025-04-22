@@ -122,7 +122,24 @@ const Profile = () => {
 
   const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
 
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://unity-women-backend.vercel.app/api/users/getuser/${userInfo._id}`
+        );
+        if (data.payment === false) {
+          alert('Zəhmət olmasa ödəniş edin.');
+        }
+      } catch (err) {
+        console.error('Xəta:', err);
+      }
+    };
 
+    if (userInfo?._id) {
+      checkPaymentStatus();
+    }
+  }, [userInfo]);
 
   // Arama fonksiyonu
   const filteredUsers = referredUserss
