@@ -9,7 +9,8 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
 import { FaMoneyBillWave, FaUsers, FaSitemap, FaMedal, FaPercentage, FaBalanceScale } from 'react-icons/fa';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const Profile = () => {
   const [email, setEmail] = useState("");
@@ -36,6 +37,8 @@ const Profile = () => {
   const [paymentFilter, setPaymentFilter] = useState(null);
 
   const { userInfo } = useSelector((state) => state.auth);
+  const MySwal = withReactContent(Swal);
+
 
   const handleLogout = async () => {
     try {
@@ -267,7 +270,68 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState(null);
 
+   
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://unity-women-backend.vercel.app/api/users/getuser/${userInfo._id}`
+        );
 
+        if (data.payment === false) {
+          MySwal.fire({
+            title: `💳 Salam, ${data.name}!`,
+            html: `
+              <p class="text-lg mb-2">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
+              <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between cursor-pointer border border-gray-300"
+                   id="copyCard">
+                <span class="font-mono text-lg">5522 0993 7821 1379</span>
+                <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş sonrası tam giriş aktivləşəcək ✅</p>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: 'Sonra',
+            cancelButtonColor: '#F87171',
+            background: '#f9fafb',
+            customClass: {
+              popup: 'rounded-2xl shadow-2xl border border-gray-200',
+              title: 'text-2xl font-semibold text-gray-800',
+            },
+            didOpen: () => {
+              const copyDiv = document.getElementById('copyCard');
+              if (copyDiv) {
+                copyDiv.addEventListener('click', () => {
+                  navigator.clipboard.writeText('5522099378211379');
+                  Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Kart nömrəsi kopyalandı!',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    background: '#ecfdf5',
+                    color: '#065f46',
+                  });
+                });
+              }
+            },
+          });
+
+          localStorage.setItem('paymentAlertShown', 'true');
+        }
+      } catch (error) {
+        console.error('Xəta:', error);
+      }
+    };
+
+    if (userInfo?._id) {
+      checkPaymentStatus();
+    }
+  }, [userInfo]);
 
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
