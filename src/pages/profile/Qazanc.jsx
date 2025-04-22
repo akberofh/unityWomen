@@ -148,8 +148,8 @@ const Qazanc = () => {
                     <td className="p-4">{user.name}</td>
                     <td className="p-4">{user.email}</td>
                     <td className="p-4">{user.totalEarned} AZN</td>
+                    <td className="p-4">{user.count}</td>
                     <td className="p-4">{user.totalInvited}</td>
-                    <td className="p-4">{user.totalPaymentTrue}</td>
                   </tr>
                 ))}
               </tbody>
