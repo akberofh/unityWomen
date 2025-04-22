@@ -162,11 +162,7 @@ const Qazanc = () => {
                         </table>
                     </div>
 
-                    {/* Toplam veriler */}
-                    <div className="mt-4 text-gray-700 dark:text-gray-200">
-                        <p><strong>Toplam Dəvət Edilən:</strong> {filteredData.reduce((acc, user) => acc + user.totalInvited, 0)}</p>
-                        <p><strong>Toplam Qazanc:</strong> {filteredData.reduce((acc, user) => acc + user.totalEarned, 0)} AZN</p>
-                    </div>
+
 
                     {filteredData.length === 0 && (
                         <p className="text-center text-gray-500 mt-6 dark:text-gray-400">Mükafat yoxdur.</p>
