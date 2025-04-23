@@ -372,7 +372,6 @@ const Payment = () => {
                         src={product.photo[0]} // Sadece ilk fotoğrafı göster
                         alt={`product-image`}
                         className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
-                        onClick={() => navigate(`/product/${product._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
                       />
                     </div>
                   ) : (
@@ -381,7 +380,6 @@ const Payment = () => {
                         src={product.photo}
                         alt={product.title}
                         className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
-                        onClick={() => navigate(`/product/${product._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
                       />
                     </div>
                   )}
