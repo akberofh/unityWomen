@@ -271,7 +271,7 @@ const Profile = () => {
                 <span class="font-mono text-lg">5522 0993 7821 1379</span>
                 <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
               </div>
-              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş sonrası tam giriş aktivləşəcək ✅</p>
+              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mutləq göndərin ✅</p>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -287,7 +287,7 @@ const Profile = () => {
               const copyDiv = document.getElementById('copyCard');
               if (copyDiv) {
                 copyDiv.addEventListener('click', () => {
-                  navigator.clipboard.writeText('5522099378211379');
+                  navigator.clipboard.writeText('4628167141050428');
                   Swal.fire({
                     toast: true,
                     position: 'top-end',

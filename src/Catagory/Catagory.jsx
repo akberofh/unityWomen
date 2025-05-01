@@ -19,9 +19,6 @@ const Catagory = () => {
   const { data, error, isLoading } = useGetCatagoryQuery();
 
   useEffect(() => {
-    if (!userInfo) {
-      navigate('/login');
-    }
     if (data?.allCatagory) {
       dispatch(setCatagory(data.allCatagory));
     }

@@ -1,25 +1,25 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; // Swiper'ın CSS'i
+import "swiper/css"; 
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import "swiper/css/navigation"; // Navigation için CSS
+import "swiper/css/navigation"; 
 import { EffectCoverflow, Navigation, Autoplay } from "swiper/modules";
 
 const Sec = () => {
   const images = [
-    "https://unitywomen.com/assets/images/1740237994Minimalist%20Website%20Launch%20Computer%20Mockup%20Instagram%20Post.png",
-    "https://unitywomen.com/assets/images/1740238098%C3%9Cz%20baxim%20vasi.png",
-    "https://unitywomen.com/assets/images/1740239328%C3%9Cz%20baxim%20vasi.png",
-    "https://unitywomen.com/assets/images/1740240107%C3%9Cz%20baxim%20vasi.png",
-    "https://unitywomen.com/assets/images/1740240181Minimalist%20Website%20Launch%20Computer%20Mockup%20Instagram%20Post.png",
-    "https://unitywomen.com/assets/images/1740240274Untitled%20design.png",
-    "https://unitywomen.com/assets/images/1740240641%C3%9Cz%20baxim%20vasi.png",
+    "https://i.ibb.co/BV5BSqD8/Whats-App-kil-2025-05-01-saat-21-26-41-4998bc2f.jpg",
+    "https://i.ibb.co/whJDLVRd/Whats-App-kil-2025-05-01-saat-21-26-41-099a80b4.jpg",
+    "https://i.ibb.co/KcK9tYGK/Whats-App-kil-2025-05-01-saat-21-26-41-6dbb6de3.jpg",
+    "https://i.ibb.co/0yQC38hN/Whats-App-kil-2025-05-01-saat-21-26-43-8883a49c.jpg",
+    "https://i.ibb.co/MD92wyjB/Whats-App-kil-2025-05-01-saat-21-26-42-ee5cc419.jpg",
+    "https://i.ibb.co/N6MSqQfL/Whats-App-kil-2025-05-01-saat-21-26-42-c4198946.jpg",
+    "https://i.ibb.co/v6y6GFgS/Whats-App-kil-2025-05-01-saat-21-26-42-75d82e2f.jpg",
   ];
 
   const photo = [
-    "https://unitywomen.com/assets/images/2AqG2125.jpg",
-    "https://unitywomen.com/assets/images/U8hd44.jpg",
+    "https://i.ibb.co/TBLnz8Pr/Whats-App-kil-2025-05-01-saat-21-26-43-ea8baf9d.jpg",
+    "https://i.ibb.co/M5Z4zS6F/Whats-App-kil-2025-05-01-saat-21-26-43-493f8e15.jpg",
   ];
 
   return (
@@ -52,7 +52,7 @@ const Sec = () => {
           >
             {images.map((src, index) => (
               <SwiperSlide key={index}>
-                <div className="p-3 relative group  aspect-w-4 aspect-h-3 flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+                <div className="p-3 relative h-96 w-full group  aspect-w-4 aspect-h-3 flex items-center overflow-hidden bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
                   <img
                     src={src}
                     alt={`Image ${index + 1}`}

@@ -105,6 +105,11 @@ const Header = ({ theme, setTheme }) => {
   };
 
 
+  useEffect(() => {
+    if (isMenuOpen && !userInfo) {
+      navigate("/login");
+    }
+  }, [isMenuOpen, userInfo, navigate]);
 
 
 
@@ -281,7 +286,7 @@ const Header = ({ theme, setTheme }) => {
             <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profilə Keçin➡</Link>
 
             {
-              userInfo.photo ? (
+              userInfo ? (
                 <img
                 src={userInfo.photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
                 alt="Profile"
