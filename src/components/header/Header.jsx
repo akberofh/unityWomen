@@ -158,6 +158,14 @@ const Header = ({ theme, setTheme }) => {
                 Sevimlilər
               </Link>
               <Link
+                to="/products"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Məhsullar
+              </Link>
+              <Link
                 to="/about"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
                 data-aos="custom-border"
@@ -288,10 +296,10 @@ const Header = ({ theme, setTheme }) => {
             {
               userInfo ? (
                 <img
-                src={userInfo.photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
-                alt="Profile"
-                className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
-              />
+                  src={userInfo.photo} // URL'den gelen fotoğrafı direkt gösteriyoruz
+                  alt="Profile"
+                  className="w-32 h-32 object-cover mx-auto rounded-full mt-4"
+                />
               ) : (
                 <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-4" />
               )
@@ -326,7 +334,7 @@ const Header = ({ theme, setTheme }) => {
                   to="/login"
                   className="bg-blue-500  text-white px-6 py-3 rounded-lg text-xl hover:bg-blue-600"
                 >
-                  Giriş Ed
+                  Giriş Et
                 </Link>
 
                 <div className=" h-6"></div>
@@ -355,6 +363,8 @@ const Header = ({ theme, setTheme }) => {
           <div className="space-y-4 mt-6">
             <Link to="/favorie" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Sevimlilər</Link>
+            <Link to="/products" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Məhsullar</Link>
             <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Haqqımızda</Link>
             <Link to="/contact" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
