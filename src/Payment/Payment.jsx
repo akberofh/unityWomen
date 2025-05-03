@@ -401,7 +401,7 @@ const Payment = () => {
                 <h6 className="text-sm font-semibold dark:text-white text-gray-800">Qiymet:</h6>
               </div>
               <p className="object-cover rounded-full mb-4 sm:mb-0 sm:mr-6">
-                {data && data.reduce((acc, product) => acc + product.totalPrice, 0)}₼
+              {data && (data.reduce((acc, product) => acc + product.totalPrice, 0)).toFixed(2)} ₼
               </p>
             </div>
           )}
