@@ -106,29 +106,78 @@ const Basket = () => {
         <p className="text-center text-gray-600">Yüklənir...</p>
       ) : (
         data && data.map((product) => (
-          <div key={product._id} className=" dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-            <img src={product.photo} alt="Thumbnail" className="w-32 h-32 object-cover rounded-full mb-4 md:mb-0 md:mr-6 border border-gray-200" />
-            <div className="w-full flex flex-col items-center">
-              <h3 className="text-lg font-semibold dark:text-white  text-gray-800">{product.title}</h3>
-            </div>
-            <div className="flex w-full dark:text-white items-center justify-center space-x-4 mt-4">
-              {product.quantity > 1 ? (
-                <button onClick={() => updateQuantity(product.productId, product.quantity - 1)} className="px-4 py-2  bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">-</button>
-              ) : (
-                <button onClick={() => removeProduct(product._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Sil</button>
-              )}
-              <span className="text-lg dark:text-white font-medium text-gray-700">{product.quantity}</span>
-              <button onClick={() => updateQuantity(product.productId, product.quantity + 1)} className="px-4  py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+</button>
-            </div>
-            <div className="flex flex-col w-full items-center mt-4">
-              <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Qiymət: {product.totalPrice} ₼</p>
-              {product.stock === 1 ? (
-                <p className="text-red-500 mb-2">Son 1 məhsul qaldı!</p>
-              ) : product.stock === 0 ? (
-                <p className="text-red-500 mb-2">Bu məhsul stokda yoxdur!</p>
-              ) : null}
-            </div>
-          </div>
+<div
+  key={product._id}
+  className="dark:bg-black bg-white border shadow-md rounded-2xl p-6 mb-6 flex flex-col md:flex-row md:items-center gap-6 hover:shadow-xl transition-all duration-300"
+>
+  {/* Ürün Fotoğrafı */}
+  <div
+    className="w-full md:w-auto flex justify-center"
+    onClick={() => navigate(`/product/${product.productId}`)}
+  >
+    <img
+      src={
+        Array.isArray(product.photo) && product.photo.length > 0
+          ? product.photo[0]
+          : product.photo
+      }
+      alt={product.title}
+      className="w-32 h-32 object-cover rounded-full border border-gray-300 cursor-pointer"
+    />
+  </div>
+
+  {/* Ürün Bilgileri */}
+  <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+    <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+      {product.title}
+    </h3>
+
+    {/* Adet ve Butonlar */}
+    <div className="flex items-center justify-center md:justify-start space-x-4 mb-2">
+      {product.quantity > 1 ? (
+        <button
+          onClick={() =>
+            updateQuantity(product.productId, product.quantity - 1)
+          }
+          className="px-4 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+        >
+          -
+        </button>
+      ) : (
+        <button
+          onClick={() => removeProduct(product._id)}
+          className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Sil
+        </button>
+      )}
+      <span className="text-lg font-medium dark:text-white text-gray-800">
+        {product.quantity}
+      </span>
+      <button
+        onClick={() =>
+          updateQuantity(product.productId, product.quantity + 1)
+        }
+        className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >
+        +
+      </button>
+    </div>
+
+    {/* Fiyat ve Stok Durumu */}
+    <p className="text-lg font-semibold dark:text-white text-gray-900 mt-2">
+      Toplam Qiymət: {(Math.round(product.totalPrice * 100) / 100).toFixed(2)} ₼
+    </p>
+
+    {product.stock === 1 && (
+      <p className="text-red-500 font-medium mt-1">Son 1 məhsul qaldı!</p>
+    )}
+    {product.stock === 0 && (
+      <p className="text-red-500 font-medium mt-1">Bu məhsul stokta yoxdur!</p>
+    )}
+  </div>
+</div>
+
         ))
       )}
 

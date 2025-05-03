@@ -30,7 +30,7 @@ const Favorie = () => {
     return (
         <div className="container min-h-[740px] mx-auto p-6">
             {isLoading ? (
-                <p className="text-center text-gray-600">Yükləniyor...</p>
+                <p className="text-center text-gray-600">Yüklənir...</p>
             ) : (
                 data && data.map(product => (
                     <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
@@ -47,7 +47,7 @@ const Favorie = () => {
                             <span className="text-lg dark:text-white font-medium text-gray-700">{product.catagory}</span>
                         </div>
                         <div className="flex flex-col w-full items-center mt-4">
-                            <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Fiyat: {product.price} AZN</p>
+                            <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Qiymət: {product.price} ₼</p>
                             {product.stock === 1 ? (
                                 <p className="text-red-500 mb-2">Son 1 məhsul qaldı!</p>
                             ) : product.stock === 0 ? (
