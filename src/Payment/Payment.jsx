@@ -366,15 +366,23 @@ const Payment = () => {
             data &&
             data.map((product) => (
               <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
+                {Array.isArray(product.photo) && product.photo.length > 0 ? (
+                  <div className="">
                     <img
-                src={
-                  Array.isArray(product.photo) && product.photo.length > 0
-                    ? product.photo[0]
-                    : product.photo
-                }
-                alt={product.title}
-                className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
-                />
+                      src={product.photo[0]} // Sadece ilk fotoğrafı göster
+                      alt={`product-image`}
+                      className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
+                    />
+                  </div>
+                ) : (
+                  <div className="">
+                    <img
+                      src={product.photo}
+                      alt={product.title}
+                      className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
+                    />
+                  </div>
+                )}
                 <div className="w-full flex flex-col items-center sm:items-start">
                   <h6 className="text-sm font-semibold dark:text-white text-gray-800">{product.title}</h6>
                 </div>
