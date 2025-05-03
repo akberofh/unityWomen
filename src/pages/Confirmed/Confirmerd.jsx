@@ -49,39 +49,39 @@ const Confirmed = () => {
                         </div>
 
                         <div className="overflow-x-auto">
-    <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50 sticky top-0 z-10">
-            <tr>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Şəkil</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Ad</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Ədəd</th>
-                <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Toplam Qiymət</th>
-            </tr>
-        </thead>
-        <tbody className="bg-white">
-            {cart.products.map((product) => (
-                <tr key={product._id} className="border-b">
-                    <td className="px-4 py-3">
-                        <img
-                            src={
-                                Array.isArray(product.productId.photo)
-                                    ? product.productId.photo[0]
-                                    : product.productId.photo
-                            }
-                            alt={product.title}
-                            className="w-16 h-16 rounded-lg object-cover border"
-                        />
-                    </td>
-                    <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
-                    <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
-                    <td className="px-4 py-3 text-green-600 font-semibold text-center">
-                        {product.totalPrice} AZN
-                    </td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
-</div>
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50 sticky top-0 z-10">
+                                    <tr>
+                                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Şəkil</th>
+                                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Ad</th>
+                                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Ədəd</th>
+                                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Toplam Qiymət</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white">
+                                    {cart.products.map((product) => (
+                                        <tr key={product._id} className="border-b">
+                                            <td className="px-4 py-3">
+                                                <img
+                                                    src={
+                                                        Array.isArray(product.productId.photo)
+                                                            ? product.productId.photo[0]
+                                                            : product.productId.photo
+                                                    }
+                                                    alt={product.title}
+                                                    className="w-16 h-16 rounded-lg object-cover border"
+                                                />
+                                            </td>
+                                            <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
+                                            <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
+                                            <td className="px-4 py-3 text-green-600 font-semibold text-center">
+                                                {product.totalPrice} AZN
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 ))
