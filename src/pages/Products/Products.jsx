@@ -171,7 +171,7 @@ const Products = () => {
     </div>
 
     {/* Pagination */}
-    <div className="flex justify-center mt-6 space-x-2">
+    <div className="flex justify-center mt-6 mb-6 space-x-2">
       {currentPage > 3 && (
         <button
           onClick={() => setCurrentPage(1)}
