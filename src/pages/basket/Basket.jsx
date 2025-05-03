@@ -27,7 +27,7 @@ const Basket = () => {
       await updateTodo({ productId, quantity }).unwrap();
       await refetch();
     } catch (err) {
-      console.error("Failed to update the quantity:", err);
+      console.error("Məhsul yenilənmədi:", err);
     }
   };
 
@@ -35,10 +35,12 @@ const Basket = () => {
   const removeProduct = async (_id) => {
     try {
       await removeTodo(_id).unwrap();
-      alert("Ürün sepetten silindi!");
+      alert("Məhsul səbətdən silindi!");
       await refetch();
     } catch (err) {
-      console.error("Failed to remove the product:", err);
+      console.error("Məhsul silinmədi:", err);
+      alert("Məhsul səbətdən silinmədi!");
+
     }
   };
 
@@ -46,13 +48,13 @@ const Basket = () => {
   const handleConfirmCart = async () => {
     try {
       await addConfirm().unwrap();
-      alert("Sepet başarıyla onaylandı!");
+      alert("Səbət təsdiqləndi! Ödəmə hissəsinə yönləndirilir.");
       setTimeout(() => {
         navigate('/payment');
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error("Sepeti onaylarken hata oluştu:", error);
-      alert("Sepeti onaylarken bir hata oluştu.");
+      alert("Səbət təsdiqlənmədi.");
     }
   };
 
@@ -87,12 +89,14 @@ const Basket = () => {
   useEffect(() => {
     if (data) {
       dispatch(setTodos(data));
+      refetch();
     }
   }, [data, dispatch]);
 
   const calculateTotalPrice = Array.isArray(data)
-    ? data.reduce((total, product) => total + product.price * product.quantity, 0)
-    : 0;
+  ? Math.round(data.reduce((total, product) => total + product.price * product.quantity, 0) * 100) / 100
+  : 0;
+
 
   const isStockAvailable = data && Array.isArray(data) && !data.some((product) => product.stock === 0);
 
@@ -117,7 +121,7 @@ const Basket = () => {
               <button onClick={() => updateQuantity(product.productId, product.quantity + 1)} className="px-4  py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+</button>
             </div>
             <div className="flex flex-col w-full items-center mt-4">
-              <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Fiyat: {product.totalPrice} ₼</p>
+              <p className="text-xl dark:text-white font-bold text-gray-800 mb-2">Toplam Qiymət: {product.totalPrice} ₼</p>
               {product.stock === 1 ? (
                 <p className="text-red-500 mb-2">Son 1 məhsul qaldı!</p>
               ) : product.stock === 0 ? (

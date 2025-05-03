@@ -14,13 +14,14 @@ const Favorie = () => {
     useEffect(() => {
         if (data) {
             dispatch(setTodos(data));
+            refetch();
         }
     }, [data, dispatch]);
 
     const handleDelete = async (id) => {
         try {
             await deleteeTodo(id);
-            await refetch(); // verileri tekrar çekmek için
+            await refetch(); 
         } catch (err) {
             console.error("Silme hatası:", err);
         }
