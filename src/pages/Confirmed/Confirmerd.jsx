@@ -8,8 +8,8 @@ const Confirmed = () => {
     const { data, isLoading } = useGetConfirmedQuery();
 
     useEffect(() => {
-        if (data?.confirmedCarts) {
-            dispatch(setConfirmed(data.confirmedCarts));
+        if (data) {
+            dispatch(setConfirmed(data));
         }
     }, [data, dispatch]);
 
@@ -21,8 +21,8 @@ const Confirmed = () => {
 
             {isLoading ? (
                 <p className="text-center text-gray-500 text-lg">Yüklənir...</p>
-            ) : data?.confirmedCarts?.length > 0 ? (
-                data.confirmedCarts.map((cart) => (
+            ) : data?.length > 0 ? (
+                data.map((cart) => (
                     <div
                         key={cart._id}
                         className="bg-white border border-gray-200 rounded-xl shadow-sm mb-12 p-6"
@@ -62,15 +62,21 @@ const Confirmed = () => {
                                     {cart.products.map((product) => (
                                         <tr key={product._id} className="border-b">
                                             <td className="px-4 py-3">
-                                                <img
-                                                    src={
-                                                        Array.isArray(product.productId.photo)
-                                                            ? product.productId.photo[0]
-                                                            : product.productId.photo
-                                                    }
-                                                    alt={product.title}
-                                                    className="w-16 h-16 rounded-lg object-cover border"
-                                                />
+                                                {product?.photo ? (
+                                                    <img
+                                                        src={
+                                                            Array.isArray(product.photo)
+                                                                ? product.photo[0]
+                                                                : product.photo
+                                                        }
+                                                        alt={product.title}
+                                                        className="w-16 h-16 rounded-lg object-cover border"
+                                                    />
+                                                ) : (
+                                                    <div className="w-16 h-16 flex items-center justify-center border rounded bg-gray-100 text-gray-400 text-sm">
+                                                        N/A
+                                                    </div>
+                                                )}
                                             </td>
                                             <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
                                             <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
@@ -82,7 +88,6 @@ const Confirmed = () => {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 ))
             ) : (
