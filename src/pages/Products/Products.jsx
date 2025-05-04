@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { FaRegHeart } from "react-icons/fa";
 import { useGetCatagoryQuery } from "../../redux/slices/catagoryApiSlice";
 import { setCatagory } from "../../redux/slices/catagorySlice";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -17,9 +18,10 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
-  const [inStock, setInStock] = useState("all"); 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const [inStock, setInStock] = useState("all");
+  const scrollRef = useRef(null);
+  const [page, setPage] = useState(1); // Sayfa durumu
+  const [hasMore, setHasMore] = useState(true);
 
   const { data: categoryData } = useGetCatagoryQuery();
 
@@ -32,15 +34,24 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/");
-        setProducts(response.data.allQolbaq || []);
-      } catch (error) {
+        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq?page=${page}`);
+        const newData = response.data.allQolbaq;
+
+        // Yeni ürünleri ekleyerek veri durumunu güncelle
+        setProducts((prevData) => [...prevData, ...newData]);
+  
+        // Eğer toplam sayfa sayısından küçükse, daha fazla ürün var demektir
+        setHasMore(page < response.data.totalPages);     
+       } catch (error) {
         console.error("Error fetching data:", error);
-        setProducts([]);
       }
     };
     fetchData();
-  }, []);
+  }, [page]);
+
+  const loadMore = () => {
+    if (hasMore) setPage((prev) => prev + 1); // Sayfayı bir arttır
+  };
 
   const handleAddToCart = async (product) => {
     try {
@@ -74,149 +85,118 @@ const Products = () => {
     return matchesSearch && matchesCategory && matchesPrice && matchesStock;
   });
 
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const scrollLeft = () => {
+    scrollRef.current.scrollLeft -= 400;
+  };
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const scrollRight = () => {
+    scrollRef.current.scrollLeft += 400;
+  };
 
   return (
-<div className="w-full mx-auto flex flex-col lg:flex-row gap-6 mt-4">
-  {/* Filter Sidebar */}
-  <div className="lg:w-1/4 w-full lg:sticky lg:top-4 h-fit space-y-6 bg-white dark:bg-gray-800 p-4 rounded shadow mb-4 lg:mb-0">
-    <div>
-      <h2 className="font-bold text-lg mb-2 dark:text-white">Axtarış</h2>
-      <input
-        type="text"
-        placeholder="Ad ilə axtar"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
-      />
-    </div>
+    <div className="w-full flex flex-col gap-6 mt-4">
+      {/* Filters */}
+      <div className="w-full bg-white dark:bg-gray-800 p-4 rounded shadow flex flex-wrap gap-4">
+        <input
+          type="text"
+          placeholder="Ad ilə axtar"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
+        />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
+        >
+          <option value="all">Hamısı</option>
+          {categoryData?.allCatagory?.map((cat) => (
+            <option key={cat._id} value={cat.title}>{cat.title}</option>
+          ))}
+        </select>
+        <select
+          value={priceRange}
+          onChange={(e) => setPriceRange(e.target.value)}
+          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
+        >
+          <option value="all">Hamısı</option>
+          <option value="low">0 - 50₼</option>
+          <option value="mid">51 - 150₼</option>
+          <option value="high">151₼+</option>
+        </select>
+        <select
+          value={inStock}
+          onChange={(e) => setInStock(e.target.value)}
+          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
+        >
+          <option value="all">Hamısı</option>
+          <option value="inStock">Stokda Olanlar</option>
+          <option value="outOfStock">Stokda Olmayanlar</option>
+        </select>
+      </div>
 
-    <div>
-      <h2 className="font-bold text-lg mb-2 dark:text-white">Kateqoriya</h2>
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
-      >
-        <option value="all">Hamısı</option>
-        {categoryData?.allCatagory?.map((cat) => (
-          <option key={cat._id} value={cat.title}>
-            {cat.title}
-          </option>
-        ))}
-      </select>
-    </div>
+      {/* Product Scrollable Grid */}
+      <div className="relative">
+        <button
+          onClick={scrollLeft}
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
+        >
+          <FaArrowLeft />
+        </button>
 
-    <div>
-      <h2 className="font-bold text-lg mb-2 dark:text-white">Qiymət Aralığı</h2>
-      <select
-        value={priceRange}
-        onChange={(e) => setPriceRange(e.target.value)}
-        className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
-      >
-        <option value="all">Hamısı</option>
-        <option value="low">0 - 50₼</option>
-        <option value="mid">51 - 150₼</option>
-        <option value="high">151₼+</option>
-      </select>
-    </div>
+        <div
+          ref={scrollRef}
+          className="overflow-x-auto whitespace-nowrap scroll-smooth px-8"
+        >
+          <div className="grid grid-rows-3 gap-6 auto-cols-max grid-flow-col">
+            {filteredProducts.map((product) => (
+              <div key={product._id} className="w-56 bg-white dark:bg-gray-800 rounded-lg shadow p-4 relative">
+                <button
+                  onClick={() => handleAddToFavorite(product)}
+                  className="absolute top-2 right-2 text-gray-700 dark:text-white"
+                >
+                  <FaRegHeart className="w-6 h-6 hover:text-red-600" />
+                </button>
+                <img
+                  src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
+                  alt={product.title}
+                  className="w-full h-40 object-cover rounded cursor-pointer"
+                  onClick={() => navigate(`/product/${product._id}`)}
+                />
+                <h3 className="mt-2 font-semibold dark:text-white truncate">{product.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-300">{product.price}₼</p>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  disabled={product.stock === 0}
+                  className={`w-full mt-2 py-2 rounded text-white ${product.stock === 0 ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
+                >
+                  {product.stock === 0 ? "Stokda Yoxdur" : "Səbətə Əlavə Et"}
+                </button>
+              </div>
+            ))}
+          </div>
 
-    <div>
-      <h2 className="font-bold text-lg mb-2 dark:text-white">Stok Durumu</h2>
-      <select
-        value={inStock}
-        onChange={(e) => setInStock(e.target.value)}
-        className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
-      >
-        <option value="all">Hamısı</option>
-        <option value="inStock">Stokda Olanlar</option>
-        <option value="outOfStock">Stokda Olmayanlar</option>
-      </select>
-    </div>
-  </div>
+        </div>
 
-  {/* Product Grid */}
-  <div className="lg:w-3/4 w-full overflow-x-auto mt-4 lg:mt-0">
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-      {paginatedProducts.map((product) => (
-        <div key={product._id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 relative">
+        <button
+          onClick={scrollRight}
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
+        >
+          <FaArrowRight />
+        </button>
+        {hasMore && (
+        <div className="flex justify-center mt-6">
           <button
-            onClick={() => handleAddToFavorite(product)}
-            className="absolute top-2 right-2 text-gray-700 dark:text-white"
+            onClick={loadMore}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            <FaRegHeart className="w-6 h-6 hover:text-red-600" />
-          </button>
-          <img
-            src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
-            alt={product.title}
-            className="w-full h-48 object-cover rounded cursor-pointer"
-            onClick={() => navigate(`/product/${product._id}`)}
-          />
-          <h3 className="mt-2 font-semibold dark:text-white truncate">{product.title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300">{product.price}₼</p>
-          <button
-            onClick={() => handleAddToCart(product)}
-            disabled={product.stock === 0}
-            className={`w-full mt-2 py-2 rounded text-white ${product.stock === 0 ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
-          >
-            {product.stock === 0 ? "Stokda Yoxdur" : "Səbətə Əlavə Et"}
+            Daha Çox Göstər
           </button>
         </div>
-      ))}
+      )}
+
+      </div>
     </div>
-
-    {/* Pagination */}
-    <div className="flex justify-center mt-6 mb-6 space-x-2">
-      {currentPage > 3 && (
-        <button
-          onClick={() => setCurrentPage(1)}
-          className="px-3 py-1 rounded-full text-sm font-semibold bg-gray-200 dark:bg-gray-700 dark:text-white"
-        >
-          1
-        </button>
-      )}
-
-      {currentPage > 4 && (
-        <span className="px-3 py-1 rounded-full text-sm font-semibold text-gray-500 dark:text-gray-300">
-          ...
-        </span>
-      )}
-
-      {Array.from({ length: totalPages }, (_, i) => i + 1)
-        .slice(Math.max(currentPage - 2, 0), Math.min(currentPage + 2, totalPages))
-        .map((num) => (
-          <button
-            key={num}
-            onClick={() => setCurrentPage(num)}
-            className={`px-3 py-1 rounded-full text-sm font-semibold ${currentPage === num ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"}`}
-          >
-            {num}
-          </button>
-        ))}
-
-      {currentPage < totalPages - 3 && (
-        <span className="px-3 py-1 rounded-full text-sm font-semibold text-gray-500 dark:text-gray-300">
-          ...
-        </span>
-      )}
-
-      {currentPage < totalPages - 2 && (
-        <button
-          onClick={() => setCurrentPage(totalPages)}
-          className="px-3 py-1 rounded-full text-sm font-semibold bg-gray-200 dark:bg-gray-700 dark:text-white"
-        >
-          {totalPages}
-        </button>
-      )}
-    </div>
-  </div>
-</div>
-
   );
 };
 
