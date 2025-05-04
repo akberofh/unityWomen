@@ -44,7 +44,7 @@ const Detalp = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://unity-women-backend.vercel.app/api/qolbaq/id/${qolbaq_id}`);
+                const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}`);
                 const data = response.data;
                 if (data && data.getById) {
                     setProduct(data.getById);

@@ -21,7 +21,7 @@ const Baxim = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await axios.get(`https://unity-women-backend.vercel.app/api/qolbaq/${catagory}`);
+                const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${catagory}`);
                 setItems(res.data.allQolbaq); // API'den doğrudan filtrelenmiş veriyi alıyoruz
                 setLoading(false);
             }   catch (error) {

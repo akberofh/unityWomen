@@ -86,7 +86,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/user/${userInfo.referralCode}`)
+        .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/user/${userInfo.referralCode}`)
         .then((res) => {
           setReferredUserss(res?.data?.users || []);
         })
@@ -96,7 +96,7 @@ const Profile = () => {
 
       // Fetch referred users using referralCode for admin
       axios
-        .get(`https://unity-women-backend.vercel.app/api/users/admin/${userInfo.referralCode}`)
+        .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/admin/${userInfo.referralCode}`)
         .then(async (res) => {
           setReferredUsers(res?.data?.users || []);
 
@@ -107,8 +107,8 @@ const Profile = () => {
 
 
             const [sagRes, solRes] = await Promise.all([
-              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${sagKol.referralCode}`),
-              axios.get(`https://unity-women-backend.vercel.app/api/users/user/${solKol.referralCode}`),
+              axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/user/${sagKol.referralCode}`),
+              axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/user/${solKol.referralCode}`),
             ]);
 
 
@@ -172,8 +172,8 @@ const Profile = () => {
     try {
       // İki API çağrısını paralel olarak başlatıyoruz
       const [res1, res2] = await Promise.all([
-        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${userInfo.referralCode}`),
-        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${userInfo.referralCode}`)
+        axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/get-link-owner/${userInfo.referralCode}`),
+        axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/referredBykod/${userInfo.referralCode}`)
       ]);
 
       // Yanıtları set ediyoruz
@@ -194,8 +194,8 @@ const Profile = () => {
     try {
       // İki API çağrısını paralel olarak başlatıyoruz
       const [res1, res2] = await Promise.all([
-        axios.get(`https://unity-women-backend.vercel.app/api/users/get-link-owner/${referralCode}`),
-        axios.get(`https://unity-women-backend.vercel.app/api/users/referredBykod/${referralCode}`)
+        axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/get-link-owner/${referralCode}`),
+        axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/referredBykod/${referralCode}`)
       ]);
 
       // Yanıtları set ediyoruz
@@ -217,7 +217,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(`https://unity-women-backend.vercel.app/api/users/referral-stats/${userInfo.referralCode}`);
+        const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/referral-stats/${userInfo.referralCode}`);
         setStats(res.data);
         setErrors(null);
       } catch (error) {
@@ -236,7 +236,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
-        const response = await axios.get(`https://unity-women-backend.vercel.app/api/users/salary/${userInfo.referralCode}`);
+        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/salary/${userInfo.referralCode}`);
         setSalaryData(response.data);
         setError(null); // hata varsa önceki temizlenir
       } catch (error) {
@@ -258,7 +258,7 @@ const Profile = () => {
     const checkPaymentStatus = async () => {
       try {
         const { data } = await axios.get(
-          `https://unity-women-backend.vercel.app/api/users/getuser/${userInfo._id}`
+          `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`
         );
 
         if (data.payment === false) {

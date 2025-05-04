@@ -14,7 +14,7 @@ const Qazanc = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("https://unity-women-backend.vercel.app/api/mane", {
+                const response = await axios.get("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/mane", {
                     withCredentials: true,
                 });
                 setAllData(response.data);

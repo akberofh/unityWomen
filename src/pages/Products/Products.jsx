@@ -17,7 +17,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
-  const [inStock, setInStock] = useState("all"); // Yeni filter for stock status
+  const [inStock, setInStock] = useState("all"); 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
@@ -32,7 +32,7 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://unity-women-backend.vercel.app/api/qolbaq/");
+        const response = await axios.get("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/");
         setProducts(response.data.allQolbaq || []);
       } catch (error) {
         console.error("Error fetching data:", error);

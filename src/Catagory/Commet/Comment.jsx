@@ -32,7 +32,7 @@ const Comment = () => {
     };
 
     try {
-      const response = await axios.post('https://unity-women-backend.vercel.app/api/reviews', formData);
+      const response = await axios.post('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/reviews', formData);
       console.log('Response:', response.data);
       setRating(0);
       setReview('');

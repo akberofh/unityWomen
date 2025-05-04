@@ -10,7 +10,7 @@ const CommentDetal = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get('https://unity-women-backend.vercel.app/api/reviews');
+        const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/reviews');
         setReviews(response.data);
       } catch (error) {
         console.error('Yorumlar getirilirken hata oluştu:', error);

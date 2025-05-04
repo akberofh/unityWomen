@@ -43,7 +43,7 @@ const Register = () => {
             console.log(`Referral Code: ${code}`);  // Burada referralCode konsola yazdırılıyor.
 
             axios
-                .get(`https://unity-women-backend.vercel.app/api/users/admin/${code}`)
+                .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/admin/${code}`)
                 .then((res) => {
                     console.log("API'den gelen veri:", res.data); // Veriyi doğru şekilde alıyoruz
                     const data = res.data;
