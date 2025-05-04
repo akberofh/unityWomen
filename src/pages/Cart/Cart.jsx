@@ -12,57 +12,54 @@ const Cart = () => {
   const [addTodoo] = useAddsTodoMutation();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1); // Sayfa durumu
+  const [hasMore, setHasMore] = useState(true); // Yeni ürün var mı kontrolü
 
-  const [visibleItems, setVisibleItems] = useState(8);
-  const [visibleLength, setVisibleLength] = useState(17); // Başlangıçta 100 karakter göster
-
-  // Başlangıçta görünen ürün sayısı
-
-  const loadMore = () => {
-    setVisibleItems(visibleItems + 8); // Her tıklamada 8 ürün daha göster
-  };
-
-  // Fetch products from backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/');
-        console.log(response.data); // Gelen veriyi kontrol et
-        setData(response.data.allQolbaq || []); // Eğer undefined ise boş dizi ata
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setData([]); // Hata durumunda boş dizi ata
-      }
-    };
-
-
-    fetchData();
-  }, []);
-
-  // Function to handle adding product to cart
-  const handleAddToCart = async (product) => {
+  // 300'lü 300'lü verileri almak
+  const fetchData = async () => {
     try {
-      const itemWithDetails = { productId: product._id }; // Use product._id dynamically
+      const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq?page=${page}`);
+      const newData = response.data.allQolbaq;
 
-      // Add the product to the cart using addTodo mutation
-      const newTodo = await addTodo(itemWithDetails).unwrap();
+      // Yeni ürünleri ekleyerek veri durumunu güncelle
+      setData((prevData) => [...prevData, ...newData]);
 
-      // Dispatch the new item to Redux state
-      dispatch({ type: 'product/addTodo', payload: newTodo });
-
-      // Navigate to dashboard after adding product to the cart
-      navigate('/basket');
-    } catch (err) {
-      console.error('Failed to add the product to cart:', err);
-      alert('Ürün sepete eklenemedi. Lütfen tekrar deneyin.');
+      // Eğer toplam sayfa sayısından küçükse, daha fazla ürün var demektir
+      setHasMore(page < response.data.totalPages);
+    } catch (error) {
+      console.error("Veri alınamadı:", error);
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [page]); // Sayfa değiştiğinde veri çekeriz
 
+  // "Daha Fazla Göster" butonuna tıklandığında sayfayı arttır
+  const loadMore = () => {
+    if (hasMore) setPage((prev) => prev + 1); // Sayfayı bir arttır
+  };
 
+  // Sepete ürün ekleme işlemi
+  const handleAddToCart = async (product) => {
+    try {
+      const itemWithDetails = { productId: product._id };
+
+      const newTodo = await addTodo(itemWithDetails).unwrap();
+
+      // Redux'a ekle
+      dispatch({ type: "product/addTodo", payload: newTodo });
+
+      // Sepete yönlendir
+      navigate("/basket");
+    } catch (err) {
+      console.error("Ürün sepete eklenemedi:", err);
+      alert("Ürün sepete eklenemedi. Lütfen tekrar deneyin.");
+    }
+  };
+
+  // Favorilere ürün ekleme işlemi
   const handleAddToFavorie = async (product) => {
-
-
     try {
       const itemWithDetails = { productId: product._id };
 
@@ -70,29 +67,30 @@ const Cart = () => {
       const newFavorie = await addTodoo(itemWithDetails).unwrap();
 
       // Redux'a ekle
-      dispatch({ type: 'favorie/add', payload: newFavorie });
+      dispatch({ type: "favorie/add", payload: newFavorie });
 
       // Favoriler sayfasına yönlendir
-      navigate('/favorie');
+      navigate("/favorie");
     } catch (err) {
-      console.error('Failed to add the product to favorie:', err);
-      alert(err.data?.error || 'Ürün favorilere eklenemedi. Lütfen tekrar deneyin.');
+      console.error("Ürün favorilere eklenemedi:", err);
+      alert(err.data?.error || "Ürün favorilere eklenemedi. Lütfen tekrar deneyin.");
     }
   };
-
-
 
   return (
     <div className="w-[97%] mx-auto p-4 sm:p-6">
       <div className="grid gap-4 sm:gap-6 dark:text-white grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         {data.length > 0 ? (
-          data.slice(0, visibleItems).map((product) => (
+          data.map((product) => (
             <div
               key={product._id}
               className="bg-white shadow-lg rounded-lg dark:bg-gray-800 border overflow-hidden p-4 sm:p-6 flex flex-col items-center transition-transform transform hover:scale-105 relative"
             >
               {/* Favori Ikonu */}
-              <button onClick={() => handleAddToFavorie(product)} className="absolute top-4 right-4 p-2 rounded-full dark:text-white text-gray-950">
+              <button
+                onClick={() => handleAddToFavorie(product)}
+                className="absolute top-4 right-4 p-2 rounded-full dark:text-white text-gray-950"
+              >
                 <FaRegHeart className="h-6 w-6 sm:h-8 sm:w-8 hover:text-blue-900" />
               </button>
 
@@ -121,64 +119,54 @@ const Cart = () => {
 
               {/* Ürün Başlık ve Fiyat */}
               <h3 className="text-sm sm:text-lg font-semibold mb-2 text-gray-800 dark:text-white text-center h-10 overflow-hidden">
-                {(product.title || "").slice(0, visibleLength)}
-                {visibleLength < (product.title || "").length && "..."}
+                {(product.title || "").slice(0, 50)} {/* Burada başlığı kesiyoruz, ihtiyaç varsa ayarlayabilirsin */}
               </h3>
 
               <h4 className="text-sm sm:text-lg font-semibold mb-4 dark:text-white text-gray-800">
-                {product.price}₼
+                {product.price}
               </h4>
 
               {/* Stok Durumu */}
               <p
-                className={`text-sm sm:text-base font-medium mb-4 ${product.stock > 0 ? "text-green-600" : "text-red-600"
-                  }`}
+                className={`text-sm sm:text-base font-medium mb-4 ${
+                  product.stock > 0 ? "text-green-600" : "text-red-600"
+                }`}
               >
-                {product.stock > 0 ? "Stokda Var" : "Stokda Yoxdur"}
+                {product.stock > 0 ? "Stokta Var" : "Stokta Yok"}
               </p>
 
               {/* Sepete Ekle Butonu */}
               <button
                 onClick={() => handleAddToCart(product)}
                 disabled={product.stock === 0}
-                className={`w-full py-2 sm:py-3 rounded-lg text-white ${product.stock === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-                  } transition-colors duration-200`}
+                className={`w-full py-2 sm:py-3 rounded-lg text-white ${
+                  product.stock === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } transition-colors duration-200`}
               >
-                {product.stock === 0 ? "Stokda Yoxdu" : "Səbətə Əlavə Et"}
+                {product.stock === 0 ? "Stokta Yok" : "Sepete Ekle"}
               </button>
             </div>
           ))
         ) : (
-          <p className="text-center dark:text-white text-gray-600">
-            Məhsullar yüklənir...
-          </p>
+          <p className="text-center dark:text-white text-gray-600">Ürünler yükleniyor...</p>
         )}
       </div>
 
       {/* Daha Fazla Göster Butonu */}
-      {visibleItems < data.length && (
+      {hasMore && (
         <div className="flex justify-center mt-6">
           <button
             onClick={loadMore}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            Daha Çox Gösdər
+            Daha Fazla Göster
           </button>
         </div>
       )}
     </div>
-
   );
 };
-
-
-
-
-
-
-
-
 
 export default Cart;
