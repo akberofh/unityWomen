@@ -31,8 +31,15 @@ const Confirmed = () => {
                             <div>
                                 <p className="text-gray-500 text-sm">Ödəmə Vəziyyəti</p>
                                 <p className="text-lg font-semibold text-blue-600">
-                                    {cart.paymentStatus}
+                                    {cart.paymentStatus === 'pending'
+                                        ? 'Ödəniş Gözlənilir'
+                                        : cart.paymentStatus === 'paid'
+                                            ? 'Ödəndi'
+                                            : cart.paymentStatus === 'failed'
+                                                ? 'Ödənmədi'
+                                                : ''}
                                 </p>
+
                             </div>
                             <div>
                                 <p className="text-gray-500 text-sm">Təsdiqlənmə Tarixi</p>
