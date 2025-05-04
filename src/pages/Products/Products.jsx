@@ -39,10 +39,10 @@ const Products = () => {
 
         // Yeni ürünleri ekleyerek veri durumunu güncelle
         setProducts((prevData) => [...prevData, ...newData]);
-  
+
         // Eğer toplam sayfa sayısından küçükse, daha fazla ürün var demektir
-        setHasMore(page < response.data.totalPages);     
-       } catch (error) {
+        setHasMore(page < response.data.totalPages);
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
@@ -94,109 +94,109 @@ const Products = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 mt-4">
-      {/* Filters */}
-      <div className="w-full bg-white dark:bg-gray-800 p-4 rounded shadow flex flex-wrap gap-4">
-        <input
-          type="text"
-          placeholder="Ad ilə axtar"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
-        />
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
-        >
-          <option value="all">Hamısı</option>
-          {categoryData?.allCatagory?.map((cat) => (
-            <option key={cat._id} value={cat.title}>{cat.title}</option>
-          ))}
-        </select>
-        <select
-          value={priceRange}
-          onChange={(e) => setPriceRange(e.target.value)}
-          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
-        >
-          <option value="all">Hamısı</option>
-          <option value="low">0 - 50₼</option>
-          <option value="mid">51 - 150₼</option>
-          <option value="high">151₼+</option>
-        </select>
-        <select
-          value={inStock}
-          onChange={(e) => setInStock(e.target.value)}
-          className="p-2 border rounded dark:bg-gray-900 dark:text-white"
-        >
-          <option value="all">Hamısı</option>
-          <option value="inStock">Stokda Olanlar</option>
-          <option value="outOfStock">Stokda Olmayanlar</option>
-        </select>
-      </div>
+<div className="w-full flex flex-col gap-6">
+  {/* Filters */}
+  <div className="w-full fixed top-0 left-0 z-20 bg-white dark:bg-gray-800 p-5 shadow flex flex-nowrap gap-4 overflow-x-auto">
+    <input
+      type="text"
+      placeholder="Ad ilə axtar"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="p-2 min-w-[150px] border rounded dark:bg-gray-900 dark:text-white"
+    />
+    <select
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+      className="p-2 min-w-[150px] border rounded dark:bg-gray-900 dark:text-white"
+    >
+      <option value="all">Hamısı</option>
+      {categoryData?.allCatagory?.map((cat) => (
+        <option key={cat._id} value={cat.title}>{cat.title}</option>
+      ))}
+    </select>
+    <select
+      value={priceRange}
+      onChange={(e) => setPriceRange(e.target.value)}
+      className="p-2 min-w-[150px] border rounded dark:bg-gray-900 dark:text-white"
+    >
+      <option value="all">Hamısı</option>
+      <option value="low">0 - 50₼</option>
+      <option value="mid">51 - 150₼</option>
+      <option value="high">151₼+</option>
+    </select>
+    <select
+      value={inStock}
+      onChange={(e) => setInStock(e.target.value)}
+      className="p-2 min-w-[150px] border rounded dark:bg-gray-900 dark:text-white"
+    >
+      <option value="all">Hamısı</option>
+      <option value="inStock">Stokda Olanlar</option>
+      <option value="outOfStock">Stokda Olmayanlar</option>
+    </select>
+  </div>
 
-      {/* Product Scrollable Grid */}
-      <div className="relative">
-        <button
-          onClick={scrollLeft}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
-        >
-          <FaArrowLeft />
-        </button>
+  {/* Product Scrollable Grid */}
+  <div className="relative">
+    <button
+      onClick={scrollLeft}
+      className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
+    >
+      <FaArrowLeft />
+    </button>
 
-        <div
-          ref={scrollRef}
-          className="overflow-x-auto whitespace-nowrap scroll-smooth px-8"
-        >
-          <div className="grid grid-rows-3 gap-6 auto-cols-max grid-flow-col">
-            {filteredProducts.map((product) => (
-              <div key={product._id} className="w-56 bg-white dark:bg-gray-800 rounded-lg shadow p-4 relative">
-                <button
-                  onClick={() => handleAddToFavorite(product)}
-                  className="absolute top-2 right-2 text-gray-700 dark:text-white"
-                >
-                  <FaRegHeart className="w-6 h-6 hover:text-red-600" />
-                </button>
-                <img
-                  src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
-                  alt={product.title}
-                  className="w-full h-40 object-cover rounded cursor-pointer"
-                  onClick={() => navigate(`/product/${product._id}`)}
-                />
-                <h3 className="mt-2 font-semibold dark:text-white truncate">{product.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-300">{product.price}₼</p>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  disabled={product.stock === 0}
-                  className={`w-full mt-2 py-2 rounded text-white ${product.stock === 0 ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
-                >
-                  {product.stock === 0 ? "Stokda Yoxdur" : "Səbətə Əlavə Et"}
-                </button>
-              </div>
-            ))}
+    <div
+      ref={scrollRef}
+      className="overflow-x-auto whitespace-nowrap scroll-smooth px-8"
+    >
+      <div className="grid grid-rows-3 gap-6 mt-[100px] auto-cols-max grid-flow-col">
+        {filteredProducts.map((product) => (
+          <div key={product._id} className="w-56 bg-white dark:bg-gray-800 rounded-lg shadow p-4 relative">
+            <button
+              onClick={() => handleAddToFavorite(product)}
+              className="absolute top-2 right-2 text-gray-700 dark:text-white"
+            >
+              <FaRegHeart className="w-6 h-6 hover:text-red-600" />
+            </button>
+            <img
+              src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
+              alt={product.title}
+              className="w-full h-40 object-cover rounded cursor-pointer"
+              onClick={() => navigate(`/product/${product._id}`)}
+            />
+            <h3 className="mt-2 font-semibold dark:text-white truncate">{product.title}</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-300">{product.price}₼</p>
+            <button
+              onClick={() => handleAddToCart(product)}
+              disabled={product.stock === 0}
+              className={`w-full mt-2 py-2 rounded text-white ${product.stock === 0 ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
+            >
+              {product.stock === 0 ? "Stokda Yoxdur" : "Səbətə Əlavə Et"}
+            </button>
           </div>
-
-        </div>
-
-        <button
-          onClick={scrollRight}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
-        >
-          <FaArrowRight />
-        </button>
-        {hasMore && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={loadMore}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-          >
-            Daha Çox Göstər
-          </button>
-        </div>
-      )}
-
+        ))}
       </div>
     </div>
+
+    <button
+      onClick={scrollRight}
+      className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-200 dark:bg-gray-700 rounded-full shadow hover:bg-gray-300"
+    >
+      <FaArrowRight />
+    </button>
+
+    {hasMore && (
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={loadMore}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+        >
+          Daha Çox Göstər
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 
