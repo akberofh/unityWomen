@@ -257,26 +257,21 @@ const Profile = () => {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
-        // 1. Öncə istifadəçi məlumatını al
         const { data } = await axios.get(
           `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`
         );
-  
-        // 2. Əgər ödəniş yoxdursa, kart nömrəsini API-dən al
+
         if (data.payment === false) {
-          const kartResponse = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kart');
-          const kartNumarasi = kartResponse.data?.allKart;
-  
           MySwal.fire({
             title: `💳 Salam, ${data.name}!`,
             html: `
               <p class="text-lg mb-2">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
               <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between cursor-pointer border border-gray-300"
                    id="copyCard">
-                <span class="font-mono text-lg">${kartNumarasi}</span>
+                <span class="font-mono text-lg">4628 1671 4105 0428</span>
                 <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
               </div>
-              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mütləq göndərin ✅</p>
+              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mutləq göndərin ✅</p>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -292,7 +287,7 @@ const Profile = () => {
               const copyDiv = document.getElementById('copyCard');
               if (copyDiv) {
                 copyDiv.addEventListener('click', () => {
-                  navigator.clipboard.writeText(kartNumarasi.replace(/\s/g, ''));
+                  navigator.clipboard.writeText('4628167141050428');
                   Swal.fire({
                     toast: true,
                     position: 'top-end',
@@ -308,17 +303,17 @@ const Profile = () => {
               }
             },
           });
+
         }
       } catch (error) {
         console.error('Xəta:', error);
       }
     };
-  
+
     if (userInfo?._id) {
       checkPaymentStatus();
     }
   }, [userInfo]);
-  
 
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
