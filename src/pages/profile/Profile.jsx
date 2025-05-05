@@ -257,21 +257,33 @@ const Profile = () => {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
+        // 1. İstifadəçi məlumatını al
         const { data } = await axios.get(
           `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`
         );
-
+  
+        // 2. Ödəniş yoxdursa, kart məlumatını da al
         if (data.payment === false) {
+          const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kart');
+          const kartlar = response.data.allKart || [];
+  
+          // 3. Kart nömrələrini HTML formatına sal
+          const kartHtml = kartlar.map((item) => {
+            return `
+              <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between cursor-pointer border border-gray-300 mb-2 copyCard" data-kart="${item.kart}">
+                <span class="font-mono text-lg">${item.kart}</span>
+                <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
+              </div>
+            `;
+          }).join('');
+  
+          // 4. SweetAlert ilə göstər
           MySwal.fire({
             title: `💳 Salam, ${data.name}!`,
             html: `
               <p class="text-lg mb-2">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
-              <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between cursor-pointer border border-gray-300"
-                   id="copyCard">
-                <span class="font-mono text-lg">4628 1671 4105 0428</span>
-                <button class="text-blue-600 font-semibold text-sm ml-4">Kopyala</button>
-              </div>
-              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mutləq göndərin ✅</p>
+              ${kartHtml}
+              <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mütləq göndərin ✅</p>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -284,10 +296,11 @@ const Profile = () => {
               title: 'text-2xl font-semibold text-gray-800',
             },
             didOpen: () => {
-              const copyDiv = document.getElementById('copyCard');
-              if (copyDiv) {
-                copyDiv.addEventListener('click', () => {
-                  navigator.clipboard.writeText('4628167141050428');
+              const cards = document.querySelectorAll('.copyCard');
+              cards.forEach((cardDiv) => {
+                cardDiv.addEventListener('click', () => {
+                  const kart = cardDiv.getAttribute('data-kart');
+                  navigator.clipboard.writeText(kart.replace(/\s/g, ''));
                   Swal.fire({
                     toast: true,
                     position: 'top-end',
@@ -300,16 +313,15 @@ const Profile = () => {
                     color: '#065f46',
                   });
                 });
-              }
+              });
             },
           });
-
         }
       } catch (error) {
         console.error('Xəta:', error);
       }
     };
-
+  
     if (userInfo?._id) {
       checkPaymentStatus();
     }
