@@ -3,7 +3,7 @@ import { useGetTodosQuery } from '../redux/slices/productApiSlice';
 import { setTodos } from '../redux/slices/productSlice';
 import { useDispatch } from 'react-redux';
 import { useAddPaymenttMutation } from '../redux/slices/paymentApiSlice';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const Payment = () => {
@@ -33,7 +33,8 @@ const Payment = () => {
   }, [data, dispatch]);
 
 
-
+  const location = useLocation();
+  const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
 
 
 
@@ -44,6 +45,7 @@ const Payment = () => {
       formData.append('name', name);
       formData.append('surname', surname);
       formData.append('kuriyer', kuriyer);
+      formData.append('confirmedCartId', confirmedCartId);
       formData.append('city', city);
       formData.append('email', email);
       formData.append('phone', phone);

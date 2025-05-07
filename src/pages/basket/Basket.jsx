@@ -47,14 +47,17 @@ const Basket = () => {
   // Confirm cart
   const handleConfirmCart = async () => {
     try {
-      await addConfirm().unwrap();
-      alert("Səbət təsdiqləndi! Ödəmə hissəsinə yönləndirilir.");
+      const response = await addConfirm().unwrap(); 
+      const confirmedCartId = response.confirmedCartId; 
+  
+      alert("Sepet başarıyla onaylandı!");
+  
       setTimeout(() => {
-        navigate('/payment');
+        navigate(`/payment?confirmedCartId=${confirmedCartId}`); 
       }, 1000);
     } catch (error) {
       console.error("Sepeti onaylarken hata oluştu:", error);
-      alert("Səbət təsdiqlənmədi.");
+      alert("Sepeti onaylarken bir hata oluştu.");
     }
   };
 
