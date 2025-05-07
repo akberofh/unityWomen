@@ -3,15 +3,16 @@ import { useGetTodosQuery } from '../redux/slices/productApiSlice';
 import { setTodos } from '../redux/slices/productSlice';
 import { useDispatch } from 'react-redux';
 import { useAddPaymenttMutation } from '../redux/slices/paymentApiSlice';
+import { useNavigate } from "react-router-dom";
+
 
 const Payment = () => {
   const [step, setStep] = useState(1);
   const { data, isLoading } = useGetTodosQuery();
   const dispatch = useDispatch();
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const canvasRef = useRef(null);
   const [name, setName] = useState('');
+  const [kuriyer, setKuriyer] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -19,10 +20,12 @@ const Payment = () => {
   const [adress, setAdress] = useState('');
   const [poct, setPoct] = useState('');
   const [city, setCity] = useState('');
-  const [delivery, setDelivery] = useState('');
   const [photo, setPhoto] = useState(null);
-  const [addPaymentt] = useAddPaymenttMutation();
+  const [poctType, setPoctType] = useState('');
+  const [poctAddress, setPoctAddress] = useState('');
 
+  const [addPaymentt] = useAddPaymenttMutation();
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       dispatch(setTodos(data));
@@ -32,9 +35,7 @@ const Payment = () => {
 
 
 
-  const handleFileChange = (e) => {
-    setPhoto(e.target.files[0]);
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,13 +43,20 @@ const Payment = () => {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('surname', surname);
-      formData.append('delivery', delivery);
+      formData.append('kuriyer', kuriyer);
       formData.append('city', city);
       formData.append('email', email);
       formData.append('phone', phone);
       formData.append('description', description);
       formData.append('adress', adress);
-      formData.append('poct', poct);
+
+      // ŞU KISIM ÖNEMLİ ⬇
+      if (poctType === "Kuryer" || poctType === "Poçt") {
+        formData.append('poct', `${poctType}: ${poctAddress}`);
+      } else {
+        formData.append('poct', poctType); // mağazadan götürmə
+      }
+
       if (photo) formData.append('photo', photo);
 
       const newPayment = await addPaymentt(formData).unwrap();
@@ -57,68 +65,12 @@ const Payment = () => {
         dispatch({ type: 'payment/addPayment', payload: newPayment });
       }, 1000);
 
+      navigate('/confirmed');
     } catch (err) {
       console.error('Failed to add the payment:', err);
     }
   };
 
-  const startCamera = () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-      navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          const videoDevices = devices.filter(device => device.kind === 'videoinput');
-          const backCamera = videoDevices.find(device => device.label.toLowerCase().includes('back') || device.facing == 'environment');
-
-          if (backCamera) {
-            const constraints = {
-              video: { deviceId: { exact: backCamera.deviceId } }
-            };
-
-            navigator.mediaDevices
-              .getUserMedia(constraints)
-              .then((stream) => {
-                setIsCameraOpen(true);
-              })
-              .catch((err) => {
-                console.error("Kamera açılırken bir hata oluştu: ", err);
-                alert("Kamera açılmadı. Lütfen kamera izinlerini kontrol edin.");
-              });
-          } else {
-            alert("Arka kamera bulunamadı.");
-          }
-        })
-        .catch(err => {
-          console.error("Cihazlar alınırken bir hata oluştu: ", err);
-        });
-    } else {
-      alert("Tarayıcınız kamera erişimini desteklemiyor.");
-    }
-  };
-
-  const takePicture = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    const video = document.createElement('video');
-
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.play();
-
-        video.onloadedmetadata = () => {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const imageUrl = canvas.toDataURL('image/png');
-          setSelectedImage(imageUrl);
-          stream.getTracks().forEach(track => track.stop());
-        };
-      })
-      .catch((err) => {
-        console.error("Kamera kullanılamadı: ", err);
-      });
-  };
 
   return (
     <div className="flex justify-between border max-w-7xl dark:bg-black mx-auto p-5 gap-5 flex-wrap">
@@ -242,30 +194,13 @@ const Payment = () => {
             <h2 className="text-xl font-semibold mb-4">Çatdırılma ünvanı</h2>
             <form>
               <div className="mb-4">
-                <label htmlFor="poct" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Poçt:
+                <label htmlFor="kuriyer" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Çatdırılma Növü:
                 </label>
                 <select
-                  id="poct"
-                  value={poct}
-                  onChange={(e) => setPoct(e.target.value)}
-                  className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b87333] focus:border-[#b87333] dark:bg-gray-700 dark:text-white"
-                >
-                  <option value="">Seçin</option>
-                  <option value="Bakı">Bakı</option>
-                  <option value="Gəncə">Gəncə</option>
-                  <option value="Sumqayıt">Sumqayıt</option>
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="delivery" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Çatdırılma ünvanı:
-                </label>
-                <select
-                  id="delivery"
-                  value={delivery}
-                  onChange={(e) => setDelivery(e.target.value)}
+                  id="kuriyer"
+                  value={poctType}
+                  onChange={(e) => setPoctType(e.target.value)}
                   className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b87333] focus:border-[#b87333] dark:bg-gray-700 dark:text-white"
                 >
                   <option value="">Seçin</option>
@@ -273,7 +208,19 @@ const Payment = () => {
                   <option value="Poçt">Poçt</option>
                   <option value="Mağazadan götürmə">Mağazadan götürmə</option>
                 </select>
+
+                {(poctType === "Kuryer" || poctType === "Poçt") && (
+                  <input
+                    type="text"
+                    placeholder="Ünvan daxil edin..."
+                    value={poctAddress}
+                    onChange={(e) => setPoctAddress(e.target.value)}
+                    className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b87333] focus:border-[#b87333] dark:bg-gray-700 dark:text-white"
+                  />
+                )}
               </div>
+
+
 
               <div className="flex justify-between mt-6">
                 <button
@@ -286,8 +233,8 @@ const Payment = () => {
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className={`bg-[#b87333] text-white py-2 px-4 rounded-md hover:bg-[#a0652e] ${!poct || !delivery ? 'cursor-not-allowed opacity-50' : ''}`}
-                  disabled={!poct || !delivery}
+                  className={`bg-[#b87333] text-white py-2 px-4 rounded-md hover:bg-[#a0652e] ${!poctType ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={!poctType}
                 >
                   Davam et →
                 </button>
@@ -305,42 +252,10 @@ const Payment = () => {
 
               <div >
                 <label htmlFor="photo">Şəkil:</label>
-                <input
-                  type="file"
-                  id="photo"
-                  onChange={handleFileChange}
-                />
+                <h1>Ödənişi Tamamlayın.</h1>
               </div>
 
-              {/* Kamera açma butonu */}
-              {!isCameraOpen ? (
-                <button
-                  type="button"
-                  onClick={startCamera}
-                  className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
-                >
-                  Kamerayı aç
-                </button>
-              ) : (
-                <div>
-                  <button
-                    type="button"
-                    onClick={takePicture}
-                    className="w-full p-2 mt-2 border dark:text-white dark:bg-black rounded-md"
-                  >
-                    Fotoğraf çek
-                  </button>
-                  <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
-                </div>
-              )}
 
-              {/* Seçilen veya çekilen fotoğrafı göster */}
-              {selectedImage && (
-                <div className="mt-4">
-                  <h5 className="text-sm font-semibold">Seçilen Fotoğraf:</h5>
-                  <img src={selectedImage} alt="Selected or Captured" className="w-full mt-2 rounded-md" />
-                </div>
-              )}
 
               <div className="flex justify-between mt-6">
                 <button type="button" onClick={() => setStep(2)}
