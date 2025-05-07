@@ -50,7 +50,7 @@ const Basket = () => {
       const response = await addConfirm().unwrap(); 
       const confirmedCartId = response.confirmedCartId; 
   
-      alert("Sepet başarıyla onaylandı!");
+      alert("Səbət təsdiqləndi! Ödəmə hissəsinə yönləndirilir.");
   
       setTimeout(() => {
         navigate(`/payment?confirmedCartId=${confirmedCartId}`); 
