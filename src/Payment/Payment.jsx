@@ -23,6 +23,8 @@ const Payment = () => {
   const [photo, setPhoto] = useState(null);
   const [poctType, setPoctType] = useState('');
   const [poctAddress, setPoctAddress] = useState('');
+  const [kargoData, setKargoData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [addPaymentt] = useAddPaymenttMutation();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ const Payment = () => {
       formData.append('adress', adress);
 
       // ŞU KISIM ÖNEMLİ ⬇
-      if (poctType === "Kuryer" || poctType === "Poçt") {
+      if (poctType === "Kuryer" || poctType === "Poçt" || poctType === "Kargo") {
         formData.append('poct', `${poctType}: ${poctAddress}`);
       } else {
         formData.append('poct', poctType); // mağazadan götürmə
@@ -72,6 +74,22 @@ const Payment = () => {
       console.error('Failed to add the payment:', err);
     }
   };
+
+  useEffect(() => {
+    const fetchKargoData = async () => {
+      try {
+        const response = await fetch('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kargo');
+        const data = await response.json();
+        setKargoData(data);
+      } catch (error) {
+        console.error('Kargo verileri alınamadı:', error);
+      }
+    };
+
+    if (poctType === 'Kargo') {
+      fetchKargoData();
+    }
+  }, [poctType]);
 
 
   return (
@@ -207,9 +225,41 @@ const Payment = () => {
                 >
                   <option value="">Seçin</option>
                   <option value="Kuryer">Kuryer</option>
+                  <option value="Kargo">Kargo</option>
                   <option value="Poçt">Poçt</option>
                   <option value="Mağazadan götürmə">Mağazadan götürmə</option>
                 </select>
+
+                {poctType === "Kargo" && (
+                  <div className="mt-4">
+                    <input
+                      type="text"
+                      placeholder="Axtar..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b87333] focus:border-[#b87333] dark:bg-gray-700 dark:text-white"
+                    />
+                    <ul className="mt-2 max-h-60 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800">
+                      {kargoData
+                        .filter((item) =>
+                          item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+                        )
+                        .map((item, index) => (
+                          <li
+                            key={index}
+                            onClick={() => {
+                              setPoctAddress(item.title);  // seçilen kargo adresi
+                              setSearchTerm(item.title);   // input alanında da göster
+                            }}
+                            className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded"
+                          >
+                            {item.title}
+                          </li>
+
+                        ))}
+                    </ul>
+                  </div>
+                )}
 
                 {(poctType === "Kuryer" || poctType === "Poçt") && (
                   <input
