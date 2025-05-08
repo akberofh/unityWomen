@@ -25,9 +25,25 @@ const Payment = () => {
   const [poctAddress, setPoctAddress] = useState('');
   const [kargoData, setKargoData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
   const [addPaymentt] = useAddPaymenttMutation();
   const navigate = useNavigate();
+
+
+
+  const [manyData, setManyData] = useState([]);
+
+
+
+
+  useEffect(() => {
+    // manyData'yı API'den çek
+    fetch("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/many")
+      .then(res => res.json())
+      .then(data => setManyData(data))
+      .catch(err => console.error("Many API hatası:", err));
+  }, []);
+
+
   useEffect(() => {
     if (data) {
       dispatch(setTodos(data));
@@ -54,9 +70,12 @@ const Payment = () => {
       formData.append('description', description);
       formData.append('adress', adress);
 
+      const selectedMany = manyData.find(m => m.titla?.toLowerCase().includes(poctType.toLowerCase()));
+      const priceText = selectedMany ? selectedMany.titla : '';
+
       // ŞU KISIM ÖNEMLİ ⬇
       if (poctType === "Kuryer" || poctType === "Poçt" || poctType === "Kargo") {
-        formData.append('poct', `${poctType}: ${poctAddress}`);
+        formData.append('poct', `${poctType}: ${poctAddress} , ${priceText}`);
       } else {
         formData.append('poct', poctType); // mağazadan götürmə
       }

@@ -5,11 +5,12 @@ import { useDispatch } from "react-redux";
 
 const Confirmed = () => {
     const dispatch = useDispatch();
-    const { data, isLoading } = useGetConfirmedQuery();
+    const { data, isLoading , refetch } = useGetConfirmedQuery();
 
     useEffect(() => {
         if (data) {
             dispatch(setConfirmed(data));
+             refetch();
         }
     }, [data, dispatch]);
 

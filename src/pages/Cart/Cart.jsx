@@ -123,7 +123,7 @@ const Cart = () => {
               </h3>
 
               <h4 className="text-sm sm:text-lg font-semibold mb-4 dark:text-white text-gray-800">
-                {product.price}
+                {product.price} AZN
               </h4>
 
               {/* Stok Durumu */}
