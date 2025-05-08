@@ -39,7 +39,7 @@ const Payment = () => {
 
 
 
-  
+
 
 
   useEffect(() => {
@@ -256,6 +256,20 @@ const Payment = () => {
                   <option value="Mağazadan götürmə">Mağazadan götürmə</option>
                 </select>
 
+                {/* Seçilen tür için manyData'dan bilgi göster */}
+                {(poctType === "Kuryer" || poctType === "Kargo" || poctType === "Poçt") && (
+                  <div className="mt-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow">
+                    <h3 className="font-semibold text-gray-800 dark:text-white mb-2">Seçilən Çatdırılma Növünün Zəhmət Haqqı:</h3>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      {
+                        manyData.find(m => m.titla?.toLowerCase().includes(poctType.toLowerCase()))?.titla
+                        || "Bu növ üçün məlumat tapılmadı."
+                      }
+                    </p>
+                  </div>
+                )}
+
+                {/* Kargo seçildiyse adres seçimi */}
                 {poctType === "Kargo" && (
                   <div className="mt-4">
                     <input
@@ -274,20 +288,19 @@ const Payment = () => {
                           <li
                             key={index}
                             onClick={() => {
-                              setPoctAddress(item.title);  // seçilen kargo adresi
-                              setSearchTerm(item.title);   // input alanında da göster
+                              setPoctAddress(item.title);
+                              setSearchTerm(item.title);
                             }}
                             className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded"
                           >
                             {item.title}
                           </li>
-
                         ))}
                     </ul>
                   </div>
                 )}
 
-
+                {/* Kuryer veya Poçt için adres girişi */}
                 {(poctType === "Kuryer" || poctType === "Poçt") && (
                   <input
                     type="text"
@@ -298,8 +311,6 @@ const Payment = () => {
                   />
                 )}
               </div>
-
-
 
               <div className="flex justify-between mt-6">
                 <button
@@ -320,9 +331,8 @@ const Payment = () => {
               </div>
             </form>
           </div>
-
-
         )}
+
 
         {step === 3 && (
           <div>
