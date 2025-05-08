@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { useAddPaymenttMutation } from '../redux/slices/paymentApiSlice';
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 const Payment = () => {
   const [step, setStep] = useState(1);
   const { data, isLoading } = useGetTodosQuery();
@@ -25,11 +24,6 @@ const Payment = () => {
   const [poctAddress, setPoctAddress] = useState('');
   const [kargoData, setKargoData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [addPaymentt] = useAddPaymenttMutation();
-  const navigate = useNavigate();
-
-
-
   const [manyData, setManyData] = useState([]);
 
 
@@ -44,6 +38,34 @@ const Payment = () => {
   }, []);
 
 
+
+  
+
+
+  useEffect(() => {
+    const fetchKargoData = async () => {
+      try {
+        const response = await fetch('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kargo');
+        const data = await response.json();
+        setKargoData(data);
+      } catch (error) {
+        console.error('Kargo verileri alınamadı:', error);
+      }
+    };
+
+    if (poctType === 'Kargo') {
+      fetchKargoData();
+    }
+  }, [poctType]);
+
+
+
+  const location = useLocation();
+  const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
+
+  const [addPaymentt] = useAddPaymenttMutation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (data) {
       dispatch(setTodos(data));
@@ -51,8 +73,7 @@ const Payment = () => {
   }, [data, dispatch]);
 
 
-  const location = useLocation();
-  const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
+
 
 
 
@@ -63,8 +84,8 @@ const Payment = () => {
       formData.append('name', name);
       formData.append('surname', surname);
       formData.append('kuriyer', kuriyer);
-      formData.append('confirmedCartId', confirmedCartId);
       formData.append('city', city);
+      formData.append('confirmedCartId', confirmedCartId);
       formData.append('email', email);
       formData.append('phone', phone);
       formData.append('description', description);
@@ -94,25 +115,11 @@ const Payment = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchKargoData = async () => {
-      try {
-        const response = await fetch('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kargo');
-        const data = await response.json();
-        setKargoData(data);
-      } catch (error) {
-        console.error('Kargo verileri alınamadı:', error);
-      }
-    };
 
-    if (poctType === 'Kargo') {
-      fetchKargoData();
-    }
-  }, [poctType]);
 
 
   return (
-    <div className="flex justify-between border max-w-7xl dark:bg-black mx-auto p-5 gap-5 flex-wrap">
+    <div className="flex justify-between border max-w-7xl min-h-[740px] dark:bg-black mx-auto p-5 gap-5 flex-wrap">
       {/* Left Panel */}
       <div className="flex-1 p-5 rounded-lg dark:bg-black shadow-lg w-full sm:w-2/3 lg:w-2/3">
         <div className="flex justify-between mb-5">
@@ -280,6 +287,7 @@ const Payment = () => {
                   </div>
                 )}
 
+
                 {(poctType === "Kuryer" || poctType === "Poçt") && (
                   <input
                     type="text"
@@ -352,23 +360,11 @@ const Payment = () => {
             data &&
             data.map((product) => (
               <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-                {Array.isArray(product.photo) && product.photo.length > 0 ? (
-                  <div className="">
-                    <img
-                      src={product.photo[0]} // Sadece ilk fotoğrafı göster
-                      alt={`product-image`}
-                      className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
-                    />
-                  </div>
-                ) : (
-                  <div className="">
-                    <img
-                      src={product.photo}
-                      alt={product.title}
-                      className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
-                    />
-                  </div>
-                )}
+                <img
+                  src={product.photo}
+                  alt="Thumbnail"
+                  className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
+                />
                 <div className="w-full flex flex-col items-center sm:items-start">
                   <h6 className="text-sm font-semibold dark:text-white text-gray-800">{product.title}</h6>
                 </div>
