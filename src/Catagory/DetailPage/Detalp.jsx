@@ -47,8 +47,14 @@ const Detalp = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}/${userInfo._id}`);
+                // Eğer userInfo._id varsa URL'ye ekleyin, yoksa sadece qolbaq_id'yi kullanın
+                const url = userInfo?._id 
+                    ? `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}/${userInfo._id}`
+                    : `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}`;
+                
+                const response = await axios.get(url);
                 const data = response.data;
+                
                 if (data && data.getById) {
                     setProduct(data.getById);
                 } else {
@@ -61,9 +67,9 @@ const Detalp = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchProduct();
-    }, [qolbaq_id]);
+    }, [qolbaq_id, userInfo?._id]);
 
     const handleAddToCart = async (product) => {
         try {

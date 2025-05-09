@@ -30,24 +30,37 @@ const Catos = ({ catagory }) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`
-        );
 
-        const data = response.data.allQolbaq;
-        if (data && data.length > 0) {
-          const filteredProducts = data.filter((item) => item.catagory === catagory);
-          setProducts((prev) => [...prev, ...filteredProducts]);
-          setHasMore(page < response.data.totalPages);
+        try {
+          let url = 'https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq';
+  
+          if (userInfo && userInfo._id) {
+            url += `/${userInfo._id}?page=${page}`;
+          } else {
+            url += `?page=${page}`;
+          }
+            const response = await axios.get(url);
+
+            const data = response.data.allQolbaq;
+
+            if (data && data.length > 0) {
+                // Kategoriyi filtreleyip ürünleri ekleyelim
+                const filteredProducts = data.filter((item) => item.catagory === catagory);
+                setProducts((prev) => [...prev, ...filteredProducts]);
+
+                // Daha fazla sayfa olup olmadığını kontrol et
+                setHasMore(page < response.data.totalPages);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            // Kullanıcıya hata mesajı göstermek için
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
     };
 
-    if (userInfo?._id) fetchProducts();
-  }, [catagory, page, userInfo]);
+    // Sayfa değiştiğinde veya kategori değiştiğinde fetchProducts'ı tekrar çalıştır
+    if (page > 0) fetchProducts();
+}, [catagory, page, userInfo?._id]); // userInfo._id de bağımlılık listesinde olmalı
+
 
   const loadMore = () => {
     if (hasMore) setPage((prev) => prev + 1);
@@ -82,7 +95,8 @@ const Catos = ({ catagory }) => {
                 {(product.title || "").length > 50 && "..."}
               </h3>
 
-              <h4 className="text-sm sm:text-lg font-semibold mb-2 dark:text-white text-gray-800 text-center">Qiymət: {product.discountApplied ? (
+              <h4 className="text-sm sm:text-lg font-semibold mb-2 dark:text-white text-gray-800 text-center">
+                {product.discountApplied ? (
                   <>
                     <span className="text-red-500 line-through mr-2">
                       {product.originalPrice}₼

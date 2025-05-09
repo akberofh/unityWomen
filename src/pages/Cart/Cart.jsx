@@ -19,14 +19,20 @@ const Cart = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
 
-  // 300'lü 300'lü verileri almak
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`);
+      let url = 'https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq';
+
+      if (userInfo && userInfo._id) {
+        url += `/${userInfo._id}?page=${page}`;
+      } else {
+        url += `?page=${page}`;
+      }
+
+      const response = await axios.get(url);
       const newData = response.data.allQolbaq;
 
       setData((prevData) => [...prevData, ...newData]);
-
       setHasMore(page < response.data.totalPages);
     } catch (error) {
       console.error("Veri alınamadı:", error);
@@ -35,7 +41,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page]); // Sayfa değiştiğinde veri çekeriz
+  }, [page]);
 
   // "Daha Fazla Göster" butonuna tıklandığında sayfayı arttır
   const loadMore = () => {

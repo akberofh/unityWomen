@@ -24,24 +24,28 @@ const Baxim = () => {
 
     useEffect(() => {
         const fetchItems = async () => {
-            try {
-                const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${catagory}/${userInfo._id}`);
-                setItems(res.data.allQolbaq); // API'den doğrudan filtrelenmiş veriyi alıyoruz
-                setLoading(false);
-            }   catch (error) {
-                if (error.response && error.response.status === 404) {
-                    setItems([]); // Yorum yok durumunda boş liste olarak ayarla
-                } else {
-                  setError(error.message);
-                }
-              } finally {
-                setLoading(false);
-              }
+          try {
+            let url = `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/catagory/${catagory}`;
+      
+            if (userInfo && userInfo._id) {
+              url += `/${userInfo._id}`;
+            }
+      
+            const res = await axios.get(url);
+            setItems(res.data.allQolbaq);
+          } catch (error) {
+            if (error.response && error.response.status === 404) {
+              setItems([]);
+            } else {
+              setError(error.message);
+            }
+          } finally {
+            setLoading(false);
+          }
         };
-        
-
+      
         fetchItems();
-    }, [catagory]); // Kategori değiştiğinde yeniden veri çeker
+      }, [catagory, userInfo]);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Yüklənir...</div>;

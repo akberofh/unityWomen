@@ -37,20 +37,26 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`);
+        let url = 'https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq';
+  
+        if (userInfo && userInfo._id) {
+          url += `/${userInfo._id}?page=${page}`;
+        } else {
+          url += `?page=${page}`;
+        }
+  
+        const response = await axios.get(url);
         const newData = response.data.allQolbaq;
-
-        // Yeni ürünleri ekleyerek veri durumunu güncelle
+  
         setProducts((prevData) => [...prevData, ...newData]);
-
-        // Eğer toplam sayfa sayısından küçükse, daha fazla ürün var demektir
         setHasMore(page < response.data.totalPages);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Veri alınamadı:", error);
       }
     };
     fetchData();
   }, [page]);
+
 
   const loadMore = () => {
     if (hasMore) setPage((prev) => prev + 1); // Sayfayı bir arttır
