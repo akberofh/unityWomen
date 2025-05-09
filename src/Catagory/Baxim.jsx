@@ -4,6 +4,7 @@ import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import EtirComment from './Commet/EtirComment';
+import { useSelector } from 'react-redux';
 
 const Baxim = () => {
     const [items, setItems] = useState([]);
@@ -15,13 +16,16 @@ const Baxim = () => {
     useEffect(() => {
         AOS.init({ duration: 1000 });
     }, []);
+   
+
+    const { userInfo } = useSelector((state) => state.auth);
 
  
 
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${catagory}`);
+                const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${catagory}/${userInfo._id}`);
                 setItems(res.data.allQolbaq); // API'den doğrudan filtrelenmiş veriyi alıyoruz
                 setLoading(false);
             }   catch (error) {
@@ -86,8 +90,16 @@ const Baxim = () => {
                             </div>
                     
                             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                            <p className="text-gray-600 mb-4">{item.price}</p>
-                            <button
+                            <p className="text-gray-600 mb-4">Qiymət: {item.discountApplied ? (
+                                <>
+                                    <span className="text-red-500 line-through mr-2">
+                                        {item.originalPrice}₼
+                                    </span>
+                                    <span className="text-green-600">{item.price}₼</span>
+                                </>
+                            ) : (
+                                <span>{item.price}₼</span>
+                            )}</p>                            <button
                                 onClick={() => navigate(`/product/${item._id}`)}
                                 className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"
                             >

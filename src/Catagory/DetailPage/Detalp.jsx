@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductCard from './Catos';
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper/modules';
@@ -25,6 +25,9 @@ const Detalp = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [addTodoo] = useAddsTodoMutation();
+
+    const { userInfo } = useSelector((state) => state.auth);
+
 
 
     const [visibleLength, setVisibleLength] = useState(100); // Başlangıçta 100 karakter göster
@@ -44,7 +47,7 @@ const Detalp = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}`);
+                const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/id/${qolbaq_id}/${userInfo._id}`);
                 const data = response.data;
                 if (data && data.getById) {
                     setProduct(data.getById);
@@ -178,8 +181,17 @@ const Detalp = () => {
                     {/* Ürün Detayları */}
                     <div className="flex dark:text-white flex-col justify-center">
                         <h1 className="text-3xl font-semibold mb-4">{product.title}</h1>
-                        <p className="text-xl text-blue-600 font-semibold mb-6">Qiymət: {product.price}AZN</p>
-                        <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
+                        <p className="text-xl text-blue-600 font-semibold mb-6">Qiymət: {product.discountApplied ? (
+                            <>
+                                <span className="text-red-500 line-through mr-2">
+                                    {product.originalPrice}₼
+                                </span>
+                                <span className="text-green-600">{product.price}₼</span>
+                            </>
+                        ) : (
+                            <span>{product.price}₼</span>
+                        )}</p>                       
+                         <p className="text-lg mb-4">Stok Durumu: {product.stock > 0 ? "Var" : "Yok"}</p>
                         <div className="text-gray-700 dark:text-white mb-6">
                             {/* Açıklama Metni */}
                             <p>
@@ -238,9 +250,9 @@ const Detalp = () => {
                 {/* Diğer Ürünler */}
             </div>
             <div className="mt-16 mb-20 w-[95%] mx-auto text-center">
-  <h2 className="text-3xl font-semibold my-10 dark:text-white">Digər Məhsullar</h2>
-  <ProductCard catagory={product.catagory} />
-</div>
+                <h2 className="text-3xl font-semibold my-10 dark:text-white">Digər Məhsullar</h2>
+                <ProductCard catagory={product.catagory} />
+            </div>
 
 
 
