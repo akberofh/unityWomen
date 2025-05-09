@@ -82,8 +82,7 @@ const Catos = ({ catagory }) => {
                 {(product.title || "").length > 50 && "..."}
               </h3>
 
-              <h4 className="text-sm sm:text-lg font-semibold mb-2 dark:text-white text-gray-800 text-center">
-                {product.discountApplied ? (
+              <h4 className="text-sm sm:text-lg font-semibold mb-2 dark:text-white text-gray-800 text-center">Qiymət: {product.discountApplied ? (
                   <>
                     <span className="text-red-500 line-through mr-2">
                       {product.originalPrice}₼
