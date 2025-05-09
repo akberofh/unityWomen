@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { FaRegHeart } from "react-icons/fa";
 
@@ -25,10 +25,8 @@ const Cart = () => {
       const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`);
       const newData = response.data.allQolbaq;
 
-      // Yeni ürünleri ekleyerek veri durumunu güncelle
       setData((prevData) => [...prevData, ...newData]);
 
-      // Eğer toplam sayfa sayısından küçükse, daha fazla ürün var demektir
       setHasMore(page < response.data.totalPages);
     } catch (error) {
       console.error("Veri alınamadı:", error);
