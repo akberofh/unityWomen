@@ -124,9 +124,16 @@ const Cart = () => {
                 {(product.title || "").slice(0, 50)} {/* Burada başlığı kesiyoruz, ihtiyaç varsa ayarlayabilirsin */}
               </h3>
 
-              <h4 className="text-sm sm:text-lg font-semibold mb-4 dark:text-white text-gray-800">
-                {product.price} AZN
-              </h4>
+              <h4 className="text-sm sm:text-lg font-semibold mb-4 dark:text-white text-gray-800">Qiymət: {product.discountApplied ? (
+                  <>
+                    <span className="text-red-500 line-through mr-2">
+                      {product.originalPrice}₼
+                    </span>
+                    <span className="text-green-600">{product.price}₼</span>
+                  </>
+                ) : (
+                  <span>{product.price}₼</span>
+                )}              </h4>
 
               {/* Stok Durumu */}
               <p

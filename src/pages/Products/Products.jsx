@@ -167,8 +167,16 @@ const Products = () => {
               onClick={() => navigate(`/product/${product._id}`)}
             />
             <h3 className="mt-2 font-semibold dark:text-white truncate">{product.title}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-300">{product.price}₼</p>
-            <button
+            <p className="text-sm text-gray-500 dark:text-gray-300">Qiymət: {product.discountApplied ? (
+                  <>
+                    <span className="text-red-500 line-through mr-2">
+                      {product.originalPrice}₼
+                    </span>
+                    <span className="text-green-600">{product.price}₼</span>
+                  </>
+                ) : (
+                  <span>{product.price}₼</span>
+                )}</p>            <button
               onClick={() => handleAddToCart(product)}
               disabled={product.stock === 0}
               className={`w-full mt-2 py-2 rounded text-white ${product.stock === 0 ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
