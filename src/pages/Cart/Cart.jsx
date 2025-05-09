@@ -15,10 +15,14 @@ const Cart = () => {
   const [page, setPage] = useState(1); // Sayfa durumu
   const [hasMore, setHasMore] = useState(true); // Yeni ürün var mı kontrolü
 
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+
   // 300'lü 300'lü verileri almak
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq?page=${page}`);
+      const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`);
       const newData = response.data.allQolbaq;
 
       // Yeni ürünleri ekleyerek veri durumunu güncelle
