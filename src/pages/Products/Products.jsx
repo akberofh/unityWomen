@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddTodoMutation } from "../../redux/slices/productApiSlice";
 import { useAddsTodoMutation } from "../../redux/slices/todoApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { FaRegHeart } from "react-icons/fa";
 import { useGetCatagoryQuery } from "../../redux/slices/catagoryApiSlice";
@@ -31,10 +31,13 @@ const Products = () => {
     }
   }, [categoryData, dispatch]);
 
+    const { userInfo } = useSelector((state) => state.auth);
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq?page=${page}`);
+        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/qolbaq/${userInfo._id}?page=${page}`);
         const newData = response.data.allQolbaq;
 
         // Yeni ürünleri ekleyerek veri durumunu güncelle
