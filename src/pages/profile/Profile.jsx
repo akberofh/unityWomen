@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { logout, setCredentials } from "../../redux/slices/authSlice";
 import { useLogoutMutation, useUpdateUserMutation } from "../../redux/slices/usersApiSlice";
 import axios from "axios";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from "recharts";
-import { FaMoneyBillWave, FaUsers, FaSitemap, FaMedal, FaPercentage, FaBalanceScale } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -212,27 +208,7 @@ const Profile = () => {
     }
   };
 
-  const [stats, setStats] = useState(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/referral-stats/${userInfo.referralCode}`);
-        setStats(res.data);
-        setErrors(null);
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Veriler alınamadı.";
-        setErrors(errorMessage);
-      }
-    };
-
-    fetchStats();
-  }, [userInfo]);
-
-
-
-  const [errors, setErrors] = useState(null);
 
 
   useEffect(() => {
@@ -405,78 +381,7 @@ const Profile = () => {
 
 
 
-        <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
-          <h2 className="text-3xl font-bold text-center text-gray-800">Dəvət Qazanc Məlumatları</h2>
 
-          {/* stats null kontrolü */}
-          {errors ? (
-            <div className="text-center text-red-500 font-medium">{errors}</div>
-          ) : stats ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                  <p className="text-gray-500">Ad</p>
-                  <p className="text-lg font-semibold">{stats.referrerName}</p>
-                </div>
-                <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                  <p className="text-gray-500">Toplam Dəvət</p>
-                  <p className="text-lg font-semibold">{stats.totalInvited} İnsan</p>
-                </div>
-                <div className="bg-gray-100 p-4 rounded-2xl shadow">
-                  <p className="text-gray-500">Toplam Qazanc</p>
-                  <p className="text-lg font-semibold">{stats.totalEarned} AZN</p>
-                </div>
-              </div>
-
-
-              {/* 15 Günlük Kazanç Grafiği */}
-              {stats && (
-                <div className="mt-10">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-700">1 Həftəlik Qazanc Qrafiki</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart
-                      data={stats.periodEarnings}
-                      margin={{ top: 10, right: 30, left: 0, bottom: 50 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="periodLabel" angle={-20} textAnchor="end" interval={0} height={70} />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="earned" fill="#4f46e5" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              )}
-
-
-              <div className="mt-10">
-                <h3 className="text-xl font-semibold mb-4 text-gray-700">Qazanc Dönəmləri</h3>
-                <div className="overflow-x-auto">
-                  <table className="table-auto w-full border-collapse border border-gray-200">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-2 border">Dönəm</th>
-                        <th className="px-4 py-2 border">İnsan Sayı</th>
-                        <th className="px-4 py-2 border">Qazanc (AZN)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {stats.periodEarnings.map((period, idx) => (
-                        <tr key={idx} className="text-center border-t">
-                          <td className="px-4 py-2 border">{period.periodLabel}</td>
-                          <td className="px-4 py-2 border">{period.userCount}</td>
-                          <td className="px-4 py-2 border">{period.earned} AZN</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </>
-          ) : (
-            <p className="text-center text-sm text-gray-500">Yüklənir...</p>
-          )}
-        </div>
 
         <div className="bg-gradient-to-br from-white via-gray-100 to-white shadow-2xl p-6 rounded-2xl w-full max-w-3xl mx-auto mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
