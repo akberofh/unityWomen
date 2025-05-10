@@ -376,7 +376,7 @@ const Header = ({ theme, setTheme }) => {
 
 
           {/* Linkler */}
-          <div className="space-y-4 mt-6">
+          <div className="space-y-4 mt-6 max-h-[200px] overflow-y-auto">
             <Link to="/favorie" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Sevimlilər</Link>
             <Link to="/products" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
@@ -392,6 +392,7 @@ const Header = ({ theme, setTheme }) => {
             <Link to="/qazanc" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Mükafatlar</Link>
           </div>
+
         </div>
       )}
 
