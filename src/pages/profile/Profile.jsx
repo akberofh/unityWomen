@@ -231,29 +231,10 @@ const Profile = () => {
   }, [userInfo]);
 
 
-  const [salaryData, setSalaryData] = useState(null);
 
-  useEffect(() => {
-    const fetchSalaryData = async () => {
-      try {
-        const response = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/salary/${userInfo.referralCode}`);
-        setSalaryData(response.data);
-        setError(null); // hata varsa önceki temizlenir
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Maaş verisi alınarkən bir xəta baş verdi.";
-        setError(errorMessage);
-      }
-    };
-
-    fetchSalaryData();
-  }, []);
-
-
-  const [error, setError] = useState(null);
   const [errors, setErrors] = useState(null);
 
-   
+
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
@@ -261,12 +242,12 @@ const Profile = () => {
         const { data } = await axios.get(
           `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`
         );
-  
+
         // 2. Ödəniş yoxdursa, kart məlumatını da al
         if (data.payment === false) {
           const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/kart');
           const kartlar = response.data.allKart || [];
-  
+
           // 3. Kart nömrələrini HTML formatına sal
           const kartHtml = kartlar.map((item) => {
             return `
@@ -276,7 +257,7 @@ const Profile = () => {
               </div>
             `;
           }).join('');
-  
+
           // 4. SweetAlert ilə göstər
           MySwal.fire({
             title: `💳 Salam, ${data.name}!`,
@@ -321,7 +302,7 @@ const Profile = () => {
         console.error('Xəta:', error);
       }
     };
-  
+
     if (userInfo?._id) {
       checkPaymentStatus();
     }
@@ -421,50 +402,7 @@ const Profile = () => {
           </button>
         </form>
 
-        <div className="w-full px-4 py-6 bg-gray-50 rounded-2xl shadow-lg">
-          {error ? (
-            <div className="py-6 px-6 text-center text-sm text-red-500 font-medium">
-              {error}
-            </div>
-          ) : (!salaryData || !salaryData.periodSalaries || salaryData.periodSalaries.length === 0) ? (
-            <div className="py-6 px-6 text-center text-sm text-gray-500">
-              Veriler yükleniyor...
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <div className="max-h-[500px] overflow-y-auto">
-                <table className="w-full min-w-[800px] bg-white border border-gray-200 rounded-xl shadow-md">
-                  <thead className="bg-gradient-to-r from-gray-100 to-gray-200 sticky top-0 z-10">
-                    <tr>
-                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Foto</th>
-                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Ad Soyad</th>
-                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Periyod</th>
-                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Rütbə</th>
-                      <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700">Maaş (AZN)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {salaryData.periodSalaries.map((period, index) => (
-                      <tr key={index} className="border-t border-gray-200 hover:bg-gray-50 transition">
-                        <td className="py-4 px-6">
-                          <img
-                            src={period.photo}
-                            alt="Profil"
-                            className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-                          />
-                        </td>
-                        <td className="py-4 px-6 text-sm text-gray-800 font-medium">{period.name}</td>
-                        <td className="py-4 px-6 text-sm text-gray-600">{period.periodLabel}</td>
-                        <td className="py-4 px-6 text-sm text-gray-600">{period.rank}</td>
-                        <td className="py-4 px-6 text-sm text-green-600 font-semibold">{period.salary.toFixed(2)} ₼</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
+
 
 
         <div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-2xl mt-10 space-y-8">
@@ -828,7 +766,7 @@ const Profile = () => {
             onChange={(e) => setSearchTerm(e.target.value)} // Arama terimi güncelleme
           />
 
-<select
+          <select
             value={paymentFilter === null ? "" : paymentFilter ? "paid" : "unpaid"}
             onChange={(e) => {
               const val = e.target.value;
@@ -849,7 +787,7 @@ const Profile = () => {
               <table className="min-w-full bg-white text-sm">
                 <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
                   <tr className="bg-gray-100">
-                    <th className="px-4 py-2 border-b">#</th> 
+                    <th className="px-4 py-2 border-b">#</th>
                     <th className="px-4 py-2 border-b">Ad Soyad</th>
                     <th className="px-4 py-2 border-b">Kod</th>
                     <th className="px-4 py-2 border-b">Email</th>

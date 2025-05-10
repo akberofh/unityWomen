@@ -16,7 +16,7 @@ import Catagory from "../Catagory/Catagory";
 import FavorieProduct from "../pages/Favorie/FavorieProduct";
 import PaymentDetal from "../Payment/PaymentDetal";
 import Cedvel from "../pages/profile/Cedvel";
-import Maas from "../pages/profile/Maas";
+import Maas from "../Maaslar/Maaslar";
 import Qazanc from "../pages/profile/Qazanc";
 import Products from "../pages/Products/Products";
 

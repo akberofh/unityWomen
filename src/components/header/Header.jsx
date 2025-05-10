@@ -189,6 +189,22 @@ const Header = ({ theme, setTheme }) => {
               >
                 Sifarişlərim
               </Link>
+              <Link
+                to="/maas"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Maaşlar
+              </Link>
+              <Link
+                to="/qazanc"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Mükafatlar
+              </Link>
             </nav>
 
             {/* Sağ Taraf - Sepet, Favoriler ve Tema Değiştirme */}
@@ -371,6 +387,10 @@ const Header = ({ theme, setTheme }) => {
               data-aos-duration="1000">Əlaqə</Link>
             <Link to="/confirmed" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Sifarişlərim</Link>
+            <Link to="/maas" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Maaşlar</Link>
+            <Link to="/qazanc" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Mükafatlar</Link>
           </div>
         </div>
       )}
