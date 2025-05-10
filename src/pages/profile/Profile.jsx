@@ -511,18 +511,6 @@ const Profile = () => {
           >
             Cədvələ Keçin➡
           </button>
-          <button
-            onClick={() => navigate("/qazanc")}
-            className="text-blue-500 hover:text-white m-10 hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
-          >
-            Mükafat Bölməsinə Keçin➡
-          </button>
-          <button
-            onClick={() => navigate("/maas")}
-            className="text-blue-500 hover:text-white m-10 hover:bg-blue-600 hover:shadow-md px-6 py-2 border border-blue-500 rounded-full transition-all duration-300"
-          >
-            Maaş Bölməsinə Keçin➡
-          </button>
 
           <h2 className="text-2xl font-semibold mb-4">Sağ Sol Qollar</h2>
 
