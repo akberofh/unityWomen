@@ -494,7 +494,7 @@ const Profile = () => {
               {/* 15 Günlük Kazanç Grafiği */}
               {stats && (
                 <div className="mt-10">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-700">15 Günlük Qazanc Qrafiki</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-700">1 Həftəlik Qazanc Qrafiki</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart
                       data={stats.periodEarnings}
