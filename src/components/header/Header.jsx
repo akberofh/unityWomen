@@ -120,7 +120,7 @@ const Header = ({ theme, setTheme }) => {
 
 
   return (
-    <header className="fixed top-0 left-0  h-[160px] z-10  shadow-md w-full dark:bg-black dark:text-white duration-300 ">
+    <header className="fixed top-0 left-0  h-[160px] z-50  shadow-md w-full dark:bg-black dark:text-white duration-300 ">
 
 
 
