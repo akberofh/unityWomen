@@ -245,7 +245,7 @@ const Qazanc = () => {
               {filteredData.map((user, i) => (
                 <tr
                   key={i}
-                  className="hover:bg-gradient-to-r from-blue-50 via-white to-blue-50 dark:hover:from-gray-700 dark:hover:to-gray-800 transition duration-300 ease-in-out transform hover:scale-[1.01]"
+                  className="hover:bg-gradient-to-r from-blue-50 border-t dark:border-gray-600 via-white to-blue-50 dark:hover:from-gray-700 dark:hover:to-gray-800 transition duration-300 ease-in-out transform hover:scale-[1.01]"
                 >
                   <td className="px-6 py-4 font-bold">{i + 1}</td>
                   <td className="px-6 py-4">{user.referrerName}</td>
