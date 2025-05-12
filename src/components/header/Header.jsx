@@ -149,14 +149,7 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Ana Menü ve Kategoriler Sağ Taraf */}
             <nav className="hidden md:flex space-x-6">
-              <Link
-                to="/favorie"
-                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
-                data-aos="custom-border"
-                data-aos-duration="1000"
-              >
-                Sevimlilər
-              </Link>
+        
               <Link
                 to="/products"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
@@ -377,8 +370,7 @@ const Header = ({ theme, setTheme }) => {
 
           {/* Linkler */}
           <div className="space-y-4 mt-6 max-h-[200px] overflow-y-auto">
-            <Link to="/favorie" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
-              data-aos-duration="1000">Sevimlilər</Link>
+         
             <Link to="/products" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Məhsullar</Link>
             <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
