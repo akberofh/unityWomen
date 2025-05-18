@@ -27,6 +27,13 @@ const [isLoading, setIsLoading] = useState(false);
   const [kargoData, setKargoData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [manyData, setManyData] = useState([]);
+  
+
+  const location = useLocation();
+  const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
+
+  const [addPaymentt] = useAddPaymenttMutation();
+  const navigate = useNavigate();
 
 
 
@@ -72,12 +79,6 @@ const [isLoading, setIsLoading] = useState(false);
   }, [poctType]);
 
 
-
-  const location = useLocation();
-  const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
-
-  const [addPaymentt] = useAddPaymenttMutation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
