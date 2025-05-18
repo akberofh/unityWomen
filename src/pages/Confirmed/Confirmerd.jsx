@@ -88,9 +88,10 @@ const Confirmed = () => {
                                             </td>
                                             <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
                                             <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
-                                            <td className="px-4 py-3 text-green-600 font-semibold text-center">
-                                                {product.price} AZN
-                                            </td>
+                                         <td className="px-4 py-3 text-green-600 font-semibold text-center">
+  {(product.price * product.quantity).toFixed(2)} AZN
+</td>
+
                                         </tr>
                                     ))}
                                 </tbody>
