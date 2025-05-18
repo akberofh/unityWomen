@@ -4,10 +4,11 @@ import { setTodos } from '../redux/slices/productSlice';
 import { useDispatch } from 'react-redux';
 import { useAddPaymenttMutation } from '../redux/slices/paymentApiSlice';
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Payment = () => {
   const [step, setStep] = useState(1);
-  const { data, isLoading } = useGetTodosQuery();
+  const [ data, setData, isLoading ] = useGetTodosQuery();
   const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const [name, setName] = useState('');
@@ -38,6 +39,17 @@ const Payment = () => {
   }, []);
 
 
+    useEffect(() => {
+    if (confirmedCartId) {
+      axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/product/payment/${confirmedCartId}`)
+        .then(res => {
+          setData(res.data.products);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  }, [confirmedCartId]);
 
 
 
@@ -340,7 +352,7 @@ const Payment = () => {
             <form>
 
               <div >
-                <label htmlFor="photo">Şəkil:</label>
+                <label htmlFor="photo">Son:</label>
                 <h1>Ödənişi Tamamlayın.</h1>
               </div>
 
@@ -393,7 +405,7 @@ const Payment = () => {
                 <h6 className="text-sm font-semibold dark:text-white text-gray-800">Qiymet:</h6>
               </div>
               <p className="object-cover rounded-full mb-4 sm:mb-0 sm:mr-6">
-                {data && (data.reduce((acc, product) => acc + product.price, 0)).toFixed(2)} ₼
+                {data && (data.reduce((acc, product) => acc + product.price * product.quantity, 0)).toFixed(2)} ₼
               </p>
             </div>
           )}
