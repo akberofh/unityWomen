@@ -33,7 +33,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
   const [paymentFilter, setPaymentFilter] = useState(null);
-    const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState(null);
   const [salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -290,7 +290,7 @@ const Profile = () => {
   }, [userInfo]);
 
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
@@ -344,7 +344,7 @@ const Profile = () => {
       </div>
 
       <div className="space-y-6">
-             <div className="min-h-[300px] flex items-center justify-center bg-gradient-to-br  dark:from-gray-800 dark:to-black px-4 py-10">
+       <div className="min-h-[300px] flex items-center justify-center bg-gradient-to-br dark:from-gray-800 dark:to-black px-4 py-10">
           <div className="bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-10 flex flex-col md:flex-row items-center gap-10 w-full max-w-5xl transition-all duration-300">
 
             {/* Profil Fotoğrafı */}
@@ -352,9 +352,8 @@ const Profile = () => {
               <img
                 src={photo}
                 alt="Profil"
-                className="w-full h-full object-cover rounded-full border-4 border-blue-500 shadow-lg"
+                className="w-full h-full object-cover rounded-full border-4 border-blue-500 shadow-xl"
               />
-              {/* Kamera ikonu */}
               <label className="absolute bottom-2 right-2 bg-blue-500 p-2 rounded-full shadow-md cursor-pointer hover:scale-110 transition duration-200">
                 <FaCamera className="text-white" />
                 <input
@@ -376,8 +375,9 @@ const Profile = () => {
               </p>
 
               {/* İstatistikler */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-tr from-green-200 to-green-400 dark:from-green-800 dark:to-green-600 p-6 rounded-2xl shadow-xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Maaş */}
+                <div className="bg-gradient-to-tr from-green-200 to-green-400 dark:from-green-800 dark:to-green-600 p-6 rounded-2xl shadow-xl transform transition hover:scale-105">
                   <h2 className="text-lg font-semibold text-green-900 dark:text-green-100">
                     Maaş
                   </h2>
@@ -386,13 +386,30 @@ const Profile = () => {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-tr from-blue-200 to-blue-400 dark:from-blue-800 dark:to-blue-600 p-6 rounded-2xl shadow-xl">
+                {/* Qazanc */}
+                <div className="bg-gradient-to-tr from-blue-200 to-blue-400 dark:from-blue-800 dark:to-blue-600 p-6 rounded-2xl shadow-xl transform transition hover:scale-105">
                   <h2 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                    Qazanc
+                    Pul Mükafatı
                   </h2>
                   <p className="text-3xl font-bold mt-2 text-blue-900 dark:text-blue-100">
                     {stats?.totalEarned || 0} ₼
                   </p>
+                </div>
+
+                {/* Rütbəsi - Vurgulu kutu */}
+                <div className="relative overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 dark:from-purple-800 dark:to-indigo-700 p-6 rounded-2xl shadow-xl transform transition hover:scale-105">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <div className="flex flex-col items-center text-white">
+                    <div className="text-5xl mb-2">
+                      🏅
+                    </div>
+                    <h2 className="text-lg font-bold tracking-wider  opacity-80">
+                      Rütbəsi
+                    </h2>
+                    <p className="text-2xl font-extrabold mt-1">
+                      {salaryData?.rank || "—"}
+                    </p>
+                  </div>
                 </div>
               </div>
 
