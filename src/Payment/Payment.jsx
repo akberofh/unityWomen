@@ -8,7 +8,8 @@ import axios from 'axios';
 
 const Payment = () => {
   const [step, setStep] = useState(1);
-  const [ data, setData, isLoading ] = useGetTodosQuery();
+const [data, setData] = useState([]);
+const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const [name, setName] = useState('');
