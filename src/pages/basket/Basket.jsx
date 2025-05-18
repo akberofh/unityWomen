@@ -84,19 +84,16 @@ const Basket = () => {
   }, [data, dispatch]);
 
   // Sadece seçilen ürünlerin toplamı
-  const totalPrice = Array.isArray(data)
+  const calculateTotalPrice = Array.isArray(data)
     ? Math.round(
-      data
-        .filter((product) => selectedProducts.includes(product._id))
-        .reduce(
-          (total, product) => total + product.price * product.quantity,
-          0
-        ) * 100
-    ) / 100
+        data
+          .filter((product) => selectedProducts.includes(product._id))
+          .reduce(
+            (total, product) => total + product.price * product.quantity,
+            0
+          ) * 100
+      ) / 100
     : 0;
-
-  // %10 endirimli qiymət
-  const discountedPrice = Math.round((totalPrice * 0.9) * 100) / 100;
 
   const isStockAvailable =
     data &&
@@ -181,7 +178,7 @@ const Basket = () => {
               {/* Fiyat ve Stok Durumu */}
               <p className="text-lg font-semibold dark:text-white text-gray-900 mt-2">
                 Toplam Qiymət:{" "}
-                {(Math.round(product.price * 100) / 100).toFixed(2)} ₼
+                {(Math.round(product.totalPrice * 100) / 100).toFixed(2)} ₼
               </p>
 
               {product.stock === 1 && (
@@ -199,20 +196,18 @@ const Basket = () => {
         ))
       )}
 
- <div className="flex flex-col items-end mt-6">
+      <div className="flex justify-between items-center mt-6">
         <p className="text-xl font-semibold dark:text-white text-gray-800">
-          Seçilən Məhsulların Cəmi: {totalPrice.toFixed(2)} ₼
-        </p>
-        <p className="text-xl font-semibold text-green-600 mt-1">
-          Endirimli Qiymət (%10): {discountedPrice.toFixed(2)} ₼
+          Seçilən Məhsulların Cəmi: {calculateTotalPrice} ₼
         </p>
         <button
           onClick={handleConfirmCart}
           disabled={!isStockAvailable}
-          className={`mt-3 px-6 py-2 rounded text-white ${!isStockAvailable
+          className={`px-6 py-2 rounded text-white ${
+            !isStockAvailable
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-500 hover:bg-green-600 transition-all"
-            }`}
+          }`}
         >
           Səbəti Təsdiqlə
         </button>
