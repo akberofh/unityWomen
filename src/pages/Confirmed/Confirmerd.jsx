@@ -89,7 +89,7 @@ const Confirmed = () => {
                                             <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
                                             <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
                                             <td className="px-4 py-3 text-green-600 font-semibold text-center">
-                                                {product.totalPrice} AZN
+                                                {product.price} AZN
                                             </td>
                                         </tr>
                                     ))}
