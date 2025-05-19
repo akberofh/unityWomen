@@ -177,7 +177,7 @@ const Basket = () => {
               </div>
 
               <p className="text-lg font-semibold dark:text-white text-gray-800">
-                Toplam Qiymət: {(product.orginalPrice).toFixed(2)} ₼
+                Toplam Qiymət: {(product.orginalPrice * product.quantity).toFixed(2)} ₼
               </p>
 
               {product.stock === 1 && (
