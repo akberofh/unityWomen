@@ -42,6 +42,18 @@ const Detalp = () => {
 
     const isFullVisible = visibleLength >= product?.description?.length;
 
+    const [visibleLengthh, setVisibleLengthh] = useState(100); // Başlangıçta 100 karakter göster
+
+    const handleShowMoree = () => {
+        setVisibleLengthh((prev) => prev + 700); // Her tıklamada 100 karakter daha ekle
+    };
+
+    const handleShowLesss = () => {
+        setVisibleLengthh(100); // Reset to the default 100 characters
+    };
+
+    const isFullVisiblee = visibleLengthh >= product?.distance?.length;
+
     const [addTodo] = useAddTodoMutation();
 
     useEffect(() => {
@@ -205,7 +217,6 @@ const Detalp = () => {
                                 {visibleLength < (product.description || "").length && "..."}
                             </p>
 
-
                             {/* Butonlar */}
                             <div className="mt-2">
                                 {!isFullVisible && (
@@ -219,6 +230,33 @@ const Detalp = () => {
                                 {visibleLength > 100 && (
                                     <button
                                         onClick={handleShowLess}
+                                        className="text-blue-600 font-semibold"
+                                    >
+                                        Daha Az Gösdər
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        <div className="text-gray-700 dark:text-white mb-6">
+                            {/* Açıklama Metni */}
+                            <p>
+                                {(product.distance || "").slice(0, visibleLengthh)}
+                                {visibleLengthh < (product.distance || "").length && "..."}
+                            </p>
+
+                            {/* Butonlar */}
+                            <div className="mt-2">
+                                {!isFullVisiblee && (
+                                    <button
+                                        onClick={handleShowMoree}
+                                        className="text-blue-600 font-semibold mr-4"
+                                    >
+                                        Daha Çox Gösdər
+                                    </button>
+                                )}
+                                {visibleLengthh > 100 && (
+                                    <button
+                                        onClick={handleShowLesss}
                                         className="text-blue-600 font-semibold"
                                     >
                                         Daha Az Gösdər

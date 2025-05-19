@@ -58,6 +58,9 @@ const Cart = () => {
       // Redux'a ekle
       dispatch({ type: "product/addTodo", payload: newTodo });
 
+            alert("Məhsul səbətə yükləndi.");
+
+
     } catch (err) {
       console.error("Ürün sepete eklenemedi:", err);
       alert("Ürün sepete eklenemedi. Lütfen tekrar deneyin.");
