@@ -243,7 +243,11 @@ const Profile = () => {
           MySwal.fire({
             title: `💳 Salam, ${data.name}!`,
             html: `
-              <p class="text-lg mb-2">Profil funksiyalarını tam istifadə etmək üçün zəhmət olmasa ödəniş edin.</p>
+              <p class="text-lg mb-2">Qeydiyyatınızı tamamlamaq üçün zəhmət olmasa ödəniş edin.
+		Ödəniş ayda cəmi 1 dəfə – 12 AZN təşkil edir.
+		Ödənişdən sonra şəxsi kabinetiniz aktivləşir və qazancınız avtomatik hesablanmağa başlayır.
+		Maaş hesablaması yalnız ödəniş edən üzvlər üçün açıqdır.
+		Diqqət: Ödəniş geri qaytarılmır.Komandamıza xoş gəlmisiniz – uğura gedən yol buradan başlayır!</p>
               ${kartHtml}
               <p class="text-sm text-gray-500 mt-2">Qeyd: Ödəniş etdikdən sonra qəbzi öz rəhbərinizə mütləq göndərin ✅</p>
             `,
