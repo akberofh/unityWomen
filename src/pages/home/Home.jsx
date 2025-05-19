@@ -5,7 +5,6 @@ import Header from '../../components/header/Header'
 import Chat from '../../components/Chat/Chat'
 import Sec from "../../components/SwiperSec/Sec";
 import Cart from "../Cart/Cart";
-import CommentDetal from "../../Catagory/Commet/CommentDetal";
 
 
 const Home = () => {
@@ -39,7 +38,6 @@ const Home = () => {
         <Header theme={theme} setTheme={setTheme} />
         <Sec/>
         <Chat theme={theme}  />
-        <CommentDetal/>
         <Cart theme={theme} />
     </div>
   );
