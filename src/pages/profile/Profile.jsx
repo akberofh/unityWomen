@@ -330,6 +330,55 @@ const Profile = () => {
     if (userInfo?.referralCode) fetchSalaryData();
   }, [userInfo]);
 
+
+    useEffect(() => {
+    const fetchUserData = async () => {
+      if (!userInfo?._id) return;
+
+      try {
+        const { data } = await axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`);
+
+        const currentMonth = new Date().getFullYear() + "-" + (new Date().getMonth() + 1);
+        const shownMonth = localStorage.getItem("paymentShownMonth");
+
+        if (data.payment) {
+          if (shownMonth !== currentMonth) {
+            MySwal.fire({
+              title: "Təbriklər!",
+              html: `
+    <p>Uğura xoş gəlmisiniz!<br />
+    Artıq siz rəsmi şəkildə sistemə daxil oldunuz və bu, həyatınızda yeni bir başlanğıcdır!</p>
+
+    <p><strong>Buradan sonrası sizdən asılıdır.</strong><br />
+    12 AZN ilə başlanan bu yol – sizi yüzlərlə qazanan qadın arasında görmək üçün atılmış ilk addımdır.</p>
+
+    <p>📌 <strong>İndi nə etməli?</strong><br />
+    1. WhatsApp qrupuna qoşul – dəstək və yönləndirmə üçün.<br />
+    2. Gündəlik təlimləri izləməyə başla.<br />
+    3. İlk qazancını elə bu gün qazan!</p>
+
+    <p>🔗 <a href="https://chat.whatsapp.com/FohUxmClFmN5SwBunsUydh" target="_blank" style="color: #1d72f3; font-weight: bold;">WhatsApp Qrupuna Qoşul</a></p>
+  `,
+              icon: "success",
+              confirmButtonText: "Bağla"
+            });
+
+
+            localStorage.setItem("paymentShownMonth", currentMonth);
+          }
+        } else {
+          // eğer payment false ise, localStorage temizlensin
+          localStorage.removeItem("paymentShownMonth");
+        }
+
+      } catch (error) {
+        console.error("Payment kontrol hatası:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [userInfo]);
+
   return (
     <div className="max-w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center mb-4">
