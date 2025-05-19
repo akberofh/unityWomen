@@ -58,8 +58,6 @@ const Cart = () => {
       // Redux'a ekle
       dispatch({ type: "product/addTodo", payload: newTodo });
 
-      // Sepete yönlendir
-      navigate("/basket");
     } catch (err) {
       console.error("Ürün sepete eklenemedi:", err);
       alert("Ürün sepete eklenemedi. Lütfen tekrar deneyin.");
@@ -77,8 +75,6 @@ const Cart = () => {
       // Redux'a ekle
       dispatch({ type: "favorie/add", payload: newFavorie });
 
-      // Favoriler sayfasına yönlendir
-      navigate("/favorie");
     } catch (err) {
       console.error("Ürün favorilere eklenemedi:", err);
       alert(err.data?.error || "Ürün favorilere eklenemedi. Lütfen tekrar deneyin.");
