@@ -18,7 +18,6 @@ const Basket = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const navigate = useNavigate();
 
-  // Ürün seçimini toggle et
   const toggleProductSelection = (productId) => {
     setSelectedProducts((prev) =>
       prev.includes(productId)
@@ -47,24 +46,20 @@ const Basket = () => {
     }
   };
 
-  // Sadece seçilen ürünleri gönder
   const handleConfirmCart = async () => {
     try {
       const selectedItems = data.filter((product) =>
         selectedProducts.includes(product._id)
       );
-  
-      console.log("Seçili ürün ID'leri:", selectedProducts);
-      console.log("Gönderilecek ürünler:", selectedItems);
-  
+
       if (selectedItems.length === 0) {
         alert("Zəhmət olmasa ən azı bir məhsul seçin.");
         return;
       }
-  
+
       const response = await addConfirm({ products: selectedItems }).unwrap();
       const confirmedCartId = response.confirmedCartId;
-  
+
       alert("Səbət təsdiqləndi! Ödəmə hissəsinə yönləndirilir.");
       setTimeout(() => {
         navigate(`/payment?confirmedCartId=${confirmedCartId}`);
@@ -74,7 +69,6 @@ const Basket = () => {
       alert(error?.data?.error || "Sepeti onaylarken bir hata oluştu.");
     }
   };
-  
 
   useEffect(() => {
     if (data) {
@@ -83,16 +77,27 @@ const Basket = () => {
     }
   }, [data, dispatch]);
 
-  // Sadece seçilen ürünlerin toplamı
   const calculateTotalPrice = Array.isArray(data)
     ? Math.round(
-        data
-          .filter((product) => selectedProducts.includes(product._id))
-          .reduce(
-            (total, product) => total + product.price * product.quantity,
-            0
-          ) * 100
-      ) / 100
+      data
+        .filter((product) => selectedProducts.includes(product._id))
+        .reduce(
+          (total, product) => total + product.price * product.quantity,
+          0
+        ) * 100
+    ) / 100
+    : 0;
+
+  const calculateTotalOrginalPrice = Array.isArray(data)
+    ? Math.round(
+      data
+        .filter((product) => selectedProducts.includes(product._id))
+        .reduce(
+          (total, product) =>
+            total + product.orginalPrice * product.quantity,
+          0
+        ) * 100
+    ) / 100
     : 0;
 
   const isStockAvailable =
@@ -103,7 +108,7 @@ const Basket = () => {
       .some((product) => product.stock === 0);
 
   return (
-    <div className="container min-h-[740px] mx-auto p-6">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[740px]">
       {isLoading ? (
         <p className="text-center text-gray-600">Yüklənir...</p>
       ) : (
@@ -111,17 +116,15 @@ const Basket = () => {
         data.map((product) => (
           <div
             key={product._id}
-            className="dark:bg-black bg-white border shadow-md rounded-2xl p-6 mb-6 flex flex-col md:flex-row md:items-center gap-6 hover:shadow-xl transition-all duration-300"
+            className="bg-white dark:bg-[#121212] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 mb-6 flex flex-col md:flex-row md:items-center gap-6"
           >
-            {/* Checkbox */}
             <input
               type="checkbox"
               checked={selectedProducts.includes(product._id)}
               onChange={() => toggleProductSelection(product._id)}
-              className="w-5 h-5 accent-green-600"
+              className="w-5 h-5 text-green-600 accent-green-500"
             />
 
-            {/* Ürün Fotoğrafı */}
             <div
               className="w-full md:w-auto flex justify-center"
               onClick={() => navigate(`/product/${product.productId}`)}
@@ -133,52 +136,48 @@ const Basket = () => {
                     : product.photo
                 }
                 alt={product.title}
-                className="w-32 h-32 object-cover rounded-full border border-gray-300 cursor-pointer"
+                className="w-32 h-32 rounded-full border border-gray-300 object-cover cursor-pointer"
               />
             </div>
 
-            {/* Ürün Bilgileri */}
-            <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 {product.title}
               </h3>
 
-              {/* Adet ve Butonlar */}
-              <div className="flex items-center justify-center md:justify-start space-x-4 mb-2">
+              <div className="flex justify-center md:justify-start items-center space-x-4 mb-2">
                 {product.quantity > 1 ? (
                   <button
                     onClick={() =>
                       updateQuantity(product.productId, product.quantity - 1)
                     }
-                    className="px-4 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full px-4 py-1 font-semibold transition"
                   >
                     -
                   </button>
                 ) : (
                   <button
                     onClick={() => removeProduct(product._id)}
-                    className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    className="bg-red-500 hover:bg-red-600 text-white rounded-full px-4 py-1 font-semibold transition"
                   >
                     Sil
                   </button>
                 )}
-                <span className="text-lg font-medium dark:text-white text-gray-800">
+                <span className="text-lg font-semibold dark:text-white">
                   {product.quantity}
                 </span>
                 <button
                   onClick={() =>
                     updateQuantity(product.productId, product.quantity + 1)
                   }
-                  className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                  className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-4 py-1 font-semibold transition"
                 >
                   +
                 </button>
               </div>
 
-              {/* Fiyat ve Stok Durumu */}
-              <p className="text-lg font-semibold dark:text-white text-gray-900 mt-2">
-                Toplam Qiymət:{" "}
-                {(Math.round(product.totalPrice * 100) / 100).toFixed(2)} ₼
+              <p className="text-lg font-semibold dark:text-white text-gray-800">
+                Toplam Qiymət: {(product.totalPrice).toFixed(2)} ₼
               </p>
 
               {product.stock === 1 && (
@@ -188,7 +187,7 @@ const Basket = () => {
               )}
               {product.stock === 0 && (
                 <p className="text-red-500 font-medium mt-1">
-                  Bu məhsul stokta yoxdur!
+                  Bu məhsul stokda yoxdur!
                 </p>
               )}
             </div>
@@ -196,22 +195,57 @@ const Basket = () => {
         ))
       )}
 
-      <div className="flex justify-between items-center mt-6">
-        <p className="text-xl font-semibold dark:text-white text-gray-800">
-          Seçilən Məhsulların Cəmi: {calculateTotalPrice} ₼
-        </p>
+      <div className="mt-12 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+        {/* Cəmi Qiymət */}
+        <div className="flex items-center gap-4">
+          <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-full">
+            <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3v2h6v-2c0-1.657-1.343-3-3-3z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c4.418 0 8 3.582 8 8v1H4v-1c0-4.418 3.582-8 8-8z" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-medium">Seçilmiş Məhsulların Qiyməti</p>
+            <p className="text-2xl font-bold  text-blue-600 dark:text-blue-400">{calculateTotalOrginalPrice} ₼</p>
+          </div>
+        </div>
+
+        {/* Endirimli Qiymət ya da mesaj */}
+        <div className="flex flex-col items-start gap-2">
+          {calculateTotalOrginalPrice !== calculateTotalPrice ? (
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-green-100 dark:bg-green-900  rounded-full">
+                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3v2h6v-2c0-1.657-1.343-3-3-3z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c4.418 0 8 3.582 8 8v1H4v-1c0-4.418 3.582-8 8-8z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg text-gray-600 dark:text-gray-300 font-medium">Endirimli Qiymət (10%)</p>
+                <p className="text-2xl font-bold text-green-600 dark:text-green-400">{calculateTotalPrice} ₼</p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+              Bu məhsullarda hal-hazırda endirim yoxdur.
+            </p>
+          )}
+        </div>
+
+        {/* Təsdiqlə Butonu */}
         <button
           onClick={handleConfirmCart}
           disabled={!isStockAvailable}
-          className={`px-6 py-2 rounded text-white ${
-            !isStockAvailable
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600 transition-all"
-          }`}
+          className={`mt-4 md:mt-0 px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 ${!isStockAvailable
+              ? "bg-gray-400 cursor-not-allowed text-white"
+              : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+            }`}
         >
-          Səbəti Təsdiqlə
+          ✅ Səbəti Təsdiqlə
         </button>
       </div>
+
+
     </div>
   );
 };

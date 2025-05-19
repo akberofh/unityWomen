@@ -8,8 +8,8 @@ import axios from 'axios';
 
 const Payment = () => {
   const [step, setStep] = useState(1);
-const [data, setData] = useState([]);
-const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const [name, setName] = useState('');
@@ -27,11 +27,8 @@ const [isLoading, setIsLoading] = useState(false);
   const [kargoData, setKargoData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [manyData, setManyData] = useState([]);
-  
-
   const location = useLocation();
   const confirmedCartId = new URLSearchParams(location.search).get("confirmedCartId");
-
   const [addPaymentt] = useAddPaymenttMutation();
   const navigate = useNavigate();
 
@@ -47,7 +44,7 @@ const [isLoading, setIsLoading] = useState(false);
   }, []);
 
 
-    useEffect(() => {
+  useEffect(() => {
     if (confirmedCartId) {
       axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/product/payment/${confirmedCartId}`)
         .then(res => {
