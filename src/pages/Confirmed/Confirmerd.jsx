@@ -5,12 +5,12 @@ import { useDispatch } from "react-redux";
 
 const Confirmed = () => {
     const dispatch = useDispatch();
-    const { data, isLoading , refetch } = useGetConfirmedQuery();
+    const { data, isLoading, refetch } = useGetConfirmedQuery();
 
     useEffect(() => {
         if (data) {
             dispatch(setConfirmed(data));
-             refetch();
+            refetch();
         }
     }, [data, dispatch]);
 
@@ -43,9 +43,9 @@ const Confirmed = () => {
 
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Təsdiqlənmə Tarixi</p>
+                                <p className="text-gray-500 text-sm">Sifariş Kodu</p>
                                 <p className="text-lg font-semibold text-gray-700">
-                                    {new Date(cart.confirmedAt).toLocaleString()}
+                                        {cart._id}
                                 </p>
                             </div>
                             <div>
@@ -88,9 +88,9 @@ const Confirmed = () => {
                                             </td>
                                             <td className="px-4 py-3 text-gray-800 font-medium">{product.title}</td>
                                             <td className="px-4 py-3 text-gray-700 text-center">{product.quantity}</td>
-                                         <td className="px-4 py-3 text-green-600 font-semibold text-center">
-  {(product.price * product.quantity).toFixed(2)} AZN
-</td>
+                                            <td className="px-4 py-3 text-green-600 font-semibold text-center">
+                                                {(product.price * product.quantity).toFixed(2)} AZN
+                                            </td>
 
                                         </tr>
                                     ))}
