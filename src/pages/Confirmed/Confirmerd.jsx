@@ -45,7 +45,7 @@ const Confirmed = () => {
                             <div>
                                 <p className="text-gray-500 text-sm">Sifariş Kodu</p>
                                 <p className="text-lg font-semibold text-gray-700">
-                                        {cart._id}
+                                        {cart.orderCode}
                                 </p>
                             </div>
                             <div>
