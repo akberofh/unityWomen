@@ -126,7 +126,19 @@ const Payment = () => {
     }
   };
 
+    const getDeliveryPrice = (manyData, poctType) => {
+    if (!poctType) return 0;
 
+    const selectedDelivery = manyData.find(m =>
+      m.titla?.toLowerCase().includes(poctType.toLowerCase())
+    );
+
+
+    if (!selectedDelivery?.titla) return 0;
+
+    const match = selectedDelivery.titla.match(/(\d+)\s*AZN/);
+    return match ? parseInt(match[1], 10) : 0;
+  };
 
 
   return (
@@ -382,7 +394,7 @@ const Payment = () => {
             data.map((product) => (
               <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
                 <img
-                  src={product.photo}
+              src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
                   alt="Thumbnail"
                   className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
                 />
@@ -396,15 +408,36 @@ const Payment = () => {
 
         <h3 className="text-xl font-semibold mb-4">Sifaris ozeti</h3>
         <div className="container mx-auto p-6">
-          {isLoading ? (
-            <p className="text-center text-gray-600">Yükleniyor...</p>
-          ) : (
-            <div className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-              <div className="w-full flex flex-col items-center sm:items-start">
-                <h6 className="text-sm font-semibold dark:text-white text-gray-800">Qiymet:</h6>
-              </div>
-              <p className="object-cover rounded-full mb-4 sm:mb-0 sm:mr-6">
-                {data && (data.reduce((acc, product) => acc + product.price * product.quantity, 0)).toFixed(2)} ₼
+   {!isLoading && manyData && (
+            <div className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col items-start hover:shadow-xl transition-all duration-300 ease-in-out">
+              <h6 className="text-sm font-semibold dark:text-white text-gray-800 mb-2">
+                Çatdırılma növü:
+                <span className="text-gray-600">
+                  {
+                    poctType
+                      ? (
+                        manyData.find(m =>
+                          m.titla?.toLowerCase().includes(poctType.toLowerCase())
+                        )?.titla || "Seçilməyib"
+                      )
+                      : "Seçilməyib"
+                  }
+
+                </span>
+              </h6>
+
+
+              <p className="text-gray-700 mb-2">
+                Çatdırılma qiyməti: <strong>{getDeliveryPrice(manyData, poctType)} ₼</strong>
+              </p>
+
+
+              <p className="text-lg font-bold text-green-700">
+                Sifarişin ümumi qiyməti: {
+                  (
+                    data.reduce((acc, product) => acc + product.price * product.quantity, 0) + getDeliveryPrice(manyData, poctType)
+                  ).toFixed(2)
+                } ₼
               </p>
             </div>
           )}
