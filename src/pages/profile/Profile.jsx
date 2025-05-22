@@ -707,9 +707,9 @@ const Profile = () => {
                       </td>
                      <td className="px-4 py-2">
                         {index === 0 && referredUsers.length >= 2
-                          ? `${solGrupSayisi.total} nəfər (${solGrupSayisi.paid} ödənişli)`
+                          ? `${sagGrupSayisi.total} nəfər (${sagGrupSayisi.paid} ödənişli)`
                           : index === 1 && referredUsers.length >= 2
-                            ? `${sagGrupSayisi.total} nəfər (${sagGrupSayisi.paid} ödənişli)`
+                            ? `${solGrupSayisi.total} nəfər (${solGrupSayisi.paid} ödənişli)`
                             : "-"}
                       </td>
 
