@@ -126,7 +126,7 @@ const Payment = () => {
     }
   };
 
-    const getDeliveryPrice = (manyData, poctType) => {
+  const getDeliveryPrice = (manyData, poctType) => {
     if (!poctType) return 0;
 
     const selectedDelivery = manyData.find(m =>
@@ -362,10 +362,28 @@ const Payment = () => {
             <h2 className="text-xl font-semibold mb-4">Ödəniş</h2>
             <form>
 
-              <div >
-                <label htmlFor="photo">Son:</label>
-                <h1>Ödənişi Tamamlayın.</h1>
+              <div className="bg-white rounded-2xl shadow-lg p-6 max-w-xl mx-auto mt-8 border border-gray-200">
+                <label htmlFor="photo" className="block text-lg font-semibold text-gray-700 mb-2">
+                  Son:
+                </label>
+                <h1 className="text-gray-800 leading-relaxed space-y-2 text-[17px]">
+                  <p className="font-semibold text-green-600 text-xl mb-2">
+                    Sifariş verdiyiniz üçün təşəkkür edirik!
+                  </p>
+                  <p>
+                    Zəhmət olmasa, sifarişin təsdiqlənməsi və sizə göndərilməsi üçün ödəməni aşağıdakı hesaba edin:
+                  </p>
+                  <div className="bg-gray-100 text-gray-800 p-3 rounded-lg my-3 border border-gray-300">
+                    <p><span className="font-medium">Kart nömrəsi:</span></p>
+                    <p className="text-lg font-bold tracking-wide mt-1">M10 0777205373</p>
+                  </div>
+                  <p>
+                    Ödənişi etdikdən sonra zəhmət olmasa qəbzin şəklini bizimlə paylaşın.
+                  </p>
+                  <p className="mt-2 text-blue-600 font-medium">Təşəkkür edirik!</p>
+                </h1>
               </div>
+
 
 
 
@@ -394,7 +412,7 @@ const Payment = () => {
             data.map((product) => (
               <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col sm:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
                 <img
-              src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
+                  src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
                   alt="Thumbnail"
                   className="w-9 h-9 object-cover rounded-full mb-4 sm:mb-0 sm:mr-6 border border-gray-200"
                 />
@@ -408,7 +426,7 @@ const Payment = () => {
 
         <h3 className="text-xl font-semibold mb-4">Sifaris ozeti</h3>
         <div className="container mx-auto p-6">
-   {!isLoading && manyData && (
+          {!isLoading && manyData && (
             <div className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col items-start hover:shadow-xl transition-all duration-300 ease-in-out">
               <h6 className="text-sm font-semibold dark:text-white text-gray-800 mb-2">
                 Çatdırılma növü:
@@ -427,7 +445,7 @@ const Payment = () => {
               </h6>
 
 
-              <p className="text-gray-700 mb-2">
+              <p className="text-gray-700 dark:text-white mb-2">
                 Çatdırılma qiyməti: <strong>{getDeliveryPrice(manyData, poctType)} ₼</strong>
               </p>
 

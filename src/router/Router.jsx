@@ -6,7 +6,7 @@ import Profile from "../pages/profile/Profile";
 import PrivateRoute from "../components/PrivateRoute";
 import Home from "../pages/home/Home";
 import Cart from "../pages/Cart/Cart";
-import Confirmed from "../pages/Confirmed/Confirmerd";
+import Confirmed from "../pages/Confirmed/ConfirmedDetal";
 import ContactComp from "../components/ContacUs/ContactComp";
 import DetalPage from "../Catagory/DetailPage/DetalPage";
 import Baxim from "../Catagory/Baxim";
