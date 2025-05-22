@@ -35,7 +35,7 @@ const Favorie = () => {
                 data && data.map(product => (
                     <div key={product._id} className="dark:bg-black border shadow-lg rounded-lg p-6 mb-6 flex flex-col md:flex-row items-center hover:shadow-xl transition-all duration-300 ease-in-out">
                         <img
-                            src={product.photo}
+                  src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
                             alt={product.title}
                             className="h-28 w-28 sm:h-40 sm:w-40 object-cover mb-4 sm:mb-6 rounded-md cursor-pointer"
                             onClick={() => navigate(`/product/${product.productId}`)}
