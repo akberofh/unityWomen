@@ -4,7 +4,9 @@ import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import EtirComment from './Commet/EtirComment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddTodoMutation } from "../redux/slices/productApiSlice";
+
 
 const Baxim = () => {
     const [items, setItems] = useState([]);
@@ -12,6 +14,10 @@ const Baxim = () => {
     const [error, setError] = useState(null);
     const { catagory } = useParams(); // URL'den kategori bilgisini alıyoruz
     const navigate = useNavigate();
+      const [addTodo] = useAddTodoMutation();
+        const dispatch = useDispatch();
+      
+    
 
     useEffect(() => {
         AOS.init({ duration: 1000 });
@@ -55,68 +61,108 @@ const Baxim = () => {
         return <div className="flex justify-center items-center h-screen">Xəta: {error}</div>;
     }
 
+      const handleAddToCart = async (item) => {
+    try {
+      const itemWithDetails = { productId: item._id };
+
+      const newTodo = await addTodo(itemWithDetails).unwrap();
+
+      // Redux'a ekle
+      dispatch({ type: "product/addTodo", payload: newTodo });
+
+            alert("Məhsul səbətə yükləndi.");
+
+
+    } catch (err) {
+      console.error("Ürün sepete eklenemedi:", err);
+      alert("Ürün sepete eklenemedi. Lütfen tekrar deneyin.");
+    }
+  };
+
     return (
-        <div className="container mx-auto py-12">
-            <h1 className="text-3xl font-bold text-center mb-10" data-aos="fade-up">
-                {catagory} Kategorisi
-            </h1>
-            <div
-                style={{ marginBottom: "60px" }}
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+<div className="container mx-auto py-12 px-4">
+  <h1
+    className="text-3xl font-bold text-center mb-10 text-gray-800 dark:text-white"
+    data-aos="fade-up"
+  >
+    {catagory} Kategorisi
+  </h1>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+    {items.length > 0 ? (
+      items.map((item) => (
+        <div
+          key={item._id}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5 transition duration-300 hover:shadow-xl"
+          data-aos="fade-up"
+        >
+          <div className="flex justify-center mb-4 w-full">
+            {Array.isArray(item.photo) && item.photo.length > 0 ? (
+              <div className="relative w-full h-60">
+                <img
+                  src={item.photo[0]}
+                  alt="item"
+                  className="object-cover w-full h-full rounded-xl cursor-pointer"
+                  onClick={() => navigate(`/product/${item._id}`)}
+                />
+              </div>
+            ) : (
+              <div className="w-full h-60 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-xl">
+                <span className="text-gray-400">Şəkil yoxdur</span>
+              </div>
+            )}
+          </div>
+
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 text-center">
+            {item.title}
+          </h3>
+
+          <p className="text-center text-gray-700 dark:text-gray-300 mb-4">
+            Qiymət:{" "}
+            {item.discountApplied ? (
+              <>
+                <span className="text-red-500 line-through mr-2">
+                  {item.originalPrice}₼
+                </span>
+                <span className="text-green-500 font-semibold">{item.price}₼</span>
+              </>
+            ) : (
+              <span className="font-semibold">{item.price}₼</span>
+            )}
+          </p>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => navigate(`/product/${item._id}`)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition duration-200"
             >
-                {items.length > 0 ? (
-                    items.map((item) => (
-                        <div
-                            key={item._id}
-                            className="bg-white shadow-lg rounded-lg p-6"
-                            data-aos="fade-up"
-                        >
-                              <div className="flex justify-center mb-4 sm:mb-6 w-full">
-                                {Array.isArray(item.photo) && item.photo.length > 0 ? (
-                                    <div className="relative w-full h-64 sm:h-80">
-                                        <img
-                                            src={item.photo[0]} // Sadece ilk fotoğrafı göster
-                                            alt={`item-image`}
-                                            className="object-cover w-full h-full rounded-md cursor-pointer"
-                                            onClick={() => navigate(`/product/${item._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="w-full h-64 sm:h-80 flex items-center justify-center">
-                                        <img
-                                            src={item.photo}
-                                            alt={item.title}
-                                            className="object-cover w-full h-full rounded-md cursor-pointer"
-                                            onClick={() => navigate(`/product/${item._id}`)} // Fotoğrafa tıklandığında ürün sayfasına git
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                    
-                            <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                            <p className="text-gray-600 mb-4">Qiymət: {item.discountApplied ? (
-                                <>
-                                    <span className="text-red-500 line-through mr-2">
-                                        {item.originalPrice}₼
-                                    </span>
-                                    <span className="text-green-600">{item.price}₼</span>
-                                </>
-                            ) : (
-                                <span>{item.price}₼</span>
-                            )}</p>                            <button
-                                onClick={() => navigate(`/product/${item._id}`)}
-                                className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"
-                            >
-                                Məhsul Haqqında.
-                            </button>
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-center col-span-full">Məhsul yoxdu.</div>
-                )}
-            </div>
-            <EtirComment/>
+              Məhsul Haqqında
+            </button>
+
+            <button
+              onClick={() => handleAddToCart(item)}
+              disabled={item.stock === 0}
+              className={`py-2 rounded-lg text-white text-center transition duration-200 ${
+                item.stock === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {item.stock === 0 ? "Stokda Yoxdur" : "Səbətə Əlavə Et"}
+            </button>
+          </div>
         </div>
+      ))
+    ) : (
+      <div className="text-center col-span-full text-gray-500 dark:text-gray-300">
+        Məhsul yoxdur.
+      </div>
+    )}
+  </div>
+
+  <EtirComment />
+</div>
+
     );
 };
 

@@ -66,9 +66,11 @@ const Products = () => {
     try {
       const newTodo = await addTodo({ productId: product._id }).unwrap();
       dispatch({ type: "product/addTodo", payload: newTodo });
-      navigate("/basket");
+            alert("Məhsul səbətə yükləndi.");
     } catch (err) {
       console.error("Failed to add product to cart:", err);
+            alert("Ürün sepete eklenemedi. Lütfen tekrar deneyin.");
+
     }
   };
 
