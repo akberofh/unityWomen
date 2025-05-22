@@ -20,8 +20,8 @@ const Profile = () => {
   const [referredUsers, setReferredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
-  const [sagGrupSayisi, setSagGrupSayisi] = useState(0);
-  const [solGrupSayisi, setSolGrupSayisi] = useState(0);
+  const [solGrupSayisi, setSolGrupSayisi] = useState({ total: 0, paid: 0 });
+  const [sagGrupSayisi, setSagGrupSayisi] = useState({ total: 0, paid: 0 });
   const [referrerInfo, setReferrerInfo] = useState(null);
   const [referrerInfoo, setReferrerInfoo] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -96,7 +96,7 @@ const Profile = () => {
         });
 
       // Fetch referred users using referralCode for admin
-      axios
+   axios
         .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/admin/${userInfo.referralCode}`)
         .then(async (res) => {
           setReferredUsers(res?.data?.users || []);
@@ -106,16 +106,24 @@ const Profile = () => {
             const sagKol = users[0];
             const solKol = users[1];
 
-
             const [sagRes, solRes] = await Promise.all([
               axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/user/${sagKol.referralCode}`),
               axios.get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/user/${solKol.referralCode}`),
             ]);
 
+            // Qrup sayıları
+            const solGroup = solRes.data.users || [];
+            const sagGroup = sagRes.data.users || [];
 
+            const solCount = solGroup.length;
+            const sagCount = sagGroup.length;
 
-            setSolGrupSayisi(sagRes.data.count);
-            setSagGrupSayisi(solRes.data.count);
+            // Ödəniş edənlər
+            const solPaid = solGroup.filter((u) => u.payment === true).length;
+            const sagPaid = sagGroup.filter((u) => u.payment === true).length;
+
+            setSolGrupSayisi({ total: solCount, paid: solPaid });
+            setSagGrupSayisi({ total: sagCount, paid: sagPaid });
           }
         })
         .catch((error) => {
@@ -697,11 +705,11 @@ const Profile = () => {
                           {user.payment ? "+" : "-"}
                         </span>
                       </td>
-                      <td className="px-4 py-2">
+                     <td className="px-4 py-2">
                         {index === 0 && referredUsers.length >= 2
-                          ? `${solGrupSayisi ?? 0} nəfər`
+                          ? `${solGrupSayisi.total} nəfər (${solGrupSayisi.paid} ödənişli)`
                           : index === 1 && referredUsers.length >= 2
-                            ? `${sagGrupSayisi ?? 0} nəfər`
+                            ? `${sagGrupSayisi.total} nəfər (${sagGrupSayisi.paid} ödənişli)`
                             : "-"}
                       </td>
 
