@@ -414,7 +414,8 @@ const Header = ({ theme, setTheme }) => {
                         } cursor-pointer`}
                       onClick={() => navigate(`/product/${item._id}`)}
                     >
-                      <img src={item.photo} alt={item.title} className="w-12 h-12 object-cover rounded" />
+                      <img                   src={Array.isArray(product.photo) ? product.photo[0] : product.photo}
+ alt={item.title} className="w-12 h-12 object-cover rounded" />
                       <div className="flex flex-col flex-grow">
                         <h2 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h2>
                         <div className="flex items-center justify-between mt-2">
