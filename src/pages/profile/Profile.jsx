@@ -96,7 +96,7 @@ const Profile = () => {
         });
 
       // Fetch referred users using referralCode for admin
-   axios
+      axios
         .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/admin/${userInfo.referralCode}`)
         .then(async (res) => {
           setReferredUsers(res?.data?.users || []);
@@ -339,7 +339,7 @@ const Profile = () => {
   }, [userInfo]);
 
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchUserData = async () => {
       if (!userInfo?._id) return;
 
@@ -405,7 +405,7 @@ const Profile = () => {
       </div>
 
       <div className="space-y-6">
-       <div className="min-h-[300px] flex items-center justify-center bg-gradient-to-br dark:from-gray-800 dark:to-black px-4 py-10">
+        <div className="min-h-[300px] flex items-center justify-center bg-gradient-to-br dark:from-gray-800 dark:to-black px-4 py-10">
           <div className="bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-10 flex flex-col md:flex-row items-center gap-10 w-full max-w-5xl transition-all duration-300">
 
             {/* Profil Fotoğrafı */}
@@ -481,60 +481,87 @@ const Profile = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 w-full max-w-2xl mx-auto space-y-6"
+        >
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">
+            Kart və Referans Məlumatları
+          </h2>
+
+          {/* Kart Girişi */}
           <div className="flex flex-col space-y-2">
-            <label className="text-lg font-semibold">Card</label>
+            <label className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+              Kart Nömrəsi
+            </label>
             <input
               type="text"
               value={card}
               onChange={(e) => setCard(e.target.value)}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="0000 0000 0000 0000"
+              className="border-2 border-gray-300 dark:border-gray-700 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <h1 className="mt-4 text-lg font-semibold">İstifadəçi kodunuz:</h1>
-          {referralLink && (
-            <div className="flex items-center space-x-4 mt-2">
-              <a
-              >
-                {`${referralLink}`}
-              </a>
-              <button
-                type="button"
-                onClick={copyReferralLinke}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                Kopyala
-              </button>
-            </div>
-          )}
-          <h1 className="mt-4 text-lg font-semibold">Referans Linkiniz:</h1>
-          {referralLink && (
-            <div className="flex items-center space-x-4 mt-2">
-              <a
-                href={`/register?referral=${referralLink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                {`https://unity-women.vercel.app/register?referral=${referralLink}`}
-              </a>
-              <button
-                type="button"
-                onClick={copyReferralLink}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                Kopyala
-              </button>
-            </div>
-          )}
-          <button
-            type="submit"
-            className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-          >
-            Güncelle
-          </button>
+          {/* İstifadəçi Kodu */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              İstifadəçi Kodunuz:
+            </h3>
+            {referralLink && (
+              <div className="flex items-center justify-between mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-xl shadow">
+                <span className="text-sm md:text-base break-all text-gray-700 dark:text-gray-300">
+                  {referralLink}
+                </span>
+                <button
+                  type="button"
+                  onClick={copyReferralLinke}
+                  className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Kopyala
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Referans Linki */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              Referans Linkiniz:
+            </h3>
+            {referralLink && (
+              <div className="flex items-center justify-between mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-xl shadow">
+                <a
+                  href={`/register?referral=${referralLink}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm md:text-base"
+                >
+                  https://unity-women.vercel.app/register?referral={referralLink}
+                </a>
+                <button
+                  type="button"
+                  onClick={copyReferralLink}
+                  className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Kopyala
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Güncelle Butonu */}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="px-8 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition shadow-md"
+            >
+              Güncelle
+            </button>
+          </div>
         </form>
+
+
 
 
 
@@ -705,7 +732,7 @@ const Profile = () => {
                           {user.payment ? "+" : "-"}
                         </span>
                       </td>
-                     <td className="px-4 py-2">
+                      <td className="px-4 py-2">
                         {index === 0 && referredUsers.length >= 2
                           ? `${sagGrupSayisi.total} nəfər (${sagGrupSayisi.paid} ödənişli)`
                           : index === 1 && referredUsers.length >= 2
