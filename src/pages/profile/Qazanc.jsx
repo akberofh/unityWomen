@@ -69,6 +69,11 @@ const Qazanc = () => {
         item.referrerName.toLowerCase().includes(search.toLowerCase())
       );
     }
+    if (search) {
+      tempData = tempData.filter((item) =>
+        item.referrerReferralCode.toString().toLowerCase().includes(search.trim().toLowerCase())
+      );
+    }
 
     if (filters.earnedAboveZero !== null) {
       tempData = tempData.filter((item) =>

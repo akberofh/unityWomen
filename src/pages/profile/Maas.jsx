@@ -60,7 +60,8 @@ const Maas = () => {
 
   const filteredSalaries = filteredPeriodSalaries.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.referralCode?.toString().toLowerCase().includes(searchQuery.trim().toLowerCase())
   );
 
   return (
