@@ -708,6 +708,7 @@ const Profile = () => {
                     <th className="px-4 py-2 border-b">Ad</th>
                     <th className="px-4 py-2 border-b">Kod</th>
                     <th className="px-4 py-2 border-b">Email</th>
+                    <th className="px-4 py-2 border-b">Phone</th>
                     <th className="px-4 py-2 border-b">Ödəniş</th>
                     <th className="px-4 py-2 border-b">Qrup Sayı</th>
                     <th className="px-4 py-2 border-b">Qeydiyyat Tarixi</th>
@@ -725,6 +726,7 @@ const Profile = () => {
                       </td>
                       <td className="px-4 py-2">{user.referralCode}</td>
                       <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">{user.phone}</td>
                       <td className="px-4 py-2">
                         <span
                           className={`text-5xl ${user.payment ? "text-green-500" : "text-red-500"}`}
@@ -869,6 +871,7 @@ const Profile = () => {
                     <th className="px-4 py-2 border-b">Ad Soyad</th>
                     <th className="px-4 py-2 border-b">Kod</th>
                     <th className="px-4 py-2 border-b">Email</th>
+                    <th className="px-4 py-2 border-b">Phone</th>
                     <th className="px-4 py-2 border-b">Ödəniş</th>
                     <th className="px-4 py-2 border-b">Qeydiyyat Tarixi</th>
                   </tr>
@@ -885,6 +888,7 @@ const Profile = () => {
                       </td>
                       <td className="px-4 py-2">{user.referralCode}</td>
                       <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">{user.phone}</td>
                       <td className="px-4 py-2">
                         <span
                           className={`${user.payment ? "text-green-500" : "text-red-500"} text-5xl`}
