@@ -18,7 +18,6 @@ const Profile = () => {
   const [photo, setPhoto] = useState(null);
   const [updateUser] = useUpdateUserMutation();
   const [referredUsers, setReferredUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [solGrupSayisi, setSolGrupSayisi] = useState({ total: 0, paid: 0 });
   const [sagGrupSayisi, setSagGrupSayisi] = useState({ total: 0, paid: 0 });
@@ -37,8 +36,8 @@ const Profile = () => {
   const [stats, setStats] = useState(null);
   const [salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchTert, setSearchTert] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTert, setSearchTert] = useState("");
 
   const { userInfo } = useSelector((state) => state.auth);
   const MySwal = withReactContent(Swal);
@@ -101,7 +100,7 @@ const Profile = () => {
       axios
         .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/refCode/${userInfo.referralCode}`)
         .then((res) => {
-          setReferredUsersz(res?.data?.users || []);
+          setReferredUsersz(res?.data?.referredUsers || []);
         })
         .catch((error) => {
           console.error("Referred users fetch error:", error);
@@ -931,12 +930,12 @@ const Profile = () => {
           )}
 
 
-        
+
 
         </div>
 
         <div>
-           <h2 className="text-2xl font-semibold mb-4">Şəxsi Dəvətlilər</h2>
+          <h2 className="text-2xl font-semibold mb-4">Şəxsi Dəvətlilər</h2>
 
 
 
@@ -964,7 +963,7 @@ const Profile = () => {
           </select>
 
 
-                {filteredUserz.length > 0 ? (
+          {filteredUserz.length > 0 ? (
             <div className="overflow-x-auto max-h-[600px] overflow-y-auto border rounded-xl shadow-lg">
               <table className="min-w-full bg-white text-sm">
                 <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
