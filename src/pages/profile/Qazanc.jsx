@@ -14,6 +14,12 @@ const Qazanc = () => {
     earnedAboveZero: null,
     invitedAboveZero: null,
   });
+      const [expandedRow, setExpandedRow] = useState(null);
+
+
+    const toggleRow = (index) => {
+        setExpandedRow((prev) => (prev === index ? null : index));
+    };
   const { userInfo } = useSelector((state) => state.auth);
 
 
@@ -246,31 +252,45 @@ const Qazanc = () => {
                 <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-widest">Periyot Qazancı</th>
               </tr>
             </thead>
-            <tbody className="text-gray-800 dark:text-gray-100">
-              {filteredData.map((user, i) => (
-                <tr
-                  key={i}
-                  className="hover:bg-gradient-to-r from-blue-50 border-t dark:border-gray-600 via-white to-blue-50 dark:hover:from-gray-700 dark:hover:to-gray-800 transition duration-300 ease-in-out transform hover:scale-[1.01]"
-                >
-                  <td className="px-6 py-4 font-bold">{i + 1}</td>
-                  <td className="px-6 py-4">{user.referrerName}</td>
-                  <td className="px-6 py-4">{user.referrerEmail}</td>
-                  <td className="px-6 py-4 text-green-600 dark:text-green-400 font-semibold">{user.totalEarned} AZN</td>
-                  <td className="px-6 py-4">{user.count}</td>
-                  <td className="px-6 py-4">{user.totalInvited}</td>
-                  <td className="px-6 py-4">
-                    <div className="space-y-1">
-                      {user.periodEarnings?.map((period, index) => (
-                        <div key={index} className="text-sm">
-                          <span className="font-medium">{period.periodLabel}:</span>{" "}
-                          <span>{period.earned} AZN</span>
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+      <tbody className="text-gray-800 dark:text-gray-100">
+                            {filteredData.map((user, i) => {
+                                const isExpanded = expandedRow === i;
+
+                                return (
+                                    <React.Fragment key={i}>
+                                        <tr
+                                            onClick={() => toggleRow(i)}
+                                            className="cursor-pointer hover:bg-gradient-to-r from-blue-50 via-white border-t dark:border-gray-600 to-blue-50 dark:hover:from-gray-700 dark:hover:to-gray-800 transition duration-300 ease-in-out transform hover:scale-[1.01]"
+                                        >
+                                            <td className="px-6 py-4 font-bold">{i + 1}</td>
+                                            <td className="px-6 py-4">{user.referrerName}</td>
+                                            <td className="px-6 py-4">{user.referrerEmail}</td>
+                                            <td className="px-6 py-4 text-green-600 dark:text-green-400 font-semibold">{user.totalEarned} AZN</td>
+                                            <td className="px-6 py-4">{user.count}</td>
+                                            <td className="px-6 py-4">{user.totalInvited}</td>
+                                            <td className="px-6 py-4 text-blue-600">
+                                                {isExpanded ? "▼ Gizle" : "▶ Göstər"}
+                                            </td>
+                                        </tr>
+
+                                        {isExpanded && (
+                                            <tr className="bg-gray-100 dark:bg-gray-700">
+                                                <td colSpan="7" className="px-6 py-4">
+                                                    <div className="space-y-1">
+                                                        {user.periodEarnings?.map((period, index) => (
+                                                            <div key={index} className="text-sm">
+                                                                <span className="font-medium">{period.periodLabel}:</span>{" "}
+                                                                <span>{period.earned} AZN</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </tbody>
           </table>
         </div>
       )}
