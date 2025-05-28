@@ -29,6 +29,7 @@ const Profile = () => {
   const [referrerInfs, setReferrerInfs] = useState(null);
   const [showModa, setShowModa] = useState(false);
   const [referredUserss, setReferredUserss] = useState([]);
+  const [referredUsersz, setReferredUsersz] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
@@ -36,6 +37,8 @@ const Profile = () => {
   const [stats, setStats] = useState(null);
   const [salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTert, setSearchTert] = useState("");
 
   const { userInfo } = useSelector((state) => state.auth);
   const MySwal = withReactContent(Swal);
@@ -95,6 +98,15 @@ const Profile = () => {
           console.error("Referred users fetch error:", error);
         });
 
+      axios
+        .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/refCode/${userInfo.referralCode}`)
+        .then((res) => {
+          setReferredUsersz(res?.data?.users || []);
+        })
+        .catch((error) => {
+          console.error("Referred users fetch error:", error);
+        });
+
       // Fetch referred users using referralCode for admin
       axios
         .get(`https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/admin/${userInfo.referralCode}`)
@@ -132,7 +144,6 @@ const Profile = () => {
     }
   }, [userInfo]);
 
-  const [searchTerm, setSearchTerm] = useState(""); // Arama terimi
 
 
 
@@ -141,6 +152,17 @@ const Profile = () => {
     .filter((user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.referralCode.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((user) => {
+      if (paymentFilter === null) return true;
+      return paymentFilter ? user.payment === true : user.payment === false;
+    });
+
+
+  const filteredUserz = referredUsersz
+    .filter((user) =>
+      user.name.toLowerCase().includes(searchTert.toLowerCase()) ||
+      user.referralCode.toLowerCase().includes(searchTert.toLowerCase())
     )
     .filter((user) => {
       if (paymentFilter === null) return true;
@@ -908,6 +930,85 @@ const Profile = () => {
             <p className="text-gray-500">Qrup yoxdur.</p>
           )}
 
+
+        
+
+        </div>
+
+        <div>
+           <h2 className="text-2xl font-semibold mb-4">Şəxsi Dəvətlilər</h2>
+
+
+
+          <input
+            type="text"
+            placeholder="Ad və ya Referral Kodu ilə ara"
+            className="p-2 border border-gray-300 rounded mb-4 w-full max-w-[300px]"
+            value={searchTert}
+            onChange={(e) => setSearchTert(e.target.value)} // Arama terimi güncelleme
+          />
+
+          <select
+            value={paymentFilter === null ? "" : paymentFilter ? "paid" : "unpaid"}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "paid") setPaymentFilter(true);
+              else if (val === "unpaid") setPaymentFilter(false);
+              else setPaymentFilter(null);
+            }}
+            className="p-2 border ml-2 mb-2 border-gray-300 rounded"
+          >
+            <option value="">Bütün ödənişlər</option>
+            <option value="paid">Ödəniş edənlər</option>
+            <option value="unpaid">Ödəniş etməyənlər</option>
+          </select>
+
+
+                {filteredUserz.length > 0 ? (
+            <div className="overflow-x-auto max-h-[600px] overflow-y-auto border rounded-xl shadow-lg">
+              <table className="min-w-full bg-white text-sm">
+                <thead className="bg-gray-100 sticky top-0 z-10 text-gray-700 text-left">
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2 border-b">#</th>
+                    <th className="px-4 py-2 border-b">Ad Soyad</th>
+                    <th className="px-4 py-2 border-b">Kod</th>
+                    <th className="px-4 py-2 border-b">Email</th>
+                    <th className="px-4 py-2 border-b">Phone</th>
+                    <th className="px-4 py-2 border-b">Ödəniş</th>
+                    <th className="px-4 py-2 border-b">Qeydiyyat Tarixi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUserz.map((user, index) => (
+                    <tr key={user._id} className="border-b">
+                      <td className="px-4 py-2 font-bold text-gray-700">{index + 1}</td> {/* Sıra nömrəsi */}
+                      <td
+                        onClick={() => handleNameClick(user.referralCode)}
+                        className="px-4 py-2 text-blue-600 cursor-pointer hover:underline"
+                      >
+                        {user.name}
+                      </td>
+                      <td className="px-4 py-2">{user.referralCode}</td>
+                      <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">{user.phone}</td>
+                      <td className="px-4 py-2">
+                        <span
+                          className={`${user.payment ? "text-green-500" : "text-red-500"} text-5xl`}
+                        >
+                          {user.payment ? "+" : "-"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500">Qrup yoxdur.</p>
+          )}
         </div>
       </div>
     </div>
