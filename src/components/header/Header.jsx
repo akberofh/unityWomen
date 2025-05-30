@@ -149,7 +149,7 @@ const Header = ({ theme, setTheme }) => {
 
             {/* Ana Menü ve Kategoriler Sağ Taraf */}
             <nav className="hidden md:flex space-x-6">
-        
+
               <Link
                 to="/products"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
@@ -191,12 +191,28 @@ const Header = ({ theme, setTheme }) => {
                 Maaşlar
               </Link>
               <Link
+                to="/HistoryMaas"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Maaş Tarixçəsi
+              </Link>
+              <Link
                 to="/qazanc"
                 className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
                 data-aos="custom-border"
                 data-aos-duration="1000"
               >
                 Mükafatlar
+              </Link>
+              <Link
+                to="/HistoryMukafat"
+                className="text-white dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                data-aos="custom-border"
+                data-aos-duration="1000"
+              >
+                Mükafat Tarixçəsi
               </Link>
             </nav>
 
@@ -370,7 +386,7 @@ const Header = ({ theme, setTheme }) => {
 
           {/* Linkler */}
           <div className="space-y-4 mt-6 max-h-[200px] overflow-y-auto">
-         
+
             <Link to="/products" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Məhsullar</Link>
             <Link to="/about" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
@@ -381,8 +397,12 @@ const Header = ({ theme, setTheme }) => {
               data-aos-duration="1000">Sifarişlərim</Link>
             <Link to="/maas" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Maaşlar</Link>
+            <Link to="/HistoryMaas" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Maaş Tarixçəsi</Link>
             <Link to="/qazanc" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Mükafatlar</Link>
+            <Link to="/HistoryMukafat" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
+              data-aos-duration="1000">Mükafat Tarixçəsi</Link>
           </div>
 
         </div>
@@ -414,8 +434,8 @@ const Header = ({ theme, setTheme }) => {
                         } cursor-pointer`}
                       onClick={() => navigate(`/product/${item._id}`)}
                     >
-                      <img                   src={Array.isArray(item.photo) ? item.photo[0] : item.photo}
- alt={item.title} className="w-12 h-12 object-cover rounded" />
+                      <img src={Array.isArray(item.photo) ? item.photo[0] : item.photo}
+                        alt={item.title} className="w-12 h-12 object-cover rounded" />
                       <div className="flex flex-col flex-grow">
                         <h2 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h2>
                         <div className="flex items-center justify-between mt-2">

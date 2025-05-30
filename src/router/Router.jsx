@@ -19,6 +19,8 @@ import Cedvel from "../pages/profile/Cedvel";
 import Maas from "../Maaslar/Maaslar";
 import Qazanc from "../Mukafatlar/Mukafatlar";
 import Products from "../pages/Products/Products";
+import TarixceQazanc from "../Tarixce/TarixceQazanc";
+import TarixceMaas from "../Tarixce/TarixceMaas";
 
 
 const Router = () => {
@@ -28,6 +30,8 @@ const Router = () => {
         <Route path="/" element={<Home />}  />
         <Route path="/products" element={<Products />}  />
         <Route path="/qazanc" element={<Qazanc />}  />
+        <Route path="/HistoryMaas" element={<TarixceMaas />}  />
+        <Route path="/HistoryMukafat" element={<TarixceQazanc />}  />
         <Route path="/cedvel" element={<Cedvel />}  />
         <Route path="/payment" element={<PaymentDetal />}  />
         <Route path="/favorie" element={<FavorieProduct />}  />
