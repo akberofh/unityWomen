@@ -30,7 +30,7 @@ const TarixceQ = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/Historyqazanc", {
+        const response = await axios.get("https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/historyQOne", {
           withCredentials: true,
         });
         setAllData(response.data);
