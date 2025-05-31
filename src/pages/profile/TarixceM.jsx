@@ -91,7 +91,6 @@ const TarixceM = () => {
                                     <th className="p-4">📧 Email</th>
                                     <th className="p-4">🎖 Rütbə</th>
                                     <th className="p-4">📆 Tarix Maaşı</th>
-
                                     <th className="p-4">💰 Toplam Maaş</th>
                                 </tr>
                             </thead>
@@ -106,7 +105,6 @@ const TarixceM = () => {
                                         <td className="p-4">{user.email}</td>
                                         <td className="p-4">{user.rank}</td>
                                         <td className="p-4 text-yellow-600 dark:text-yellow-400">{user.salary} AZN</td>
-
                                         <td className="p-4 text-green-600 dark:text-green-400 font-semibold">{user.totalUserSalary} AZN</td>
                                     </tr>
                                 ))}

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from "recharts";
-import { useSelector } from "react-redux";
 
 const TarixceQ = () => {
   const [allData, setAllData] = useState([]);
@@ -51,28 +47,28 @@ const TarixceQ = () => {
   const applyFilters = () => {
     let tempData = [...allData];
 
-    if (search) {
-      tempData = tempData.filter((item) =>
-        item.referrerName.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-    if (search) {
-      tempData = tempData.filter((item) =>
-        item.referrerReferralCode.toString().toLowerCase().includes(search.trim().toLowerCase())
-      );
-    }
+ if (search) {
+            tempData = tempData.filter((item) =>
+                item.referrerReferralCode.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+        if (search) {
+            tempData = tempData.filter((item) =>
+                item.referrerReferralCode.toString().toLowerCase().includes(search.trim().toLowerCase())
+            );
+        }
 
-    if (filters.earnedAboveZero !== null) {
-      tempData = tempData.filter((item) =>
-        filters.earnedAboveZero ? item.totalEarned > 0 : item.totalEarned <= 0
-      );
-    }
+        if (filters.earnedAboveZero !== null) {
+            tempData = tempData.filter((item) =>
+                filters.earnedAboveZero ? item.totalEarned > 0 : item.totalEarned <= 0
+            );
+        }
 
-    if (filters.invitedAboveZero !== null) {
-      tempData = tempData.filter((item) =>
-        filters.invitedAboveZero ? item.totalInvited > 0 : item.totalInvited <= 0
-      );
-    }
+        if (filters.invitedAboveZero !== null) {
+            tempData = tempData.filter((item) =>
+                filters.invitedAboveZero ? item.totalInvited > 0 : item.totalInvited <= 0
+            );
+        }
 
     setFilteredData(tempData);
   };
@@ -103,7 +99,7 @@ const TarixceQ = () => {
   return (
     <div className="w-full px-4 py-12 bg-gray-50 dark:bg-gray-900">
       {/* Başlıq Paneli */}
-        <h2 className="text-4xl font-extrabold text-center text-gray-800 dark:text-white">
+        <h2 className="text-4xl font-extrabold mt-10 text-center text-gray-800 dark:text-white">
           🎯 Tarix Qazanc Məlumatları
         </h2>
 
