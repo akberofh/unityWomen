@@ -49,7 +49,7 @@ const TarixceQ = () => {
 
  if (search) {
             tempData = tempData.filter((item) =>
-                item.referrerReferralCode.toLowerCase().includes(search.toLowerCase())
+                item.referrerName.toLowerCase().includes(search.toLowerCase())
             );
         }
         if (search) {
@@ -99,7 +99,7 @@ const TarixceQ = () => {
   return (
     <div className="w-full px-4 py-12 bg-gray-50 dark:bg-gray-900">
       {/* Başlıq Paneli */}
-        <h2 className="text-4xl font-extrabold mt-10 text-center text-gray-800 dark:text-white">
+        <h2 className="text-4xl font-extrabold mb-10 text-center text-gray-800 dark:text-white">
           🎯 Tarix Qazanc Məlumatları
         </h2>
 
