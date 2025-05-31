@@ -14,7 +14,7 @@ const TarixceM = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/history', { withCredentials: true });
+        const response = await axios.get('https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/vanHistory', { withCredentials: true });
         setData(response.data);
 
         const all = response.data.flatMap(user => user.periodSalaries.map(p => p.periodLabel));
