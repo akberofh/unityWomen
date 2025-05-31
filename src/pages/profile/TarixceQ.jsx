@@ -44,17 +44,14 @@ const TarixceQ = () => {
     applyFilters();
   }, [search, filters, allData]);
 
-  const applyFilters = () => {
-    let tempData = [...allData];
+    const applyFilters = () => {
+        let tempData = [...allData];
 
- if (search) {
-            tempData = tempData.filter((item) =>
-                item.referrerName.toLowerCase().includes(search.toLowerCase())
-            );
-        }
         if (search) {
+            const searchLower = search.toLowerCase();
             tempData = tempData.filter((item) =>
-                item.referrerReferralCode.toString().toLowerCase().includes(search.trim().toLowerCase())
+                item.referrerName.toLowerCase().includes(searchLower) ||
+                item.referrerReferralCode.toString().toLowerCase().includes(searchLower)
             );
         }
 
@@ -70,8 +67,8 @@ const TarixceQ = () => {
             );
         }
 
-    setFilteredData(tempData);
-  };
+        setFilteredData(tempData);
+    };
 
   const toggleFilter = (key, value) => {
     setFilters((prev) => ({
@@ -114,19 +111,24 @@ const TarixceQ = () => {
         />
         {search && (
           <div className="absolute top-full mt-2 w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50 max-h-64 overflow-y-auto">
-            {allData
-              .filter(item => item.referrerName.toLowerCase().includes(search.toLowerCase()))
-              .slice(0, 10)
-              .map((item, idx) => (
-                <div
-                  key={idx}
-                  className="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
-                  onClick={() => handleSuggestionClick(item.referrerName)}
-                >
-                  {item.referrerName}{" "}
-                  <span className="text-gray-400 text-xs">({item.referrerEmail})</span>
-                </div>
-              ))}
+          {allData
+                                .filter(item =>
+                                    item.referrerName.toLowerCase().includes(search.toLowerCase()) ||
+                                    item.referrerReferralCode.toString().toLowerCase().includes(search.toLowerCase())
+                                )
+                                .slice(0, 10)
+                                .map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
+                                        onClick={() => handleSuggestionClick(item.referrerName)}
+                                    >
+                                        {item.referrerName}{" "}
+                                        <span className="text-gray-400 text-xs">
+                                            ({item.referrerEmail})
+                                        </span>
+                                    </div>
+                                ))}
           </div>
         )}
       </div>
