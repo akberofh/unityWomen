@@ -373,8 +373,8 @@ const Header = ({ theme, setTheme }) => {
 
                 {/* Email */}
                 <div className="flex flex-col space-y-1 mt-4">
-                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">Emailiniz</label>
-                  <h2 className="text-xl text-gray-800 dark:text-white">{userInfo.email}</h2>
+                  <label className="text-lg font-semibold text-gray-600 dark:text-gray-300">İstifadəçi Kodunuz</label>
+                  <h2 className="text-xl text-gray-800 dark:text-white">{userInfo.referralCode}</h2>
                 </div>
               </>
             ) : (
