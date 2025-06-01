@@ -10,6 +10,8 @@ import AOS from "aos";
 import Catagory from "../../Catagory/Catagory";
 import { useGetTodosQuery } from "../../redux/slices/productApiSlice";
 import { useGetsTodosQuery } from "../../redux/slices/todoApiSlice";
+import { logout } from "../../redux/slices/authSlice";
+import { useLogoutMutation } from "../../redux/slices/usersApiSlice";
 
 
 
@@ -23,6 +25,8 @@ const Header = ({ theme, setTheme }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+    const [logoutApiCall] = useLogoutMutation();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -38,6 +42,17 @@ const Header = ({ theme, setTheme }) => {
     AOS.init();
   }, []);
 
+
+
+  const handleLogout = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
 
@@ -404,6 +419,13 @@ const Header = ({ theme, setTheme }) => {
             <Link to="/HistoryMukafat" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Mükafat Tarixçəsi</Link>
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          >
+            Çıxış
+          </button>
 
         </div>
       )}
