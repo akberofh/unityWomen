@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
+import { BiSolidSun, BiSolidMoon, BiExit } from "react-icons/bi";
 import { FaUser, FaBars, FaShoppingCart, FaHeart, FaStar } from "react-icons/fa";
 import UnityWomen from './1722665487WhatsApp_Görsel_2024-08-03_saat_10.08.37_83e97437-removebg.png';
 import axios from "axios";
@@ -25,9 +25,9 @@ const Header = ({ theme, setTheme }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-    const [logoutApiCall] = useLogoutMutation();
-      const dispatch = useDispatch();
-    
+  const [logoutApiCall] = useLogoutMutation();
+  const dispatch = useDispatch();
+
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -288,6 +288,13 @@ const Header = ({ theme, setTheme }) => {
                   <BiSolidMoon onClick={() => setTheme("dark")} className="text-2xl text-white cursor-pointer" />
                 )}
               </div>
+                            <div className="flex items-center">
+
+              <button onClick={handleLogout} className="text-white bg-red-700 dark:text-white">
+                {<BiExit size={24} />}
+              </button>
+                            </div>
+
 
               {/* Menü Aç/Kapat */}
               <div className="flex items-center">
@@ -330,7 +337,7 @@ const Header = ({ theme, setTheme }) => {
       {/* Mobil Menü Açıldığında Görüntülenen Kategoriler ve İkonlar */}
       {isMenuOpen && (
         <div
-className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 min-h-[100dvh] overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 min-h-[100dvh] overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="relative text-center">
             <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profilə Keçin➡</Link>
@@ -526,6 +533,10 @@ className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform trans
 
             <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="text-white dark:text-white cursor-pointer">
               {theme === "dark" ? <BiSolidSun size={24} /> : <BiSolidMoon size={24} />}
+            </button>
+
+            <button onClick={handleLogout} className="text-white bg-red-700 dark:text-white">
+              {<BiExit size={24} />}
             </button>
 
             <style jsx>{`
