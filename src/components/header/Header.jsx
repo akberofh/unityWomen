@@ -12,6 +12,8 @@ import { useGetTodosQuery } from "../../redux/slices/productApiSlice";
 import { useGetsTodosQuery } from "../../redux/slices/todoApiSlice";
 import { logout } from "../../redux/slices/authSlice";
 import { useLogoutMutation } from "../../redux/slices/usersApiSlice";
+import { toast } from "react-toastify";
+
 
 
 
@@ -27,7 +29,7 @@ const Header = ({ theme, setTheme }) => {
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
   const dispatch = useDispatch();
-
+    const [referralLink, setReferralLink] = useState("");
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -66,6 +68,8 @@ const Header = ({ theme, setTheme }) => {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPhoto(userInfo.photo);
+            setReferralLink(userInfo.referralCode); 
+
 
 
     }
@@ -131,7 +135,16 @@ const Header = ({ theme, setTheme }) => {
 
 
 
-
+      const copyReferralLink = () => {
+    navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
+      .then(() => {
+        toast.success("Referral linkiniz kopyalandı!");
+      })
+      .catch((error) => {
+        toast.error("Referral linkiniz kopyalanmadı");
+        console.error(error);
+      });
+  };
 
 
 
@@ -428,6 +441,35 @@ const Header = ({ theme, setTheme }) => {
             <Link to="/HistoryMukafat" className="block text-lg text-gray-700 dark:text-white py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" data-aos="custom-border"
               data-aos-duration="1000">Mükafat Tarixçəsi</Link>
           </div>
+
+          <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              Referans Linkiniz:
+            </h3>
+            {referralLink && (
+              <div className="flex items-center justify-between mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-xl shadow">
+                <a
+                  href={`/register?referral=${referralLink}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm md:text-base"
+                >
+                  https://unity-women.vercel.app/register?referral={referralLink}
+                </a>
+                <button
+                  type="button"
+                  onClick={copyReferralLink}
+                  className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Kopyala
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
           <button
             onClick={handleLogout}
