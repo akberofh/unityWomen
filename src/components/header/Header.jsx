@@ -330,7 +330,7 @@ const Header = ({ theme, setTheme }) => {
       {/* Mobil Menü Açıldığında Görüntülenen Kategoriler ve İkonlar */}
       {isMenuOpen && (
         <div
-          className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 max-h-full overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 min-h-[100dvh] overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="relative text-center">
             <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profilə Keçin➡</Link>
