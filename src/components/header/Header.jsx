@@ -5,7 +5,7 @@ import { FaUser, FaBars, FaShoppingCart, FaHeart, FaStar } from "react-icons/fa"
 import UnityWomen from './1722665487WhatsApp_Görsel_2024-08-03_saat_10.08.37_83e97437-removebg.png';
 import axios from "axios";
 import { FaBarsStaggered } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AOS from "aos";
 import Catagory from "../../Catagory/Catagory";
 import { useGetTodosQuery } from "../../redux/slices/productApiSlice";
@@ -26,6 +26,8 @@ const Header = ({ theme, setTheme }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
     const [logoutApiCall] = useLogoutMutation();
+      const dispatch = useDispatch();
+    
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
