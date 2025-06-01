@@ -29,7 +29,7 @@ const Header = ({ theme, setTheme }) => {
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
   const dispatch = useDispatch();
-    const [referralLink, setReferralLink] = useState("");
+  const [referralLink, setReferralLink] = useState("");
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -68,7 +68,7 @@ const Header = ({ theme, setTheme }) => {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPhoto(userInfo.photo);
-            setReferralLink(userInfo.referralCode); 
+      setReferralLink(userInfo.referralCode);
 
 
 
@@ -135,7 +135,7 @@ const Header = ({ theme, setTheme }) => {
 
 
 
-      const copyReferralLink = () => {
+  const copyReferralLink = () => {
     navigator.clipboard.writeText(`https://unity-women.vercel.app/register?referral=${referralLink}`)
       .then(() => {
         toast.success("Referral linkiniz kopyalandı!");
@@ -301,12 +301,12 @@ const Header = ({ theme, setTheme }) => {
                   <BiSolidMoon onClick={() => setTheme("dark")} className="text-2xl text-white cursor-pointer" />
                 )}
               </div>
-                            <div className="flex items-center">
+              <div className="flex items-center">
 
-              <button onClick={handleLogout} className="text-white bg-red-700 dark:text-white">
-                {<BiExit size={24} />}
-              </button>
-                            </div>
+                <button onClick={handleLogout} className="text-white bg-red-700 dark:text-white">
+                  {<BiExit size={24} />}
+                </button>
+              </div>
 
 
               {/* Menü Aç/Kapat */}
@@ -350,8 +350,9 @@ const Header = ({ theme, setTheme }) => {
       {/* Mobil Menü Açıldığında Görüntülenen Kategoriler ve İkonlar */}
       {isMenuOpen && (
         <div
-          className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 min-h-[100dvh] overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`md:hidden bg-white dark:bg-black py-6 px-8 space-y-6 transform transition-transform duration-300 ease-in-out fixed top-0 left-0 max-h-full overflow-y-auto z-20 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
+          
           <div className="relative text-center">
             <Link to="/profile" className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Profilə Keçin➡</Link>
 
@@ -444,30 +445,30 @@ const Header = ({ theme, setTheme }) => {
 
           <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
-      <div className="text-sm max-w-[250px]">
-                  <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                    Referans Linkiniz:
-                  </h3>
-                  {referralLink && (
-                    <div className="flex flex-col gap-2 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-lg shadow-sm">
-                      <a
-                        href={`/register?referral=${referralLink}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 hover:underline break-all text-xs"
-                      >
-                        https://unity-women.vercel.app/register?referral={referralLink}
-                      </a>
-                      <button
-                        type="button"
-                        onClick={copyReferralLink}
-                        className="w-full px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
-                      >
-                        Kopyala
-                      </button>
-                    </div>
-                  )}
-                </div>
+          <div className="text-sm max-w-[250px]">
+            <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+              Referans Linkiniz:
+            </h3>
+            {referralLink && (
+              <div className="flex flex-col gap-2 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-lg shadow-sm">
+                <a
+                  href={`/register?referral=${referralLink}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 dark:text-blue-400 hover:underline break-all text-xs"
+                >
+                  https://unity-women.vercel.app/register?referral={referralLink}
+                </a>
+                <button
+                  type="button"
+                  onClick={copyReferralLink}
+                  className="w-full px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
+                >
+                  Kopyala
+                </button>
+              </div>
+            )}
+          </div>
 
           <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
