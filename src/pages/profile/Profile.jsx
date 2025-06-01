@@ -43,6 +43,31 @@ const Profile = () => {
   const MySwal = withReactContent(Swal);
 
 
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://unitywomenbackend-94ca2cb93fbd.herokuapp.com/api/users/getuser/${userInfo._id}`
+        );
+
+        if (data.payment === false) {
+          // Kullanıcı ödeme yapmamış, anasayfaya yönlendir
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Kullanıcı ödeme durumu kontrolü başarısız:", error);
+        navigate("/"); // hata varsa da yönlendir
+      }
+    };
+
+    if (userInfo) {
+      checkPaymentStatus();
+    } else {
+      navigate("/"); // userInfo yoksa da yönlendir
+    }
+  }, [userInfo, navigate]);
+
+
   const handleLogout = async () => {
     try {
       await logoutApiCall().unwrap();
