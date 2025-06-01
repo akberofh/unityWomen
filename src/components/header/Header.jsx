@@ -444,30 +444,30 @@ const Header = ({ theme, setTheme }) => {
 
           <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              Referans Linkiniz:
-            </h3>
-            {referralLink && (
-              <div className="flex items-center justify-between mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-xl shadow">
-                <a
-                  href={`/register?referral=${referralLink}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm md:text-base"
-                >
-                  https://unity-women.vercel.app/register?referral={referralLink}
-                </a>
-                <button
-                  type="button"
-                  onClick={copyReferralLink}
-                  className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Kopyala
-                </button>
-              </div>
-            )}
-          </div>
+      <div className="text-sm max-w-[250px]">
+                  <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                    Referans Linkiniz:
+                  </h3>
+                  {referralLink && (
+                    <div className="flex flex-col gap-2 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-lg shadow-sm">
+                      <a
+                        href={`/register?referral=${referralLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 dark:text-blue-400 hover:underline break-all text-xs"
+                      >
+                        https://unity-women.vercel.app/register?referral={referralLink}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={copyReferralLink}
+                        className="w-full px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
+                      >
+                        Kopyala
+                      </button>
+                    </div>
+                  )}
+                </div>
 
           <div className="border-t border-gray-300 dark:border-gray-600 my-4"></div>
 
